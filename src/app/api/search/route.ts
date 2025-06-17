@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
 
         // Remove undefined values to avoid Zod validation issues
         const cleanedSearchData = Object.fromEntries(
-            Object.entries(searchData).filter(([_, value]) => value !== undefined)
+            Object.entries(searchData).filter(([, value]) => value !== undefined)
         );
 
         const validatedSearch = TrainSearchSchema.parse(cleanedSearchData);
@@ -52,7 +52,21 @@ export async function GET(request: NextRequest) {
         const toStationIds = toStations.map(s => s.id);
 
         // Costruisci il filtro per i treni
-        const where: any = {
+        const where: {
+            OR?: Array<{
+                AND: Array<{
+                    startStationId?: { in: number[] };
+                    endStationId?: { in: number[] };
+                    stops?: {
+                        some: {
+                            stationId: { in: number[] };
+                        };
+                    };
+                }>;
+            }>;
+            isCampaniaExpress?: boolean;
+            departureTime?: { gte: string };
+        } = {
             OR: [
                 // Treni diretti
                 {

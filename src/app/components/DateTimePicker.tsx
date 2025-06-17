@@ -1,13 +1,12 @@
 "use client";
 
 import * as React from "react";
-import { ChevronDownIcon, CalendarIcon } from "lucide-react";
+import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -19,7 +18,6 @@ interface DateTimePickerProps {
 
 export function DateTimePicker({ date, setDate }: DateTimePickerProps) {
   const { t } = useLanguage();
-  const [open, setOpen] = React.useState(false);
   const [time, setTime] = React.useState(date ? format(date, "HH:mm") : "");
 
   const handleDateChange = (selectedDate: Date | undefined) => {

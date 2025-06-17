@@ -55,12 +55,6 @@ export function FindTrains() {
     setErrors({ departure: "", arrival: "", time: "" });
   };
 
-  const setQuickTime = (hours: number) => {
-    const now = new Date();
-    now.setHours(now.getHours() + hours);
-    setDepartureTime(now);
-  };
-
   const formatTimeForAPI = (date: Date): string => {
     return `${date.getHours().toString().padStart(2, "0")}:${date
       .getMinutes()

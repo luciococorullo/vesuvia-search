@@ -9,7 +9,11 @@ export async function GET(request: NextRequest) {
         const category = searchParams.get('category');
         const direction = searchParams.get('direction');
 
-        const where: any = {};
+        const where: {
+            isCampaniaExpress?: boolean;
+            category?: string;
+            direction?: string;
+        } = {};
 
         if (isCampaniaExpress === 'true') {
             where.isCampaniaExpress = true;
@@ -76,9 +80,9 @@ export async function POST(request: NextRequest) {
         const train = await prisma.train.create({
             data: {
                 ...validatedData,
-                direction: validatedData.direction as any,
-                operatingDays: validatedData.operatingDays as any,
-                category: validatedData.category as any,
+                direction: validatedData.direction,
+                operatingDays: validatedData.operatingDays,
+                category: validatedData.category,
             },
             include: {
                 startStation: true,

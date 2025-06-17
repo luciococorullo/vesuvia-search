@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Station, Train, TrainWithDetails, SearchResult, CreateStation, CreateTrain } from '@/lib/types';
+import { Station, TrainWithDetails, SearchResult, CreateStation, CreateTrain } from '@/lib/types';
 
 // API functions
 const api = {

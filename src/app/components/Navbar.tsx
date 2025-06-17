@@ -2,11 +2,6 @@
 
 import {
   NavigationMenu,
-  NavigationMenuList,
-  NavigationMenuItem,
-  NavigationMenuTrigger,
-  NavigationMenuContent,
-  NavigationMenuLink,
 } from "@/components/ui/navigation-menu";
 import { LanguageSelector } from "@/components/LanguageSelector";
 

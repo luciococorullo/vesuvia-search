@@ -244,7 +244,7 @@ function TrainCard({ train, fromStations, toStations }: TrainCardProps) {
             {t("showAllStops")}
           </summary>
           <div className="mt-3 space-y-2">
-            {train.stops.map((stop, index) => (
+            {train.stops.map((stop) => (
               <div
                 key={stop.id}
                 className="flex items-center justify-between py-1 px-3 bg-gray-50 rounded text-sm"
