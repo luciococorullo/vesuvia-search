@@ -1,0 +1,45 @@
+{
+    "name": "VesuviaSearch",
+    "short_name": "VesuviaSearch",
+    "description": "Ricerca treni Circumvesuviana Napoli-Sorrento",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#dc2626",
+    "orientation": "portrait-primary",
+    "icons": [
+        {
+            "src": "/android-chrome-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/android-chrome-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "categories": [
+        "travel",
+        "transportation",
+        "utilities"
+    ],
+    "lang": "it",
+    "scope": "/",
+    "related_applications": [],
+    "prefer_related_applications": false,
+    "shortcuts": [
+        {
+            "name": "Ricerca Rapida",
+            "short_name": "Ricerca",
+            "description": "Ricerca veloce treni",
+            "url": "/",
+            "icons": [
+                {
+                    "src": "/android-chrome-192x192.png",
+                    "sizes": "192x192"
+                }
+            ]
+        }
+    ]
+}

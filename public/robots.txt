@@ -1,0 +1,22 @@
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://vesuvia-search.vercel.app/sitemap.xml
+
+# Disallow admin and API routes
+Disallow: /api/
+Disallow: /admin/
+Disallow: /_next/
+Disallow: /.*
+
+# Allow important pages
+Allow: /$
+Allow: /search
+Allow: /stations
+
+# Crawl delay
+Crawl-delay: 1
+
+# Host
+Host: https://vesuvia-search.vercel.app

@@ -12,6 +12,10 @@
 
 # testing
 /coverage
+*.test.js
+*.test.ts
+test-*.js
+test-*.ts
 
 # next.js
 /.next/
@@ -20,9 +24,28 @@
 # production
 /build
 
+# database
+# Uncomment the lines below when using external database in production
+# *.db
+# *.db-journal
+# *.sqlite
+# *.sqlite3
+
+# prisma
+/prisma/migrations/
+node_modules/.prisma/
+prisma/generated/
+
+# data files
+*.csv
+*.json.bak
+*.xlsx
+*.xls
+
 # misc
 .DS_Store
 *.pem
+Thumbs.db
 
 # debug
 npm-debug.log*
@@ -32,6 +55,10 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 
 # vercel
 .vercel
@@ -39,3 +66,29 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+*.d.ts.map
+
+# IDE and editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+
+# Cache directories
+.cache/
+.parcel-cache/
+.eslintcache
