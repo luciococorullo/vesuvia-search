@@ -1,49 +1,40 @@
 # Deployment Guide
 
 ## For Development
-The SQLite database (`prisma/dev.db`) is included in the repository for easy development setup.
+The SQLite database (`prisma/dev.db`) is used for local development.
 
-## For Production Deployment
+## For Production Deployment (Vercel)
 
-### Option 1: Using External Database (Recommended)
-1. Set up a PostgreSQL database (e.g., on Vercel, Railway, Supabase)
-2. Set the `DATABASE_URL` environment variable to your production database
-3. Update `prisma/schema.prisma` to use `postgresql` provider:
-   ```prisma
-   datasource db {
-     provider = "postgresql"
-     url      = env("DATABASE_URL")
-   }
-   ```
-4. Run migrations and seed:
-   ```bash
-   npm run db:setup
-   ```
+### Step 1: Set up Vercel Postgres Database
+1. Go to your Vercel project dashboard
+2. Navigate to the "Storage" tab
+3. Create a new Postgres database
+4. Copy the `DATABASE_URL` connection string
 
-### Option 2: Keep SQLite for Simple Deployments
-If deploying to a platform that supports file storage:
-1. Uncomment the database ignore lines in `.gitignore`
-2. The `prisma/seed.js` will populate the database on first run
-3. Add to your deployment script:
-   ```bash
-   npm run db:setup
-   ```
+### Step 2: Configure Environment Variables
+1. In your Vercel project settings, go to "Environment Variables"
+2. Add `DATABASE_URL` with your Postgres connection string
+3. Make sure it's enabled for Production, Preview, and Development environments
+
+### Step 3: Deploy
+The deployment is now automated with the updated build process:
+- Vercel will use the `vercel-build` script
+- This will automatically set up the PostgreSQL database
+- The database will be seeded with initial data
 
 ### Environment Variables
 - `DATABASE_URL`: Your database connection string
-- For local development, use `.env.local` (already ignored by git)
+  - Local: `file:./dev.db` (SQLite)
+  - Production: `postgres://...` (PostgreSQL from Vercel)
 
-### Deployment Commands
+### Manual Database Setup (if needed)
 ```bash
-# Install dependencies and generate Prisma client
-npm install
+# Generate Prisma client
+npx prisma generate
 
-# Set up database (push schema + seed data)
-npm run db:setup
+# Push schema to database
+npx prisma db push
 
-# Build the application
-npm run build
-
-# Start production server
-npm start
+# Seed the database
+npm run db:seed
 ```

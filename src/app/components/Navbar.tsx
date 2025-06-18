@@ -1,8 +1,6 @@
 "use client";
 
-import {
-  NavigationMenu,
-} from "@/components/ui/navigation-menu";
+import { NavigationMenu } from "@/components/ui/navigation-menu";
 import { LanguageSelector } from "@/components/LanguageSelector";
 
 export default function Navbar() {
