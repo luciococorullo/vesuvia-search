@@ -4,7 +4,10 @@
 if [ "$VERCEL_ENV" = "production" ] || [ "$NODE_ENV" = "production" ]; then
     echo "🚀 Production build detected"
     
-    # Generate Prisma client
+    # Use PostgreSQL schema for production
+    cp prisma/schema.prod.prisma prisma/schema.prisma
+    
+    # Generate Prisma client for PostgreSQL
     npx prisma generate
     
     # Run migrations (this will create tables if they don't exist)
@@ -17,6 +20,7 @@ if [ "$VERCEL_ENV" = "production" ] || [ "$NODE_ENV" = "production" ]; then
     npm run build
 else
     echo "🛠️ Development build"
+    # Use SQLite schema for development (default)
     npx prisma generate
     npm run build
 fi

@@ -1,269 +1,356 @@
 import { PrismaClient } from '@prisma/client';
+import * as fs from 'fs';
+import * as path from 'path';
 
 const prisma = new PrismaClient();
 
+// These are the actual stations on the Napoli-Sorrento direct line (from official route map)
+const NAPOLI_SORRENTO_STATIONS = [
+    'Napoli Porta Nolana',
+    'Napoli P. Garibaldi',
+    'San Giorgio a Cremano',
+    'Portici Bellavista',
+    'Ercolano',
+    'Torre del Greco',
+    'Torre A.ta - Oplonti',
+    'Villa Regina',
+    'Pompei Scavi Villa dei Misteri',
+    'Pioppaino',
+    'Via Nocera',
+    'Castellammare di Stabia',
+    'Vico Equense',
+    'Seiano',
+    'Meta',
+    'Piano',
+    'S. Agnello',
+    'Sorrento'
+];
+
+interface CSVStation {
+    id: number;
+    name: string;
+    bacino: number;
+    latitude: number;
+    longitude: number;
+    isStation: boolean;
+    isTerminal: boolean;
+    isDiramazione: boolean;
+    chilometrica: number;
+    isDismessa: boolean;
+    isDisabilitata: boolean;
+    codiceIstat: string;
+}
+
+interface CSVTrain {
+    Id: string;
+    Linea: string;
+    Treno: string;
+    Bacino: string;
+    Tipologia: string;
+    Partenza: string; // DateTime
+    Arrivo: string; // DateTime
+    Categoria: string;
+    Codice_Destinazione: string;
+    Destinazione: string;
+    Codice_Partenza: string;
+    Partenza_Station: string;
+    Linea_Route: string;
+    Validita: string;
+}
+
+// Parse stations CSV
+function parseStationCSVLine(line: string): CSVStation | null {
+    const parts = line.split(',');
+    if (parts.length < 12) return null;
+
+    const chilometrica = parts[8] === 'NULL' ? 0 : parseFloat(parts[8]);
+
+    return {
+        id: parseInt(parts[0]),
+        name: parts[1],
+        bacino: parseInt(parts[2]),
+        latitude: parseFloat(parts[3]),
+        longitude: parseFloat(parts[4]),
+        isStation: parts[5] === '1',
+        isTerminal: parts[6] === '1',
+        isDiramazione: parts[7] === '1',
+        chilometrica: chilometrica,
+        isDismessa: parts[9] === '1',
+        isDisabilitata: parts[10] === '1',
+        codiceIstat: parts[11]
+    };
+}
+
+// Parse trains CSV
+function parseTrainCSVLine(line: string): CSVTrain | null {
+    const parts = line.split(',');
+    if (parts.length < 14) return null;
+
+    return {
+        Id: parts[0],
+        Linea: parts[1],
+        Treno: parts[2],
+        Bacino: parts[3],
+        Tipologia: parts[4],
+        Partenza: parts[5],
+        Arrivo: parts[6],
+        Categoria: parts[7],
+        Codice_Destinazione: parts[8],
+        Destinazione: parts[9],
+        Codice_Partenza: parts[10],
+        Partenza_Station: parts[11],
+        Linea_Route: parts[12],
+        Validita: parts[13]
+    };
+}
+
+function extractTimeFromDateTime(dateTimeString: string): string {
+    const match = dateTimeString.match(/\d{4}-\d{2}-\d{2} (\d{2}:\d{2})/);
+    return match ? match[1] : '00:00';
+}
+
+function mapCategory(categoria: string): 'REGIONALE' | 'INTERCITY' | 'CAMPANIA_EXPRESS' {
+    switch (categoria.toUpperCase()) {
+        case 'DD':
+            return 'REGIONALE'; // Direttissimo -> Regionale in our schema
+        case 'D':
+            return 'INTERCITY'; // Diretto -> Intercity in our schema
+        case 'CE':
+        case 'CAMPANIA_EXPRESS':
+            return 'CAMPANIA_EXPRESS';
+        default:
+            return 'REGIONALE';
+    }
+}
+
+function determineOperatingDays(): 'WEEKDAYS_ONLY' | 'WEEKENDS_ONLY' | 'DAILY' | 'WEEKDAYS_AND_SATURDAY' {
+    return 'DAILY';
+}
+
+function generateStationCode(name: string, id: number): string {
+    // Use station ID as prefix to ensure uniqueness
+    const cleanName = name.replace(/[^a-zA-Z]/g, '').toUpperCase();
+    const shortName = cleanName.length >= 2 ? cleanName.substring(0, 2) : cleanName.padEnd(2, 'X');
+    return `${id.toString().padStart(2, '0')}${shortName}`.substring(0, 5);
+}
+
 async function main() {
-    console.log('🚂 Iniziando il seeding del database...');
+    try {
+        console.log('🧹 Cleaning existing data...');
+        await prisma.trainStop.deleteMany();
+        await prisma.train.deleteMany();
+        await prisma.station.deleteMany();
 
-    // Prima pulisci i dati esistenti
-    await prisma.trainStop.deleteMany();
-    await prisma.train.deleteMany();
-    await prisma.station.deleteMany();
+        console.log('📍 Loading stations from CSV...');
+        const stationsPath = path.join(process.cwd(), 'Elenco Stazioni.csv');
+        const stationsContent = fs.readFileSync(stationsPath, 'utf-8');
+        const stationLines = stationsContent.split('\n').filter(line => line.trim() !== '');
 
-    // Crea le stazioni dalla tabella
-    const stations = [
-        { name: 'NAPOLI PORTA NOLANA', code: 'NAP' },
-        { name: 'NAPOLI P. GARIBALDI', code: 'GAR' },
-        { name: 'SAN GIOVANNI A CREMANO', code: 'SGC' },
-        { name: 'PORTICI BELLAVISTA', code: 'PBV' },
-        { name: 'ERCOLANO', code: 'ERC' },
-        { name: 'TORRE DEL GRECO', code: 'TDG' },
-        { name: 'TORRE ANNUNZIATA OPLONTI', code: 'TAO' },
-        { name: 'Villa Regina', code: 'VRG' },
-        { name: 'POMPEI SANTUARIO VILLA DEI MISTERI', code: 'PSV' },
-        { name: 'Moregine', code: 'MOR' },
-        { name: 'POMPEI', code: 'POM' },
-        { name: 'Via Nocera', code: 'VNO' },
-        { name: 'CASTELLAMMARE DI STABIA', code: 'CDS' },
-        { name: 'VICO EQUENSE', code: 'VEQ' },
-        { name: 'Seiano', code: 'SEI' },
-        { name: 'META', code: 'MET' },
-        { name: 'PIANO', code: 'PIA' },
-        { name: 'S.Agnello', code: 'SAG' },
-        { name: 'SORRENTO', code: 'SOR' }
-    ];
+        // Skip header line
+        const stationDataLines = stationLines.slice(1);
 
-    console.log('📍 Creando stazioni...');
-    const createdStations = await prisma.station.createMany({
-        data: stations
-    });
-    console.log(`✅ Create ${createdStations.count} stazioni`);
+        // Filter and sort Circumvesuviana line stations (Bacino = 1) for Napoli-Sorrento route
+        // Only include stations that are on the direct Napoli-Sorrento line
+        const circumvesuvianaStations: CSVStation[] = [];
 
-    // Recupera le stazioni create per ottenere gli ID
-    const stationMap = new Map();
-    const allStations = await prisma.station.findMany();
-    allStations.forEach(station => {
-        stationMap.set(station.code, station.id);
-    });
+        for (const line of stationDataLines) {
+            const station = parseStationCSVLine(line);
+            if (station &&
+                station.bacino === 1 &&
+                station.isDismessa === false && // Dismessa = 0 (not dismantled)
+                !station.isDisabilitata) {      // Not temporarily disabled
 
-    // Treni direzione SORRENTO (da Napoli a Sorrento)
-    const trainsToSorrento = [
-        // Treni feriali (DO - Lunedì-Venerdì)
-        { trainNumber: '10530', departureTime: '5:41', category: 'REGIONALE', operatingDays: 'WEEKDAYS_ONLY' },
-        { trainNumber: '10532', departureTime: '6:17', category: 'REGIONALE', operatingDays: 'WEEKDAYS_ONLY' },
-        { trainNumber: '10534', departureTime: '6:53', category: 'REGIONALE', operatingDays: 'WEEKDAYS_ONLY' },
-        { trainNumber: '10702', departureTime: '7:29', category: 'REGIONALE', operatingDays: 'WEEKDAYS_ONLY' },
-        { trainNumber: '10738', departureTime: '8:05', category: 'CAMPANIA_EXPRESS', operatingDays: 'WEEKDAYS_ONLY', isCampaniaExpress: true },
-        { trainNumber: '10082', departureTime: '8:22', category: 'REGIONALE', operatingDays: 'WEEKDAYS_ONLY' },
-        { trainNumber: '10088', departureTime: '8:41', category: 'REGIONALE', operatingDays: 'WEEKDAYS_ONLY' },
-        { trainNumber: '10094', departureTime: '9:17', category: 'REGIONALE', operatingDays: 'WEEKDAYS_ONLY' },
-        { trainNumber: '11018', departureTime: '9:53', category: 'REGIONALE', operatingDays: 'WEEKDAYS_ONLY' },
-        { trainNumber: '11106', departureTime: '10:55', category: 'REGIONALE', operatingDays: 'WEEKDAYS_ONLY' },
-        { trainNumber: '11112', departureTime: '11:31', category: 'REGIONALE', operatingDays: 'WEEKDAYS_ONLY' },
-        { trainNumber: '11118', departureTime: '12:07', category: 'REGIONALE', operatingDays: 'WEEKDAYS_ONLY' },
-        { trainNumber: '11124', departureTime: '12:43', category: 'REGIONALE', operatingDays: 'WEEKDAYS_ONLY' },
-        { trainNumber: '11130', departureTime: '13:19', category: 'REGIONALE', operatingDays: 'WEEKDAYS_ONLY' },
-        { trainNumber: '11318', departureTime: '13:55', category: 'REGIONALE', operatingDays: 'WEEKDAYS_ONLY' },
-        { trainNumber: '11136', departureTime: '14:31', category: 'REGIONALE', operatingDays: 'WEEKDAYS_ONLY' },
-        { trainNumber: '11142', departureTime: '15:07', category: 'REGIONALE', operatingDays: 'WEEKDAYS_ONLY' },
-        { trainNumber: '11148', departureTime: '15:43', category: 'REGIONALE', operatingDays: 'WEEKDAYS_ONLY' },
-        { trainNumber: '11154', departureTime: '16:19', category: 'REGIONALE', operatingDays: 'WEEKDAYS_ONLY' },
-        { trainNumber: '11602', departureTime: '16:55', category: 'REGIONALE', operatingDays: 'WEEKDAYS_ONLY' },
-        { trainNumber: '11618', departureTime: '17:31', category: 'REGIONALE', operatingDays: 'WEEKDAYS_ONLY' },
-        { trainNumber: '11166', departureTime: '17:05', category: 'REGIONALE', operatingDays: 'WEEKDAYS_ONLY' },
-        { trainNumber: '11174', departureTime: '17:41', category: 'REGIONALE', operatingDays: 'WEEKDAYS_ONLY' },
-        { trainNumber: '11178', departureTime: '18:17', category: 'REGIONALE', operatingDays: 'WEEKDAYS_ONLY' },
-        { trainNumber: '11184', departureTime: '18:53', category: 'REGIONALE', operatingDays: 'WEEKDAYS_ONLY' },
-        { trainNumber: '11190', departureTime: '19:29', category: 'REGIONALE', operatingDays: 'WEEKDAYS_ONLY' },
-        { trainNumber: '11918', departureTime: '20:05', category: 'REGIONALE', operatingDays: 'WEEKDAYS_ONLY' },
-        { trainNumber: '11196', departureTime: '20:41', category: 'REGIONALE', operatingDays: 'WEEKDAYS_ONLY' },
-        { trainNumber: '11202', departureTime: '21:17', category: 'REGIONALE', operatingDays: 'WEEKDAYS_ONLY' },
-        { trainNumber: '11208', departureTime: '21:53', category: 'REGIONALE', operatingDays: 'WEEKDAYS_ONLY' },
-        { trainNumber: '11214', departureTime: '22:11', category: 'REGIONALE', operatingDays: 'WEEKDAYS_ONLY' },
+                // Check if this station is on the direct Napoli-Sorrento line
+                const normalizedStationName = station.name.trim().toLowerCase();
 
-        // Treni festivi (alcuni sono diversi)
-        { trainNumber: '11114', departureTime: '11:50', category: 'REGIONALE', operatingDays: 'WEEKENDS_ONLY' },
-        { trainNumber: '11920', departureTime: '19:38', category: 'REGIONALE', operatingDays: 'WEEKENDS_ONLY' },
-        { trainNumber: '12202', departureTime: '22:02', category: 'REGIONALE', operatingDays: 'WEEKENDS_ONLY' },
-    ];
+                // Exclude stations that are definitely not on the direct line
+                if (normalizedStationName.includes('nola') ||
+                    normalizedStationName.includes('miglio d\'oro')) {
+                    // Don't exclude if it's Napoli Porta Nolana
+                    if (!normalizedStationName.includes('napoli porta nolana')) {
+                        continue;
+                    }
+                }
 
-    console.log('🚂 Creando treni direzione Sorrento...');
-    for (const trainData of trainsToSorrento) {
-        const train = await prisma.train.create({
-            data: {
-                trainNumber: trainData.trainNumber,
-                direction: 'SORRENTO',
-                departureTime: trainData.departureTime,
-                operatingDays: trainData.operatingDays as any,
-                category: trainData.category === 'CAMPANIA_EXPRESS' ? 'CAMPANIA_EXPRESS' : 'REGIONALE',
-                isCampaniaExpress: trainData.isCampaniaExpress || false,
-                startStationId: stationMap.get('NAP'),
-                endStationId: stationMap.get('SOR'),
+                const isOnDirectLine = NAPOLI_SORRENTO_STATIONS.some(validName => {
+                    const normalizedValidName = validName.trim().toLowerCase();
+                    // Check exact match or if station name contains the valid name (for variations)
+                    return normalizedStationName === normalizedValidName ||
+                        normalizedStationName.includes(normalizedValidName) ||
+                        normalizedValidName.includes(normalizedStationName) ||
+                        // Handle specific variations
+                        (normalizedValidName.includes('torre a.ta') && normalizedStationName.includes('torre annunziata')) ||
+                        (normalizedValidName.includes('san giorgio') && normalizedStationName.includes('san giorgio')) ||
+                        (normalizedValidName.includes('ercolano') && normalizedStationName.includes('ercolano') && !normalizedStationName.includes('miglio'));
+                });
+
+                if (isOnDirectLine) {
+                    circumvesuvianaStations.push(station);
+                }
             }
+        }
+
+        // Sort by chilometrica, but handle 0.000 and NULL values properly
+        circumvesuvianaStations.sort((a, b) => {
+            // Handle Napoli Porta Nolana as the starting point
+            if (a.name === 'Napoli Porta Nolana') return -1;
+            if (b.name === 'Napoli Porta Nolana') return 1;
+
+            // Then sort by chilometrica
+            return a.chilometrica - b.chilometrica;
         });
 
-        // Aggiungi tutte le fermate per ogni treno
-        const stops = [
-            { stationCode: 'NAP', departureTime: trainData.departureTime, order: 1 },
-            { stationCode: 'GAR', arrivalTime: addMinutes(trainData.departureTime, 3), departureTime: addMinutes(trainData.departureTime, 4), order: 2 },
-            { stationCode: 'SGC', arrivalTime: addMinutes(trainData.departureTime, 8), departureTime: addMinutes(trainData.departureTime, 9), order: 3 },
-            { stationCode: 'PBV', arrivalTime: addMinutes(trainData.departureTime, 12), departureTime: addMinutes(trainData.departureTime, 13), order: 4 },
-            { stationCode: 'ERC', arrivalTime: addMinutes(trainData.departureTime, 16), departureTime: addMinutes(trainData.departureTime, 17), order: 5 },
-            { stationCode: 'TDG', arrivalTime: addMinutes(trainData.departureTime, 21), departureTime: addMinutes(trainData.departureTime, 22), order: 6 },
-            { stationCode: 'TAO', arrivalTime: addMinutes(trainData.departureTime, 27), departureTime: addMinutes(trainData.departureTime, 28), order: 7 },
-            { stationCode: 'VRG', arrivalTime: addMinutes(trainData.departureTime, 31), departureTime: addMinutes(trainData.departureTime, 32), order: 8 },
-            { stationCode: 'PSV', arrivalTime: addMinutes(trainData.departureTime, 36), departureTime: addMinutes(trainData.departureTime, 37), order: 9 },
-            { stationCode: 'MOR', arrivalTime: addMinutes(trainData.departureTime, 40), departureTime: addMinutes(trainData.departureTime, 41), order: 10 },
-            { stationCode: 'POM', arrivalTime: addMinutes(trainData.departureTime, 44), departureTime: addMinutes(trainData.departureTime, 45), order: 11 },
-            { stationCode: 'VNO', arrivalTime: addMinutes(trainData.departureTime, 49), departureTime: addMinutes(trainData.departureTime, 50), order: 12 },
-            { stationCode: 'CDS', arrivalTime: addMinutes(trainData.departureTime, 54), departureTime: addMinutes(trainData.departureTime, 55), order: 13 },
-            { stationCode: 'VEQ', arrivalTime: addMinutes(trainData.departureTime, 59), departureTime: addMinutes(trainData.departureTime, 60), order: 14 },
-            { stationCode: 'SEI', arrivalTime: addMinutes(trainData.departureTime, 64), departureTime: addMinutes(trainData.departureTime, 65), order: 15 },
-            { stationCode: 'MET', arrivalTime: addMinutes(trainData.departureTime, 69), departureTime: addMinutes(trainData.departureTime, 70), order: 16 },
-            { stationCode: 'PIA', arrivalTime: addMinutes(trainData.departureTime, 74), departureTime: addMinutes(trainData.departureTime, 75), order: 17 },
-            { stationCode: 'SAG', arrivalTime: addMinutes(trainData.departureTime, 79), departureTime: addMinutes(trainData.departureTime, 80), order: 18 },
-            { stationCode: 'SOR', arrivalTime: addMinutes(trainData.departureTime, 84), order: 19 },
-        ];
+        // Find Napoli Porta Nolana and Sorrento to determine the route
+        const napoliIndex = circumvesuvianaStations.findIndex(s => s.name === 'Napoli Porta Nolana');
+        const sorrentoIndex = circumvesuvianaStations.findIndex(s => s.name === 'Sorrento');
 
-        // Se è Campania Express, salta alcune fermate
-        const filteredStops = trainData.isCampaniaExpress
-            ? stops.filter(stop => ['NAP', 'GAR', 'ERC', 'POM', 'CDS', 'VEQ', 'MET', 'SOR'].includes(stop.stationCode))
-            : stops;
+        if (napoliIndex === -1 || sorrentoIndex === -1) {
+            throw new Error('Could not find Napoli Porta Nolana or Sorrento stations');
+        }
 
-        for (const [index, stop] of filteredStops.entries()) {
-            await prisma.trainStop.create({
+        // Get all stations between and including Napoli and Sorrento
+        const routeStations = circumvesuvianaStations.slice(napoliIndex, sorrentoIndex + 1);
+
+        console.log(`📍 Found ${routeStations.length} stations on Napoli-Sorrento route`);
+
+        // Create stations in database
+        const stationMap = new Map<number, any>();
+
+        for (const csvStation of routeStations) {
+            const dbStation = await prisma.station.create({
                 data: {
-                    trainId: train.id,
-                    stationId: stationMap.get(stop.stationCode),
-                    arrivalTime: stop.arrivalTime,
-                    departureTime: stop.departureTime,
-                    stopOrder: index + 1,
+                    name: csvStation.name,
+                    code: generateStationCode(csvStation.name, csvStation.id)
                 }
             });
+            stationMap.set(csvStation.id, dbStation);
+            console.log(`   - Created station: ${csvStation.name} (${dbStation.code})`);
         }
-    }
 
-    // Treni direzione NAPOLI (da Sorrento a Napoli)
-    const trainsToNapoli = [
-        // Treni feriali
-        { trainNumber: '10531', departureTime: '5:30', category: 'REGIONALE', operatingDays: 'WEEKDAYS_ONLY' },
-        { trainNumber: '10533', departureTime: '5:52', category: 'REGIONALE', operatingDays: 'WEEKDAYS_ONLY' },
-        { trainNumber: '10535', departureTime: '6:28', category: 'REGIONALE', operatingDays: 'WEEKDAYS_ONLY' },
-        { trainNumber: '10537', departureTime: '6:33', category: 'REGIONALE', operatingDays: 'WEEKDAYS_ONLY' },
-        { trainNumber: '10541', departureTime: '6:37', category: 'REGIONALE', operatingDays: 'WEEKDAYS_ONLY' },
-        { trainNumber: '10544', departureTime: '6:04', category: 'REGIONALE', operatingDays: 'WEEKDAYS_ONLY' },
-        { trainNumber: '10552', departureTime: '6:12', category: 'REGIONALE', operatingDays: 'WEEKDAYS_ONLY' },
-        { trainNumber: '10555', departureTime: '6:15', category: 'REGIONALE', operatingDays: 'WEEKDAYS_ONLY' },
-        { trainNumber: '10561', departureTime: '6:21', category: 'REGIONALE', operatingDays: 'WEEKDAYS_ONLY' },
-        { trainNumber: '10565', departureTime: '6:30', category: 'REGIONALE', operatingDays: 'WEEKDAYS_ONLY' },
-        { trainNumber: '10610', departureTime: '6:30', category: 'REGIONALE', operatingDays: 'WEEKDAYS_ONLY' },
-        { trainNumber: '10613', departureTime: '6:33', category: 'REGIONALE', operatingDays: 'WEEKDAYS_ONLY' },
-        { trainNumber: '10617', departureTime: '6:37', category: 'REGIONALE', operatingDays: 'WEEKDAYS_ONLY' },
-        { trainNumber: '10627', departureTime: '6:47', category: 'REGIONALE', operatingDays: 'WEEKDAYS_ONLY' },
-        { trainNumber: '10630', departureTime: '6:50', category: 'REGIONALE', operatingDays: 'WEEKDAYS_ONLY' },
-        { trainNumber: '10633', departureTime: '6:53', category: 'REGIONALE', operatingDays: 'WEEKDAYS_ONLY' },
-        { trainNumber: '10635', departureTime: '6:56', category: 'REGIONALE', operatingDays: 'WEEKDAYS_ONLY' },
-        { trainNumber: '10644', departureTime: '7:05', category: 'REGIONALE', operatingDays: 'WEEKDAYS_ONLY' },
-        { trainNumber: '10646', departureTime: '7:07', category: 'REGIONALE', operatingDays: 'WEEKDAYS_ONLY' },
+        console.log('🚂 Loading trains from CSV...');
+        const trainsPath = path.join(process.cwd(), 'napoli_sorrento_trains.csv');
+        const trainsContent = fs.readFileSync(trainsPath, 'utf-8');
+        const trainLines = trainsContent.split('\n').filter(line => line.trim() !== '');
 
-        // Campania Express di ritorno
-        { trainNumber: '10739', departureTime: '7:38', category: 'CAMPANIA_EXPRESS', operatingDays: 'WEEKDAYS_ONLY', isCampaniaExpress: true },
-        { trainNumber: '10818', departureTime: '8:18', category: 'CAMPANIA_EXPRESS', operatingDays: 'WEEKDAYS_ONLY', isCampaniaExpress: true },
+        let trainsCreated = 0;
 
-        // Altri treni feriali
-        { trainNumber: '11101', departureTime: '11:01', category: 'REGIONALE', operatingDays: 'WEEKDAYS_ONLY' },
-        { trainNumber: '11122', departureTime: '11:22', category: 'REGIONALE', operatingDays: 'WEEKDAYS_ONLY' },
-        { trainNumber: '11135', departureTime: '11:35', category: 'REGIONALE', operatingDays: 'WEEKDAYS_ONLY' },
-        { trainNumber: '11602', departureTime: '16:20', category: 'REGIONALE', operatingDays: 'WEEKDAYS_ONLY' },
-        { trainNumber: '17501', departureTime: '17:01', category: 'REGIONALE', operatingDays: 'WEEKDAYS_ONLY' },
-        { trainNumber: '17522', departureTime: '17:22', category: 'REGIONALE', operatingDays: 'WEEKDAYS_ONLY' },
-    ];
+        // Get Napoli and Sorrento station IDs
+        const napoliStation = stationMap.get(1); // Napoli Porta Nolana has ID 1
+        const sorrentoStation = stationMap.get(62); // Sorrento has ID 62
 
-    console.log('🚂 Creando treni direzione Napoli...');
-    for (const trainData of trainsToNapoli) {
-        const train = await prisma.train.create({
-            data: {
-                trainNumber: trainData.trainNumber,
-                direction: 'NAPOLI',
-                departureTime: trainData.departureTime,
-                operatingDays: trainData.operatingDays as any,
-                category: trainData.category === 'CAMPANIA_EXPRESS' ? 'CAMPANIA_EXPRESS' : 'REGIONALE',
-                isCampaniaExpress: trainData.isCampaniaExpress || false,
-                startStationId: stationMap.get('SOR'),
-                endStationId: stationMap.get('NAP'),
+        for (const line of trainLines) {
+            const train = parseTrainCSVLine(line);
+            if (!train) continue;
+
+            // Filter by validity - only include trains with the valid value
+            if (train.Validita.trim() !== '-382156356') {
+                continue;
             }
+
+            // Determine direction based on destination
+            const isToSorrento = train.Destinazione.toLowerCase().includes('sorrento');
+            const direction = isToSorrento ? 'SORRENTO' : 'NAPOLI';
+
+            // Set start and end stations
+            const startStationId = isToSorrento ? napoliStation.id : sorrentoStation.id;
+            const endStationId = isToSorrento ? sorrentoStation.id : napoliStation.id;
+
+            try {
+                const dbTrain = await prisma.train.create({
+                    data: {
+                        trainNumber: train.Treno,
+                        direction: direction,
+                        departureTime: extractTimeFromDateTime(train.Partenza),
+                        operatingDays: determineOperatingDays(),
+                        isCampaniaExpress: train.Categoria === 'CE' || train.Linea_Route.includes('CAMPANIA EXPRESS'),
+                        category: mapCategory(train.Categoria),
+                        startStationId: startStationId,
+                        endStationId: endStationId
+                    }
+                });
+
+                // Create intermediate stops for each train
+                // Only use actual stations (not just passing points) that are active
+                const activeStations = routeStations.filter(s =>
+                    s.isStation === true &&
+                    s.isDismessa === false &&
+                    stationMap.has(s.id)
+                );
+                const stationsToUse = isToSorrento ? activeStations : [...activeStations].reverse();
+
+                for (let i = 0; i < stationsToUse.length; i++) {
+                    const station = stationsToUse[i];
+                    const dbStationForStop = stationMap.get(station.id);
+
+                    if (dbStationForStop) {
+                        // Calculate approximate times based on distance and average speed
+                        const baseTime = extractTimeFromDateTime(train.Partenza);
+                        const [hours, minutes] = baseTime.split(':').map(Number);
+                        const totalMinutes = hours * 60 + minutes;
+
+                        // Estimate travel time: ~2 minutes per km average
+                        const travelMinutes = Math.round(station.chilometrica * 2);
+                        const stationTime = isToSorrento
+                            ? totalMinutes + travelMinutes
+                            : totalMinutes + (42.388 * 2) - travelMinutes; // 42.388 is total distance
+
+                        const finalHours = Math.floor(stationTime / 60) % 24;
+                        const finalMins = stationTime % 60;
+                        const timeString = `${finalHours.toString().padStart(2, '0')}:${finalMins.toString().padStart(2, '0')}`;
+
+                        await prisma.trainStop.create({
+                            data: {
+                                trainId: dbTrain.id,
+                                stationId: dbStationForStop.id,
+                                arrivalTime: timeString,
+                                departureTime: timeString,
+                                stopOrder: i + 1
+                            }
+                        });
+                    }
+                }
+
+                trainsCreated++;
+            } catch (error) {
+                console.warn(`⚠️  Failed to create train ${train.Treno}:`, error);
+            }
+        }
+
+        console.log(`✅ Successfully loaded ${trainsCreated} trains`);
+        console.log(`📊 Database summary:`);
+
+        const stationCount = await prisma.station.count();
+        const trainCount = await prisma.train.count();
+        const stopCount = await prisma.trainStop.count();
+        const napoliToSorrento = await prisma.train.count({
+            where: { direction: 'SORRENTO' }
+        });
+        const sorrentoToNapoli = await prisma.train.count({
+            where: { direction: 'NAPOLI' }
         });
 
-        // Aggiungi fermate per treni direzione Napoli (invertite)
-        const stopsReverse = [
-            { stationCode: 'SOR', departureTime: trainData.departureTime, order: 1 },
-            { stationCode: 'SAG', arrivalTime: addMinutes(trainData.departureTime, 5), departureTime: addMinutes(trainData.departureTime, 6), order: 2 },
-            { stationCode: 'PIA', arrivalTime: addMinutes(trainData.departureTime, 10), departureTime: addMinutes(trainData.departureTime, 11), order: 3 },
-            { stationCode: 'MET', arrivalTime: addMinutes(trainData.departureTime, 15), departureTime: addMinutes(trainData.departureTime, 16), order: 4 },
-            { stationCode: 'SEI', arrivalTime: addMinutes(trainData.departureTime, 20), departureTime: addMinutes(trainData.departureTime, 21), order: 5 },
-            { stationCode: 'VEQ', arrivalTime: addMinutes(trainData.departureTime, 25), departureTime: addMinutes(trainData.departureTime, 26), order: 6 },
-            { stationCode: 'CDS', arrivalTime: addMinutes(trainData.departureTime, 30), departureTime: addMinutes(trainData.departureTime, 31), order: 7 },
-            { stationCode: 'VNO', arrivalTime: addMinutes(trainData.departureTime, 35), departureTime: addMinutes(trainData.departureTime, 36), order: 8 },
-            { stationCode: 'POM', arrivalTime: addMinutes(trainData.departureTime, 40), departureTime: addMinutes(trainData.departureTime, 41), order: 9 },
-            { stationCode: 'MOR', arrivalTime: addMinutes(trainData.departureTime, 44), departureTime: addMinutes(trainData.departureTime, 45), order: 10 },
-            { stationCode: 'PSV', arrivalTime: addMinutes(trainData.departureTime, 49), departureTime: addMinutes(trainData.departureTime, 50), order: 11 },
-            { stationCode: 'VRG', arrivalTime: addMinutes(trainData.departureTime, 54), departureTime: addMinutes(trainData.departureTime, 55), order: 12 },
-            { stationCode: 'TAO', arrivalTime: addMinutes(trainData.departureTime, 58), departureTime: addMinutes(trainData.departureTime, 59), order: 13 },
-            { stationCode: 'TDG', arrivalTime: addMinutes(trainData.departureTime, 64), departureTime: addMinutes(trainData.departureTime, 65), order: 14 },
-            { stationCode: 'ERC', arrivalTime: addMinutes(trainData.departureTime, 69), departureTime: addMinutes(trainData.departureTime, 70), order: 15 },
-            { stationCode: 'PBV', arrivalTime: addMinutes(trainData.departureTime, 74), departureTime: addMinutes(trainData.departureTime, 75), order: 16 },
-            { stationCode: 'SGC', arrivalTime: addMinutes(trainData.departureTime, 78), departureTime: addMinutes(trainData.departureTime, 79), order: 17 },
-            { stationCode: 'GAR', arrivalTime: addMinutes(trainData.departureTime, 83), departureTime: addMinutes(trainData.departureTime, 84), order: 18 },
-            { stationCode: 'NAP', arrivalTime: addMinutes(trainData.departureTime, 87), order: 19 },
-        ];
+        console.log(`   - Stations: ${stationCount}`);
+        console.log(`   - Total trains: ${trainCount}`);
+        console.log(`   - Total stops: ${stopCount}`);
+        console.log(`   - Napoli → Sorrento: ${napoliToSorrento}`);
+        console.log(`   - Sorrento → Napoli: ${sorrentoToNapoli}`);
 
-        // Se è Campania Express, salta alcune fermate
-        const filteredStops = trainData.isCampaniaExpress
-            ? stopsReverse.filter(stop => ['SOR', 'MET', 'VEQ', 'CDS', 'POM', 'ERC', 'GAR', 'NAP'].includes(stop.stationCode))
-            : stopsReverse;
+        // Show some example stations
+        console.log('\n📍 Sample stations loaded:');
+        const sampleStations = await prisma.station.findMany({
+            take: 10,
+            orderBy: { id: 'asc' }
+        });
 
-        for (const [index, stop] of filteredStops.entries()) {
-            await prisma.trainStop.create({
-                data: {
-                    trainId: train.id,
-                    stationId: stationMap.get(stop.stationCode),
-                    arrivalTime: stop.arrivalTime,
-                    departureTime: stop.departureTime,
-                    stopOrder: index + 1,
-                }
-            });
-        }
-    }
+        sampleStations.forEach(station => {
+            console.log(`   - ${station.name} (${station.code})`);
+        });
 
-    console.log('✅ Seeding completato!');
-
-    // Mostra statistiche
-    const stationCount = await prisma.station.count();
-    const trainCount = await prisma.train.count();
-    const stopCount = await prisma.trainStop.count();
-    const campaniaExpressCount = await prisma.train.count({ where: { isCampaniaExpress: true } });
-
-    console.log(`📊 Statistiche finali:`);
-    console.log(`   🏪 Stazioni: ${stationCount}`);
-    console.log(`   🚂 Treni: ${trainCount}`);
-    console.log(`   ⏸️  Fermate: ${stopCount}`);
-    console.log(`   🟡 Campania Express: ${campaniaExpressCount}`);
-}
-
-// Utility function to add minutes to a time string
-function addMinutes(timeStr: string, minutes: number): string {
-    const [hours, mins] = timeStr.split(':').map(Number);
-    const totalMinutes = hours * 60 + mins + minutes;
-    const newHours = Math.floor(totalMinutes / 60) % 24;
-    const newMins = totalMinutes % 60;
-    return `${newHours.toString().padStart(2, '0')}:${newMins.toString().padStart(2, '0')}`;
-}
-
-main()
-    .catch((e) => {
-        console.error('❌ Errore durante il seeding:', e);
-        process.exit(1);
-    })
-    .finally(async () => {
+    } catch (error) {
+        console.error('❌ Error loading data:', error);
+    } finally {
         await prisma.$disconnect();
-    });
+    }
+}
+
+main();

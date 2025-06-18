@@ -1,10 +1,12 @@
+// Production schema for PostgreSQL (used in Vercel deployment)
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model Station {
@@ -28,9 +30,9 @@ model Train {
   category          String      @default("regionale")
   startStationId    Int         @map("start_station_id")
   endStationId      Int         @map("end_station_id")
-  stops             TrainStop[]
-  endStation        Station     @relation("EndStation", fields: [endStationId], references: [id])
   startStation      Station     @relation("StartStation", fields: [startStationId], references: [id])
+  endStation        Station     @relation("EndStation", fields: [endStationId], references: [id])
+  stops             TrainStop[]
 
   @@map("trains")
 }
@@ -42,8 +44,10 @@ model TrainStop {
   arrivalTime   String? @map("arrival_time")
   departureTime String? @map("departure_time")
   stopOrder     Int     @map("stop_order")
-  station       Station @relation(fields: [stationId], references: [id])
+  platform      String?
   train         Train   @relation(fields: [trainId], references: [id], onDelete: Cascade)
+  station       Station @relation(fields: [stationId], references: [id])
 
+  @@unique([trainId, stationId])
   @@map("train_stops")
 }
