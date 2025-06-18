@@ -191,7 +191,12 @@ export const translations = {
         swapStations: 'Intercambiar estaciones',
         filters: 'Filtros',
         campaniaExpressOnly: 'Solo Campania Express',
-        campaniaExpressLabel: 'Campania Express'
+        campaniaExpressLabel: 'Campania Express',
+
+        // Additional useful translations
+        error: 'Error',
+        retry: 'Reintentar',
+        noData: 'No hay datos disponibles'
     },
 
     pt: {
@@ -249,7 +254,12 @@ export const translations = {
         swapStations: 'Trocar estações',
         filters: 'Filtros',
         campaniaExpressOnly: 'Apenas Campania Express',
-        campaniaExpressLabel: 'Campania Express'
+        campaniaExpressLabel: 'Campania Express',
+
+        // Additional useful translations
+        error: 'Erro',
+        retry: 'Tentar novamente',
+        noData: 'Não há dados disponíveis'
     },
 
     fr: {
@@ -307,7 +317,12 @@ export const translations = {
         swapStations: 'Échanger les gares',
         filters: 'Filtres',
         campaniaExpressOnly: 'Campania Express seulement',
-        campaniaExpressLabel: 'Campania Express'
+        campaniaExpressLabel: 'Campania Express',
+
+        // Additional useful translations
+        error: 'Erreur',
+        retry: 'Réessayer',
+        noData: 'Aucune donnée disponible'
     },
 
     de: {
@@ -365,7 +380,12 @@ export const translations = {
         swapStations: 'Bahnhöfe tauschen',
         filters: 'Filter',
         campaniaExpressOnly: 'Nur Campania Express',
-        campaniaExpressLabel: 'Campania Express'
+        campaniaExpressLabel: 'Campania Express',
+
+        // Additional useful translations
+        error: 'Fehler',
+        retry: 'Wiederholen',
+        noData: 'Keine Daten verfügbar'
     }
 } as const;
 
