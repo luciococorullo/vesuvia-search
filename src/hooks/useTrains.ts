@@ -73,6 +73,30 @@ const api = {
         }
         return response.json();
     },
+
+    // Departures
+    searchDepartures: async (params: {
+        from: string;
+        date?: string;
+        time?: string;
+        isCampaniaExpress?: boolean;
+    }): Promise<SearchResult> => {
+        const searchParams = new URLSearchParams();
+        searchParams.set('from', params.from);
+        if (params.date) searchParams.set('date', params.date);
+        if (params.time) searchParams.set('time', params.time);
+        if (params.isCampaniaExpress === true) {
+            searchParams.set('isCampaniaExpress', 'true');
+        }
+
+        const response = await fetch(`/api/departures?${searchParams}`);
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error('API Error:', response.status, errorText);
+            throw new Error(`Failed to search departures: ${response.status} ${errorText}`);
+        }
+        return response.json();
+    },
 };
 
 // Hooks
@@ -134,5 +158,12 @@ export const useSearchTrains = (params: {
 export const useSearchTrainsMutation = () => {
     return useMutation({
         mutationFn: api.searchTrains,
+    });
+};
+
+// Hook per la ricerca delle partenze
+export const useSearchDeparturesMutation = () => {
+    return useMutation({
+        mutationFn: api.searchDepartures,
     });
 };

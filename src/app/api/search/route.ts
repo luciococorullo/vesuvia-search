@@ -119,7 +119,10 @@ export async function GET(request: NextRequest) {
                     orderBy: { stopOrder: 'asc' }
                 }
             },
-            orderBy: { departureTime: 'asc' }
+            orderBy: [
+                { departureTime: 'asc' },
+                { trainNumber: 'asc' }
+            ]
         });
 
         // Filtra i risultati per verificare che le fermate siano nell'ordine corretto
@@ -141,9 +144,30 @@ export async function GET(request: NextRequest) {
             return fromStopIndex !== -1 && toStopIndex !== -1 && fromStopIndex < toStopIndex;
         });
 
+        // Ordina correttamente per orario (convertendo in Date)
+        const sortedTrains = validTrains.sort((a, b) => {
+            const timeToDate = (timeStr: string, dateStr?: string) => {
+                const baseDate = dateStr || new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+                return new Date(`${baseDate}T${timeStr}:00`);
+            };
+
+            const aDateTime = timeToDate(a.departureTime, validatedSearch.date);
+            const bDateTime = timeToDate(b.departureTime, validatedSearch.date);
+
+            const timeDiff = aDateTime.getTime() - bDateTime.getTime();
+            if (timeDiff !== 0) {
+                return timeDiff;
+            }
+
+            // Se gli orari sono uguali, ordina per numero del treno
+            const aTrainNumber = a.trainNumber || '';
+            const bTrainNumber = b.trainNumber || '';
+            return aTrainNumber.localeCompare(bTrainNumber);
+        });
+
         return NextResponse.json({
-            trains: validTrains,
-            totalResults: validTrains.length,
+            trains: sortedTrains,
+            totalResults: sortedTrains.length,
             searchCriteria: validatedSearch,
             fromStations,
             toStations

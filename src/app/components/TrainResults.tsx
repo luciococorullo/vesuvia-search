@@ -10,8 +10,6 @@ interface TrainResultsProps {
   trains: TrainWithDetails[];
   isLoading?: boolean;
   error?: string;
-  searchFrom?: string;
-  searchTo?: string;
   fromStations?: Station[];
   toStations?: Station[];
 }
@@ -20,8 +18,6 @@ export function TrainResults({
   trains,
   isLoading,
   error,
-  searchFrom,
-  searchTo,
   fromStations,
   toStations,
 }: TrainResultsProps) {
@@ -68,8 +64,6 @@ export function TrainResults({
           <TrainCard
             key={train.id}
             train={train}
-            searchFrom={searchFrom}
-            searchTo={searchTo}
             fromStations={fromStations}
             toStations={toStations}
           />
@@ -81,13 +75,11 @@ export function TrainResults({
 
 interface TrainCardProps {
   train: TrainWithDetails;
-  searchFrom?: string;
-  searchTo?: string;
   fromStations?: Station[];
   toStations?: Station[];
 }
 
-function TrainCard({ train, searchFrom, searchTo, fromStations, toStations }: TrainCardProps) {
+function TrainCard({ train, fromStations, toStations }: TrainCardProps) {
   const { t } = useLanguage();
 
   // Helper function to find departure and arrival stops based on search criteria
