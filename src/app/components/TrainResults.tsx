@@ -2,8 +2,7 @@
 
 import React from "react";
 import { Clock, MapPin, Train as TrainIcon, AlertCircle } from "lucide-react";
-import { TrainWithDetails, Station } from "@/lib/types";
-import { getCategoryLabel, getDirectionLabel, getOperatingDaysLabel } from "@/lib/types";
+import { TrainWithDetails, Station, TrainCategory, Direction } from "@/lib/types";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 interface TrainResultsProps {
@@ -81,6 +80,30 @@ interface TrainCardProps {
 
 function TrainCard({ train, fromStations, toStations }: TrainCardProps) {
   const { t } = useLanguage();
+
+  // Helper functions for translations
+  const getCategoryTranslationKey = (category: TrainCategory) => {
+    const keyMap = {
+      REGIONALE: "categoryRegionale" as const,
+      INTERCITY: "categoryIntercity" as const,
+      CAMPANIA_EXPRESS: "categoryCampaniaExpress" as const,
+    };
+    return keyMap[category] || ("categoryRegionale" as const);
+  };
+
+  const getDirectionTranslationKey = (direction: Direction) => {
+    return direction === "NAPOLI" ? ("directionNapoli" as const) : ("directionSorrento" as const);
+  };
+
+  const getOperatingDaysTranslationKey = (operatingDays: string) => {
+    const keyMap = {
+      WEEKDAYS_ONLY: "operatingDaysWeekdaysOnly" as const,
+      WEEKENDS_ONLY: "operatingDaysWeekendsOnly" as const,
+      DAILY: "operatingDaysDaily" as const,
+      WEEKDAYS_AND_SATURDAY: "operatingDaysWeekdaysAndSaturday" as const,
+    };
+    return keyMap[operatingDays as keyof typeof keyMap] || ("operatingDaysDaily" as const);
+  };
 
   // Helper function to find departure and arrival stops based on search criteria
   const getSearchStops = () => {
@@ -233,7 +256,7 @@ function TrainCard({ train, fromStations, toStations }: TrainCardProps) {
 
             {
               <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">
-                {getCategoryLabel(train.category)}
+                {t(getCategoryTranslationKey(train.category))}
               </span>
             }
           </div>
@@ -266,10 +289,10 @@ function TrainCard({ train, fromStations, toStations }: TrainCardProps) {
 
           <div className="mt-4 flex items-center gap-4 text-sm text-gray-500">
             <span>
-              {t("direction")}: {getDirectionLabel(train.direction)}
+              {t("direction")}: {t(getDirectionTranslationKey(train.direction))}
             </span>
             <span>•</span>
-            <span>{getOperatingDaysLabel(train.operatingDays)}</span>
+            <span>{t(getOperatingDaysTranslationKey(train.operatingDays))}</span>
             {intermediateStopsCount > 0 && (
               <>
                 <span>•</span>

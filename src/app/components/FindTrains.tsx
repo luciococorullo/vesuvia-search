@@ -183,8 +183,8 @@ export function FindTrains() {
     <div className="container mx-auto p-4 max-w-4xl">
       <Tabs value={activeTab} onValueChange={handleTabChange}>
         <TabsList>
-          <TabsTrigger value="track">Partenza - Arrivo</TabsTrigger>
-          <TabsTrigger value="from">Partenza</TabsTrigger>
+          <TabsTrigger value="track">{t("departureDepartureTab")}</TabsTrigger>
+          <TabsTrigger value="from">{t("departureOnlyTab")}</TabsTrigger>
         </TabsList>
         <TabsContent value="track">
           <div className="rounded-2xl shadow-xl border-2 border-blue-200 p-6 md:p-8 mb-8 backdrop-blur-sm bg-white/95">
@@ -325,13 +325,13 @@ export function FindTrains() {
                   className="text-sm font-medium text-blue-800 flex items-center gap-2"
                 >
                   <MapPin className="h-4 w-4 text-green-500" />
-                  Stazione di Partenza
+                  {t("departureStationLabel")}
                 </Label>
                 <StationAutocomplete
                   stations={stations}
                   value={fromStation}
                   onChange={setFromStation}
-                  placeholder="Seleziona stazione di partenza"
+                  placeholder={t("selectDepartureStation")}
                   error={fromErrors.station}
                 />
               </div>
@@ -342,7 +342,7 @@ export function FindTrains() {
                   <div className="space-y-2">
                     <Label className="text-sm font-medium text-gray-700 flex items-center gap-2">
                       <Clock className="h-4 w-4 text-purple-500" />
-                      Orario di Partenza
+                      {t("departureTimeLabel")}
                     </Label>
                     <DateTimePicker date={fromDepartureTime} setDate={setFromDepartureTime} />
                     {fromErrors.time && (
@@ -359,7 +359,7 @@ export function FindTrains() {
               <div className="space-y-4">
                 <Label className="text-sm font-medium text-blue-800 flex items-center gap-2">
                   <Filter className="h-4 w-4 text-red-500" />
-                  Filtri
+                  {t("filtersLabel")}
                 </Label>
                 <div className="flex items-center space-x-2">
                   <input
@@ -370,7 +370,7 @@ export function FindTrains() {
                     className="rounded border-blue-300 text-red-600 focus:ring-red-500"
                   />
                   <Label htmlFor="fromCampaniaExpress" className="text-sm text-blue-800">
-                    Solo Campania Express
+                    {t("campaniaExpressOnly")}
                   </Label>
                 </div>
               </div>
@@ -384,12 +384,12 @@ export function FindTrains() {
                 {departuresMutation.isPending ? (
                   <>
                     <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                    Ricerca prossime partenze...
+                    {t("searchingNextDepartures")}
                   </>
                 ) : (
                   <>
                     <Search className="h-4 w-4" />
-                    Cerca Prossime Partenze
+                    {t("searchNextDepartures")}
                   </>
                 )}
               </Button>

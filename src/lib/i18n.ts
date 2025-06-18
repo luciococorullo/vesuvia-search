@@ -70,7 +70,36 @@ export const translations = {
         // Additional useful translations
         error: 'Errore',
         retry: 'Riprova',
-        noData: 'Nessun dato disponibile'
+        noData: 'Nessun dato disponibile',
+
+        // Tab labels
+        departureDepartureTab: 'Partenza - Arrivo',
+        departureOnlyTab: 'Partenza',
+
+        // Form labels and placeholders (specific for departure tab)
+        departureStationLabel: 'Stazione di Partenza',
+        selectDepartureStation: 'Seleziona stazione di partenza',
+        departureTimeLabel: 'Orario di Partenza',
+        filtersLabel: 'Filtri',
+
+        // Button labels for departure searches
+        searchingNextDepartures: 'Ricerca prossime partenze...',
+        searchNextDepartures: 'Cerca Prossime Partenze',
+
+        // Train categories
+        categoryRegionale: 'Regionale',
+        categoryIntercity: 'Diretto (D)',
+        categoryCampaniaExpress: 'Campania Express',
+
+        // Direction labels
+        directionNapoli: 'Napoli',
+        directionSorrento: 'Sorrento',
+
+        // Operating days
+        operatingDaysWeekdaysOnly: 'Solo feriali',
+        operatingDaysWeekendsOnly: 'Solo festivi',
+        operatingDaysDaily: 'Tutti i giorni',
+        operatingDaysWeekdaysAndSaturday: 'Feriali e sabato'
     },
 
     en: {
@@ -133,7 +162,36 @@ export const translations = {
         // Additional useful translations
         error: 'Error',
         retry: 'Retry',
-        noData: 'No data available'
+        noData: 'No data available',
+
+        // Tab labels
+        departureDepartureTab: 'Departure - Arrival',
+        departureOnlyTab: 'Departure',
+
+        // Form labels and placeholders (specific for departure tab)
+        departureStationLabel: 'Departure Station',
+        selectDepartureStation: 'Select departure station',
+        departureTimeLabel: 'Departure Time',
+        filtersLabel: 'Filters',
+
+        // Button labels for departure searches
+        searchingNextDepartures: 'Searching next departures...',
+        searchNextDepartures: 'Search Next Departures',
+
+        // Train categories
+        categoryRegionale: 'Regional',
+        categoryIntercity: 'Direct (D)',
+        categoryCampaniaExpress: 'Campania Express',
+
+        // Direction labels
+        directionNapoli: 'Naples',
+        directionSorrento: 'Sorrento',
+
+        // Operating days
+        operatingDaysWeekdaysOnly: 'Weekdays only',
+        operatingDaysWeekendsOnly: 'Weekends only',
+        operatingDaysDaily: 'Daily',
+        operatingDaysWeekdaysAndSaturday: 'Weekdays and Saturday'
     },
 
     es: {
@@ -196,7 +254,36 @@ export const translations = {
         // Additional useful translations
         error: 'Error',
         retry: 'Reintentar',
-        noData: 'No hay datos disponibles'
+        noData: 'No hay datos disponibles',
+
+        // Tab labels
+        departureDepartureTab: 'Salida - Llegada',
+        departureOnlyTab: 'Salida',
+
+        // Form labels and placeholders (specific for departure tab)
+        departureStationLabel: 'Estación de Salida',
+        selectDepartureStation: 'Seleccionar estación de salida',
+        departureTimeLabel: 'Hora de Salida',
+        filtersLabel: 'Filtros',
+
+        // Button labels for departure searches
+        searchingNextDepartures: 'Buscando próximas salidas...',
+        searchNextDepartures: 'Buscar Próximas Salidas',
+
+        // Train categories
+        categoryRegionale: 'Regional',
+        categoryIntercity: 'Directo (D)',
+        categoryCampaniaExpress: 'Campania Express',
+
+        // Direction labels
+        directionNapoli: 'Nápoles',
+        directionSorrento: 'Sorrento',
+
+        // Operating days
+        operatingDaysWeekdaysOnly: 'Solo laborables',
+        operatingDaysWeekendsOnly: 'Solo fines de semana',
+        operatingDaysDaily: 'Diario',
+        operatingDaysWeekdaysAndSaturday: 'Laborables y sábado'
     },
 
     pt: {
@@ -259,7 +346,36 @@ export const translations = {
         // Additional useful translations
         error: 'Erro',
         retry: 'Tentar novamente',
-        noData: 'Não há dados disponíveis'
+        noData: 'Não há dados disponíveis',
+
+        // Tab labels
+        departureDepartureTab: 'Partida - Chegada',
+        departureOnlyTab: 'Partida',
+
+        // Form labels and placeholders (specific for departure tab)
+        departureStationLabel: 'Estação de Partida',
+        selectDepartureStation: 'Selecionar estação de partida',
+        departureTimeLabel: 'Horário de Partida',
+        filtersLabel: 'Filtros',
+
+        // Button labels for departure searches
+        searchingNextDepartures: 'Pesquisando próximas partidas...',
+        searchNextDepartures: 'Pesquisar Próximas Partidas',
+
+        // Train categories
+        categoryRegionale: 'Regional',
+        categoryIntercity: 'Direto (D)',
+        categoryCampaniaExpress: 'Campania Express',
+
+        // Direction labels
+        directionNapoli: 'Nápoles',
+        directionSorrento: 'Sorrento',
+
+        // Operating days
+        operatingDaysWeekdaysOnly: 'Apenas dias úteis',
+        operatingDaysWeekendsOnly: 'Apenas fins de semana',
+        operatingDaysDaily: 'Diário',
+        operatingDaysWeekdaysAndSaturday: 'Dias úteis e sábado'
     },
 
     fr: {
@@ -322,7 +438,36 @@ export const translations = {
         // Additional useful translations
         error: 'Erreur',
         retry: 'Réessayer',
-        noData: 'Aucune donnée disponible'
+        noData: 'Aucune donnée disponible',
+
+        // Tab labels
+        departureDepartureTab: 'Départ - Arrivée',
+        departureOnlyTab: 'Départ',
+
+        // Form labels and placeholders (specific for departure tab)
+        departureStationLabel: 'Gare de Départ',
+        selectDepartureStation: 'Sélectionner la gare de départ',
+        departureTimeLabel: 'Heure de Départ',
+        filtersLabel: 'Filtres',
+
+        // Button labels for departure searches
+        searchingNextDepartures: 'Recherche prochains départs...',
+        searchNextDepartures: 'Rechercher Prochains Départs',
+
+        // Train categories
+        categoryRegionale: 'Régional',
+        categoryIntercity: 'Direct (D)',
+        categoryCampaniaExpress: 'Campania Express',
+
+        // Direction labels
+        directionNapoli: 'Naples',
+        directionSorrento: 'Sorrente',
+
+        // Operating days
+        operatingDaysWeekdaysOnly: 'Jours ouvrables seulement',
+        operatingDaysWeekendsOnly: 'Week-ends seulement',
+        operatingDaysDaily: 'Quotidien',
+        operatingDaysWeekdaysAndSaturday: 'Jours ouvrables et samedi'
     },
 
     de: {
@@ -385,7 +530,36 @@ export const translations = {
         // Additional useful translations
         error: 'Fehler',
         retry: 'Wiederholen',
-        noData: 'Keine Daten verfügbar'
+        noData: 'Keine Daten verfügbar',
+
+        // Tab labels
+        departureDepartureTab: 'Abfahrt - Ankunft',
+        departureOnlyTab: 'Abfahrt',
+
+        // Form labels and placeholders (specific for departure tab)
+        departureStationLabel: 'Abfahrtsbahnhof',
+        selectDepartureStation: 'Abfahrtsbahnhof auswählen',
+        departureTimeLabel: 'Abfahrtszeit',
+        filtersLabel: 'Filter',
+
+        // Button labels for departure searches
+        searchingNextDepartures: 'Suche nächste Abfahrten...',
+        searchNextDepartures: 'Nächste Abfahrten Suchen',
+
+        // Train categories
+        categoryRegionale: 'Regional',
+        categoryIntercity: 'Direkt (D)',
+        categoryCampaniaExpress: 'Campania Express',
+
+        // Direction labels
+        directionNapoli: 'Neapel',
+        directionSorrento: 'Sorrent',
+
+        // Operating days
+        operatingDaysWeekdaysOnly: 'Nur Werktage',
+        operatingDaysWeekendsOnly: 'Nur Wochenenden',
+        operatingDaysDaily: 'Täglich',
+        operatingDaysWeekdaysAndSaturday: 'Werktage und Samstag'
     }
 } as const;
 
