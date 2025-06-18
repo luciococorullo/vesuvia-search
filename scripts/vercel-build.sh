@@ -10,8 +10,8 @@ if [ "$VERCEL_ENV" = "production" ] || [ "$NODE_ENV" = "production" ]; then
     # Run migrations (this will create tables if they don't exist)
     npx prisma db push --force-reset
     
-    # Seed the database
-    npm run db:seed
+    # Load complete data from CSV files
+    npm run db:load-complete
     
     # Build the application
     npm run build
