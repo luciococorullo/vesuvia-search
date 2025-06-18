@@ -54,7 +54,7 @@ if [ "$VERCEL_ENV" = "production" ] || [ "$NODE_ENV" = "production" ]; then
     else
         echo "📊 Database is empty, loading complete data from CSV files..."
         # Load complete data from CSV files
-        npm run db:load-complete
+        npm run db:seed
     fi
     
     # Build the application
