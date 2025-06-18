@@ -182,6 +182,7 @@ export default function RootLayout({
         <QueryProvider>
           <LanguageProvider>{children}</LanguageProvider>
         </QueryProvider>
+        <Analytics />
       </body>
     </html>
   );
