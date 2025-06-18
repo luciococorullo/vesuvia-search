@@ -1,0 +1,6 @@
+{
+  "buildCommand": "npm run vercel-build",
+  "env": {
+    "PRISMA_GENERATE_DATAPROXY": "true"
+  }
+}
