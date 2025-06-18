@@ -102,10 +102,8 @@ export async function GET(request: NextRequest) {
             where.isCampaniaExpress = validatedSearch.isCampaniaExpress;
         }
 
-        // Aggiungi filtro per orario se specificato
-        if (validatedSearch.time) {
-            where.departureTime = { gte: validatedSearch.time };
-        }
+        // NON aggiungiamo il filtro per orario qui, lo faremo dopo nel filtraggio
+        // perché per i treni che fermano alla stazione dobbiamo controllare l'orario della fermata
 
         const trains = await prisma.train.findMany({
             where,
@@ -126,40 +124,92 @@ export async function GET(request: NextRequest) {
         });
 
         // Filtra i risultati per verificare che le fermate siano nell'ordine corretto
+        // e che rispettino il filtro dell'orario
         const validTrains = trains.filter(train => {
+            let departureTimeFromStation: string | null = null;
+            let fromStopIndex = -1;
+            let toStopIndex = -1;
+
             // Per treni diretti
             if (fromStationIds.includes(train.startStationId) &&
                 toStationIds.includes(train.endStationId)) {
-                return true;
+                departureTimeFromStation = train.departureTime;
+                // Direct trains are valid by definition
+            } else {
+                // Per treni con fermate intermedie
+                fromStopIndex = train.stops.findIndex(stop =>
+                    fromStationIds.includes(stop.stationId)
+                );
+                toStopIndex = train.stops.findIndex(stop =>
+                    toStationIds.includes(stop.stationId)
+                );
+
+                // Verifica che le fermate siano nell'ordine corretto
+                if (fromStopIndex === -1 || toStopIndex === -1 || fromStopIndex >= toStopIndex) {
+                    return false;
+                }
+
+                // Get departure time from the from station
+                const fromStop = train.stops[fromStopIndex];
+                departureTimeFromStation = fromStop.departureTime;
             }
 
-            // Per treni con fermate intermedie
-            const fromStopIndex = train.stops.findIndex(stop =>
-                fromStationIds.includes(stop.stationId)
-            );
-            const toStopIndex = train.stops.findIndex(stop =>
-                toStationIds.includes(stop.stationId)
-            );
+            // Se non abbiamo trovato un orario di partenza dalla stazione, escludi il treno
+            if (!departureTimeFromStation) {
+                return false;
+            }
 
-            return fromStopIndex !== -1 && toStopIndex !== -1 && fromStopIndex < toStopIndex;
+            // Applica il filtro per l'orario se specificato
+            if (validatedSearch.time) {
+                return departureTimeFromStation >= validatedSearch.time;
+            }
+
+            return true;
         });
 
-        // Ordina correttamente per orario (convertendo in Date)
+        // Ordina i risultati: prima i treni diretti, poi quelli con fermate intermedie
+        // e per orario di partenza dalla stazione specifica
         const sortedTrains = validTrains.sort((a, b) => {
+            // Prima priorità: treni diretti vs treni con fermate intermedie
+            const aIsDirect = fromStationIds.includes(a.startStationId) && toStationIds.includes(a.endStationId);
+            const bIsDirect = fromStationIds.includes(b.startStationId) && toStationIds.includes(b.endStationId);
+
+            if (aIsDirect && !bIsDirect) return -1;
+            if (!aIsDirect && bIsDirect) return 1;
+
+            // Seconda priorità: orario di partenza dalla stazione specifica
+            const getDepartureTimeFromStation = (train: typeof trains[0]) => {
+                if (fromStationIds.includes(train.startStationId)) {
+                    return train.departureTime;
+                } else {
+                    const stop = train.stops.find((stop) =>
+                        fromStationIds.includes(stop.stationId)
+                    );
+                    return stop ? stop.departureTime : train.departureTime;
+                }
+            };
+
             const timeToDate = (timeStr: string, dateStr?: string) => {
                 const baseDate = dateStr || new Date().toISOString().split('T')[0]; // YYYY-MM-DD
                 return new Date(`${baseDate}T${timeStr}:00`);
             };
 
-            const aDateTime = timeToDate(a.departureTime, validatedSearch.date);
-            const bDateTime = timeToDate(b.departureTime, validatedSearch.date);
+            const aTime = getDepartureTimeFromStation(a);
+            const bTime = getDepartureTimeFromStation(b);
+
+            // Handle null times by using the train's departure time as fallback
+            const aTimeToUse = aTime || a.departureTime;
+            const bTimeToUse = bTime || b.departureTime;
+
+            const aDateTime = timeToDate(aTimeToUse, validatedSearch.date);
+            const bDateTime = timeToDate(bTimeToUse, validatedSearch.date);
 
             const timeDiff = aDateTime.getTime() - bDateTime.getTime();
             if (timeDiff !== 0) {
                 return timeDiff;
             }
 
-            // Se gli orari sono uguali, ordina per numero del treno
+            // Terza priorità: numero del treno (gestendo i null)
             const aTrainNumber = a.trainNumber || '';
             const bTrainNumber = b.trainNumber || '';
             return aTrainNumber.localeCompare(bTrainNumber);
