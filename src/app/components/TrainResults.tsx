@@ -87,20 +87,22 @@ interface TrainCardProps {
   toStations?: Station[];
 }
 
-function TrainCard({ train, fromStations, toStations }: TrainCardProps) {
+function TrainCard({ train, searchFrom, searchTo, fromStations, toStations }: TrainCardProps) {
   const { t } = useLanguage();
 
   // Helper function to find departure and arrival stops based on search criteria
   const getSearchStops = () => {
     if (!fromStations || !toStations) {
       // Fallback to original behavior if search data is not available
-      return {
+
+      const fallbackResult = {
         departureStop: { station: train.startStation, departureTime: train.departureTime },
         arrivalStop: {
           station: train.endStation,
           arrivalTime: train.stops[train.stops.length - 1]?.arrivalTime || "N/A",
         },
       };
+      return fallbackResult;
     }
 
     const fromStationIds = fromStations.map((s) => s.id);
@@ -135,7 +137,7 @@ function TrainCard({ train, fromStations, toStations }: TrainCardProps) {
       }
     }
 
-    return {
+    const result = {
       departureStop: departureStop || {
         station: train.startStation,
         departureTime: train.departureTime,
@@ -145,13 +147,62 @@ function TrainCard({ train, fromStations, toStations }: TrainCardProps) {
         arrivalTime: train.stops[train.stops.length - 1]?.arrivalTime || "N/A",
       },
     };
+
+    return result;
   };
 
   const { departureStop, arrivalStop } = getSearchStops();
 
+  // Calculate intermediate stops between the searched stations
+  const calculateIntermediateStops = () => {
+    if (!fromStations || !toStations) {
+      // Fallback: use all stops minus start and end
+      return Math.max(0, train.stops.length - 2);
+    }
+
+    const fromStationIds = fromStations.map((s) => s.id);
+    const toStationIds = toStations.map((s) => s.id);
+
+    // Find indices of departure and arrival stops in the train.stops array
+    let departureIndex = -1;
+    let arrivalIndex = -1;
+
+    // Check if departure is the start station
+    if (fromStationIds.includes(train.startStationId)) {
+      departureIndex = -1; // Before the first stop in the array
+    } else {
+      departureIndex = train.stops.findIndex((stop) => fromStationIds.includes(stop.stationId));
+    }
+
+    // Check if arrival is the end station
+    if (toStationIds.includes(train.endStationId)) {
+      arrivalIndex = train.stops.length; // After the last stop in the array
+    } else {
+      arrivalIndex = train.stops.findIndex((stop) => toStationIds.includes(stop.stationId));
+    }
+
+    if (departureIndex === -1 && arrivalIndex === train.stops.length) {
+      // From start to end: all intermediate stops
+      return Math.max(0, train.stops.length - 2);
+    } else if (departureIndex === -1) {
+      // From start to some stop: stops before arrival
+      return Math.max(0, arrivalIndex);
+    } else if (arrivalIndex === train.stops.length) {
+      // From some stop to end: stops after departure
+      return Math.max(0, train.stops.length - 1 - departureIndex - 1);
+    } else {
+      // Between two intermediate stops
+      return Math.max(0, arrivalIndex - departureIndex - 1);
+    }
+  };
+
+  const intermediateStopsCount = calculateIntermediateStops();
+
   // Calculate duration between the searched stations
   const calculateDuration = (departure: string, arrival: string) => {
-    if (!arrival || arrival === "N/A") return "N/A";
+    if (!arrival || arrival === "N/A") {
+      return "N/A";
+    }
 
     const [depHours, depMins] = departure.split(":").map(Number);
     const [arrHours, arrMins] = arrival.split(":").map(Number);
@@ -165,7 +216,9 @@ function TrainCard({ train, fromStations, toStations }: TrainCardProps) {
     const hours = Math.floor(duration / 60);
     const mins = duration % 60;
 
-    return `${hours}h ${mins}m`;
+    const result = `${hours}h ${mins}m`;
+
+    return result;
   };
 
   const duration = calculateDuration(departureStop.departureTime, arrivalStop.arrivalTime);
@@ -225,11 +278,11 @@ function TrainCard({ train, fromStations, toStations }: TrainCardProps) {
             </span>
             <span>•</span>
             <span>{getOperatingDaysLabel(train.operatingDays)}</span>
-            {train.stops.length > 2 && (
+            {intermediateStopsCount > 0 && (
               <>
                 <span>•</span>
                 <span>
-                  {train.stops.length - 2} {t("intermediateStops")}
+                  {intermediateStopsCount} {t("intermediateStops")}
                 </span>
               </>
             )}
@@ -238,23 +291,89 @@ function TrainCard({ train, fromStations, toStations }: TrainCardProps) {
       </div>
 
       {/* Fermate intermedie (espandibili) */}
-      {train.stops.length > 2 && (
+      {train.stops.length > 0 && (
         <details className="mt-4">
           <summary className="cursor-pointer text-blue-600 hover:text-blue-800 font-medium">
             {t("showAllStops")}
           </summary>
           <div className="mt-3 space-y-2">
-            {train.stops.map((stop) => (
+            {/* Show start station if it's different from first stop */}
+            {!train.stops.some((stop) => stop.stationId === train.startStationId) && (
               <div
-                key={stop.id}
-                className="flex items-center justify-between py-1 px-3 bg-gray-50 rounded text-sm"
+                className={`flex items-center justify-between py-1 px-3 rounded text-sm ${
+                  departureStop.station.id === train.startStationId
+                    ? "bg-green-100 border-2 border-green-300"
+                    : "bg-gray-50"
+                }`}
               >
-                <span className="font-medium">{stop.station.name}</span>
+                <span
+                  className={`font-medium ${
+                    departureStop.station.id === train.startStationId ? "text-green-800" : ""
+                  }`}
+                >
+                  {train.startStation.name}
+                  {departureStop.station.id === train.startStationId && " 🟢 (Partenza)"}
+                </span>
                 <div className="flex gap-4 text-gray-600">
-                  {stop.arrivalTime && <span>{stop.arrivalTime}</span>}
+                  <span>{train.departureTime}</span>
                 </div>
               </div>
-            ))}
+            )}
+
+            {/* Show all intermediate stops */}
+            {train.stops.map((stop) => {
+              const isDeparture = departureStop.station.id === stop.stationId;
+              const isArrival = arrivalStop.station.id === stop.stationId;
+
+              return (
+                <div
+                  key={stop.id}
+                  className={`flex items-center justify-between py-1 px-3 rounded text-sm ${
+                    isDeparture
+                      ? "bg-green-100 border-2 border-green-300"
+                      : isArrival
+                      ? "bg-red-100 border-2 border-red-300"
+                      : "bg-gray-50"
+                  }`}
+                >
+                  <span
+                    className={`font-medium ${
+                      isDeparture ? "text-green-800" : isArrival ? "text-red-800" : ""
+                    }`}
+                  >
+                    {stop.station.name}
+                    {isDeparture && " 🟢 (Partenza)"}
+                    {isArrival && " 🔴 (Arrivo)"}
+                  </span>
+                  <div className="flex gap-4 text-gray-600">
+                    {stop.arrivalTime && <span>{stop.arrivalTime}</span>}
+                  </div>
+                </div>
+              );
+            })}
+
+            {/* Show end station if it's different from last stop */}
+            {!train.stops.some((stop) => stop.stationId === train.endStationId) && (
+              <div
+                className={`flex items-center justify-between py-1 px-3 rounded text-sm ${
+                  arrivalStop.station.id === train.endStationId
+                    ? "bg-red-100 border-2 border-red-300"
+                    : "bg-gray-50"
+                }`}
+              >
+                <span
+                  className={`font-medium ${
+                    arrivalStop.station.id === train.endStationId ? "text-red-800" : ""
+                  }`}
+                >
+                  {train.endStation.name}
+                  {arrivalStop.station.id === train.endStationId && " 🔴 (Arrivo)"}
+                </span>
+                <div className="flex gap-4 text-gray-600">
+                  <span>{train.stops[train.stops.length - 1]?.arrivalTime || "N/A"}</span>
+                </div>
+              </div>
+            )}
           </div>
         </details>
       )}
