@@ -37,7 +37,6 @@ node_modules/.prisma/
 prisma/generated/
 
 # data files
-*.csv
 *.json.bak
 *.xlsx
 *.xls
