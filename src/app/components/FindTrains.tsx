@@ -94,7 +94,7 @@ export function FindTrains() {
       <div className="container mx-auto p-4 max-w-4xl">
         <div className="flex items-center justify-center py-12">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-          <span className="ml-3 text-gray-600">Caricamento...</span>
+          <span className="ml-3 text-gray-600">{t("loading")}</span>
         </div>
       </div>
     );
@@ -165,7 +165,7 @@ export function FindTrains() {
                 className="flex items-center gap-2"
               >
                 <ArrowUpDown className="h-4 w-4" />
-                Swap stations
+                {t("swapStations")}
               </Button>
             </div>
           </div>
@@ -193,7 +193,7 @@ export function FindTrains() {
           <div className="space-y-4">
             <Label className="text-sm font-medium text-blue-800 flex items-center gap-2">
               <Filter className="h-4 w-4 text-red-500" />
-              Filtri
+              {t("filters")}
             </Label>
             <div className="flex items-center space-x-2">
               <input
@@ -204,7 +204,7 @@ export function FindTrains() {
                 className="rounded border-blue-300 text-red-600 focus:ring-red-500"
               />
               <Label htmlFor="campaniaExpress" className="text-sm text-blue-800">
-                Solo Campania Express
+                {t("campaniaExpressOnly")}
               </Label>
             </div>
           </div>

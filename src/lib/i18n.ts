@@ -56,7 +56,21 @@ export const translations = {
         intermediateStops: 'fermate intermedie',
         showAllStops: 'Mostra tutte le fermate',
         arrival: 'Arr',
-        departure: 'Part'
+        departure: 'Part',
+
+        // Page content
+        findTrainsTitle: 'Trova i tuoi treni della Circumvesuviana',
+        findTrainsSubtitle: 'Ricerca semplice e veloce per la linea Napoli-Sorrento',
+        loading: 'Caricamento...',
+        swapStations: 'Scambia stazioni',
+        filters: 'Filtri',
+        campaniaExpressOnly: 'Solo Campania Express',
+        campaniaExpressLabel: 'Campania Express',
+
+        // Additional useful translations
+        error: 'Errore',
+        retry: 'Riprova',
+        noData: 'Nessun dato disponibile'
     },
 
     en: {
@@ -105,7 +119,21 @@ export const translations = {
         intermediateStops: 'intermediate stops',
         showAllStops: 'Show all stops',
         arrival: 'Arr',
-        departure: 'Dep'
+        departure: 'Dep',
+
+        // Page content
+        findTrainsTitle: 'Find your Circumvesuviana trains',
+        findTrainsSubtitle: 'Simple and fast search for the Naples-Sorrento line',
+        loading: 'Loading...',
+        swapStations: 'Swap stations',
+        filters: 'Filters',
+        campaniaExpressOnly: 'Campania Express only',
+        campaniaExpressLabel: 'Campania Express',
+
+        // Additional useful translations
+        error: 'Error',
+        retry: 'Retry',
+        noData: 'No data available'
     },
 
     es: {
@@ -154,7 +182,16 @@ export const translations = {
         intermediateStops: 'paradas intermedias',
         showAllStops: 'Mostrar todas las paradas',
         arrival: 'Lleg',
-        departure: 'Sal'
+        departure: 'Sal',
+
+        // Page content
+        findTrainsTitle: 'Encuentra tus trenes de la Circumvesuviana',
+        findTrainsSubtitle: 'Búsqueda simple y rápida para la línea Nápoles-Sorrento',
+        loading: 'Cargando...',
+        swapStations: 'Intercambiar estaciones',
+        filters: 'Filtros',
+        campaniaExpressOnly: 'Solo Campania Express',
+        campaniaExpressLabel: 'Campania Express'
     },
 
     pt: {
@@ -203,7 +240,16 @@ export const translations = {
         intermediateStops: 'paragens intermédias',
         showAllStops: 'Mostrar todas as paragens',
         arrival: 'Cheg',
-        departure: 'Part'
+        departure: 'Part',
+
+        // Page content
+        findTrainsTitle: 'Encontre seus comboios da Circumvesuviana',
+        findTrainsSubtitle: 'Pesquisa simples e rápida para a linha Nápoles-Sorrento',
+        loading: 'Carregando...',
+        swapStations: 'Trocar estações',
+        filters: 'Filtros',
+        campaniaExpressOnly: 'Apenas Campania Express',
+        campaniaExpressLabel: 'Campania Express'
     },
 
     fr: {
@@ -252,7 +298,16 @@ export const translations = {
         intermediateStops: 'arrêts intermédiaires',
         showAllStops: 'Montrer tous les arrêts',
         arrival: 'Arr',
-        departure: 'Dép'
+        departure: 'Dép',
+
+        // Page content
+        findTrainsTitle: 'Trouvez vos trains de la Circumvesuviana',
+        findTrainsSubtitle: 'Recherche simple et rapide pour la ligne Naples-Sorrente',
+        loading: 'Chargement...',
+        swapStations: 'Échanger les gares',
+        filters: 'Filtres',
+        campaniaExpressOnly: 'Campania Express seulement',
+        campaniaExpressLabel: 'Campania Express'
     },
 
     de: {
@@ -301,7 +356,16 @@ export const translations = {
         intermediateStops: 'Zwischenstopps',
         showAllStops: 'Alle Haltestellen anzeigen',
         arrival: 'Ank',
-        departure: 'Abf'
+        departure: 'Abf',
+
+        // Page content
+        findTrainsTitle: 'Finden Sie Ihre Circumvesuviana-Züge',
+        findTrainsSubtitle: 'Einfache und schnelle Suche für die Linie Neapel-Sorrento',
+        loading: 'Lädt...',
+        swapStations: 'Bahnhöfe tauschen',
+        filters: 'Filter',
+        campaniaExpressOnly: 'Nur Campania Express',
+        campaniaExpressLabel: 'Campania Express'
     }
 } as const;
 

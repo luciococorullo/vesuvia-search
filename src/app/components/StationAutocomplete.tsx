@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { MapPin } from "lucide-react";
 import { Station } from "@/lib/types";
+import { cn } from "@/lib/utils";
 
 interface StationAutocompleteProps {
   stations: Station[];
@@ -85,7 +86,10 @@ export function StationAutocomplete({
         onChange={handleInputChange}
         onFocus={handleInputFocus}
         placeholder={placeholder}
-        className={error ? "border-red-500" : ""}
+        className={cn(
+          "w-full justify-start text-left h-12 text-sm font-normal border-blue-200 rounded-md",
+          error ? "border-red-500" : ""
+        )}
       />
 
       {error && <p className="mt-1 text-sm text-red-600">{error}</p>}

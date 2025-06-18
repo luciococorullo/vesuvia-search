@@ -3,6 +3,7 @@
 import * as React from "react";
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
+import { it, es, ptBR, fr, de, enUS } from "date-fns/locale";
 
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -16,8 +17,27 @@ interface DateTimePickerProps {
   setDate: (date: Date | undefined) => void;
 }
 
+// Map language codes to date-fns locales
+const getDateFnsLocale = (language: string) => {
+  switch (language) {
+    case "it":
+      return it;
+    case "es":
+      return es;
+    case "pt":
+      return ptBR;
+    case "fr":
+      return fr;
+    case "de":
+      return de;
+    default:
+      return enUS;
+  }
+};
+
 export function DateTimePicker({ date, setDate }: DateTimePickerProps) {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  const locale = getDateFnsLocale(language);
   const [time, setTime] = React.useState(date ? format(date, "HH:mm") : "");
 
   const handleDateChange = (selectedDate: Date | undefined) => {
@@ -54,17 +74,17 @@ export function DateTimePicker({ date, setDate }: DateTimePickerProps) {
         <Button
           variant={"outline"}
           className={cn(
-            "w-full justify-start text-left font-normal h-12 text-lg",
+            "w-full justify-start text-left font-normal h-12 text-sm",
             !date && "text-muted-foreground"
           )}
         >
-          <CalendarIcon className="mr-2 h-4 w-4" />
-          {date ? format(date, "PPP HH:mm") : <span>{t("selectDateTime")}</span>}
+          <CalendarIcon className="h-4 w-4" />
+          {date ? format(date, "PPP, HH:mm", { locale }) : <span>{t("selectDateTime")}</span>}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0">
-        <Calendar mode="single" selected={date} onSelect={handleDateChange} initialFocus />
-        <div className="p-3 border-t border-border">
+        <Calendar mode="single" selected={date} onSelect={handleDateChange} locale={locale} />
+        <div className="p-4 border-t">
           <Input type="time" value={time} onChange={handleTimeChange} className="w-full" />
         </div>
       </PopoverContent>

@@ -182,7 +182,7 @@ function TrainCard({ train, fromStations, toStations }: TrainCardProps) {
 
             {train.isCampaniaExpress && (
               <span className="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs font-medium rounded-full">
-                Campania Express
+                {t("campaniaExpressLabel")}
               </span>
             )}
 
