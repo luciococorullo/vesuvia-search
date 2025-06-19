@@ -181,43 +181,131 @@ export type SearchResult = {
 };
 
 // ============================================================================
-// HELPER FUNCTIONS
+// EAV API TYPES
 // ============================================================================
 
 /**
- * Get human-readable label for operating days
- * @param operatingDays - The operating days enum value
- * @returns Localized Italian label for operating days
+ * Raw date format returned by EAV API
+ * Format: "/Date(1750364940000)/"
  */
-export const getOperatingDaysLabel = (operatingDays: OperatingDays): string => {
-    const labels: Record<OperatingDays, string> = {
-        'WEEKDAYS_ONLY': 'Solo feriali',
-        'WEEKENDS_ONLY': 'Solo festivi',
-        'DAILY': 'Tutti i giorni',
-        'WEEKDAYS_AND_SATURDAY': 'Feriali e sabato'
-    };
-    return labels[operatingDays];
-};
+export interface EAVDate {
+    date: string;
+}
 
 /**
- * Get human-readable label for train categories
- * @param category - The train category enum value
- * @returns Localized Italian label for train category
+ * Single journey/route segment in EAV API response
  */
-export const getCategoryLabel = (category: TrainCategory): string => {
-    const labels: Record<TrainCategory, string> = {
-        'REGIONALE': 'Direttissimo (DD)',
-        'INTERCITY': 'Diretto (D)',
-        'CAMPANIA_EXPRESS': 'Campania Express'
-    };
-    return labels[category];
-};
+export interface EAVPercorso {
+    ExtensionData: Record<string, unknown>;
+    DLinea: string;
+    Descrizione_destinazione: string;
+    Descrizione_origine: string;
+    Destinazione_corsa: string;
+    Linea: string;
+    Origine_corsa: string;
+    arrivo: string; // "/Date(timestamp)/" format
+    arrivoDestinazione: string;
+    bitmask: string;
+    codice: number;
+    destinazione: number;
+    origine: number;
+    partenza: string; // "/Date(timestamp)/" format
+    partenzaOrigine: string;
+    progressivo: number | null;
+    ritardo: number;
+    soppressa: boolean;
+    tipologia: string; // "DD", "D", etc.
+}
 
 /**
- * Get human-readable label for train direction
- * @param direction - The direction enum value
- * @returns Localized Italian label for direction
+ * Single journey in EAV API response
  */
-export const getDirectionLabel = (direction: Direction): string => {
-    return direction === 'NAPOLI' ? 'Napoli' : 'Sorrento';
-};
+export interface EAVCorsa {
+    ExtensionData: Record<string, unknown>;
+    Descrizione_destinazione: string;
+    Descrizione_origine: string;
+    Destinazione_corsa: string;
+    Origine_corsa: string;
+    arrivo: string; // "/Date(timestamp)/" format
+    destinazione: number;
+    origine: number;
+    partenza: string; // "/Date(timestamp)/" format
+    percorsi: EAVPercorso[];
+}
+
+/**
+ * Complete EAV API response structure
+ */
+export interface EAVApiResponse {
+    CorsePercorso: EAVCorsa[];
+    media_origine: number[];
+    media_destinazione: number[];
+    Liv_Min_origine: number;
+    Liv_Max_origine: number;
+    Liv_Min_destinazione: number;
+    Liv_Max_destinazione: number;
+    Origine_disabilitata: boolean;
+    Destinazione_disabilitata: boolean;
+    Descr_Origine_disabilitata: string | null;
+    Descr_Destinazione_disabilitata: string | null;
+}
+
+/**
+ * Simplified train result for our app
+ */
+export interface EAVTrainResult {
+    id: string;
+    trainCode: number;
+    departureTime: string; // ISO string format for JSON serialization
+    arrivalTime: string; // ISO string format for JSON serialization
+    departureStation: string;
+    arrivalStation: string;
+    trainType: string;
+    isDelayed: boolean;
+    delaMinutes: number;
+    isCancelled: boolean;
+    line: string;
+}
+
+/**
+ * EAV search parameters
+ */
+export interface EAVSearchParams {
+    origine: string; // Station ID
+    destinazione: string; // Station ID
+    data: string; // Format: "DD/MM/YYYY"
+    ora: string; // Format: "HH:MM"
+}
+
+/**
+ * Utility function to parse EAV date format
+ * Converts "/Date(1750364940000)/" to JavaScript Date
+ */
+export function parseEAVDate(eavDate: string): Date {
+    const match = eavDate.match(/\/Date\((-?\d+)\)\//);
+    if (!match) {
+        throw new Error(`Invalid EAV date format: ${eavDate}`);
+    }
+    return new Date(parseInt(match[1], 10));
+}
+
+/**
+ * Utility function to format date for EAV API
+ * Converts JavaScript Date to "DD/MM/YYYY" format
+ */
+export function formatDateForEAV(date: Date): string {
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+}
+
+/**
+ * Utility function to format time for EAV API
+ * Converts JavaScript Date to "HH:MM" format
+ */
+export function formatTimeForEAV(date: Date): string {
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    return `${hours}:${minutes}`;
+}

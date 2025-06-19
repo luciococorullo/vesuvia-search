@@ -12,7 +12,7 @@
 "use client";
 
 import Navbar from "./components/Navbar";
-import { FindTrains } from "./components/FindTrains";
+import { NewFindTrains } from "./components/NewFindTrains";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 /**
@@ -44,7 +44,7 @@ export default function Home() {
           </div>
 
           {/* Train search component */}
-          <FindTrains />
+          <NewFindTrains />
         </div>
       </div>
     </main>

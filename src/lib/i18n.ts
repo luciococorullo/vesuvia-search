@@ -98,15 +98,33 @@ export const translations = {
         searchingTrainsInProgress: 'Ricerca treni in corso...',
         noTrainsFound: 'Nessun treno trovato',
         noTrainsFoundDescription: 'Prova a modificare i criteri di ricerca o verifica che le stazioni siano corrette.',
-        searchResults: 'Risultati della ricerca',
+        searchResults: 'Risultati ricerca',
         train: 'treno',
         trains: 'treni',
+        departure: 'Partenza',
+        arrival: 'Arrivo',
         duration: 'Durata',
         direction: 'Direzione',
         intermediateStops: 'fermate intermedie',
         showAllStops: 'Mostra tutte le fermate',
-        arrival: 'Arr',
-        departure: 'Part',
+        quickSelection: 'Selezione rapida',
+        apiError: 'Servizio temporaneamente non disponibile',
+        apiErrorDescription: 'Riprovare tra pochi istanti. Se il problema persiste, contattare il supporto.',
+        networkError: 'Errore di connessione',
+        networkErrorDescription: 'Controlla la tua connessione a Internet e riprova.',
+        invalidStationError: 'Stazione non valida',
+        invalidStationErrorDescription: 'Seleziona una stazione valida dall\'elenco.',
+        searchError: 'Errore di ricerca',
+        searchErrorDescription: 'Si è verificato un errore durante la ricerca. Riprova.',
+
+        // ========================================
+        // TRAIN RESULTS AND STATUS
+        // ========================================
+        delayed: 'In ritardo',
+        onTime: 'In orario',
+        cancelled: 'Annullato',
+        delayedByMinutes: 'In ritardo di {{minutes}} min',
+        trainCode: 'Treno {{code}}',
 
         // ========================================
         // PAGE CONTENT AND TITLES
@@ -192,6 +210,7 @@ export const translations = {
         oneHour: '+1 hour',
         twoHours: '+2 hours',
         tomorrow: 'Tomorrow',
+        quickSelection: 'Quick Selection',
 
         // Search button
         searchTrains: 'Search Trains',
@@ -209,19 +228,36 @@ export const translations = {
         time: 'Time',
         selectDate: 'Select date',
 
-        // Train results
+        // SEARCH RESULTS AND TRAIN INFORMATION
         searchingTrainsInProgress: 'Searching trains...',
         noTrainsFound: 'No trains found',
         noTrainsFoundDescription: 'Try modifying your search criteria or verify that the stations are correct.',
         searchResults: 'Search results',
         train: 'train',
         trains: 'trains',
+        departure: 'Departure',
+        arrival: 'Arrival',
         duration: 'Duration',
         direction: 'Direction',
         intermediateStops: 'intermediate stops',
         showAllStops: 'Show all stops',
-        arrival: 'Arr',
-        departure: 'Dep',
+        apiError: 'Service temporarily unavailable',
+        apiErrorDescription: 'Please try again in a few moments. If the problem persists, contact support.',
+        networkError: 'Connection error',
+        networkErrorDescription: 'Check your internet connection and try again.',
+        invalidStationError: 'Invalid station',
+        invalidStationErrorDescription: 'Please select a valid station from the list.',
+        searchError: 'Search error',
+        searchErrorDescription: 'An error occurred during the search. Please try again.',
+
+        // ========================================
+        // TRAIN RESULTS AND STATUS
+        // ========================================
+        delayed: 'Delayed',
+        onTime: 'On time',
+        cancelled: 'Cancelled',
+        delayedByMinutes: 'Delayed by {{minutes}} min',
+        trainCode: 'Train {{code}}',
 
         // Page content
         findTrainsTitle: 'Find your Circumvesuviana trains',
@@ -291,6 +327,7 @@ export const translations = {
         oneHour: '+1 hora',
         twoHours: '+2 horas',
         tomorrow: 'Mañana',
+        quickSelection: 'Selección Rápida',
 
         // Search button
         searchTrains: 'Buscar Trenes',
@@ -312,15 +349,34 @@ export const translations = {
         searchingTrainsInProgress: 'Buscando trenes...',
         noTrainsFound: 'No se encontraron trenes',
         noTrainsFoundDescription: 'Intenta modificar los criterios de búsqueda o verifica que las estaciones sean correctas.',
+        apiError: 'Servicio temporalmente no disponible',
+        apiErrorDescription: 'Inténtalo de nuevo en unos momentos. Si el problema persiste, contacta con el soporte.',
+        networkError: 'Error de conexión',
+        networkErrorDescription: 'Verifica tu conexión a Internet y vuelve a intentarlo.',
+        invalidStationError: 'Estación no válida',
+        invalidStationErrorDescription: 'Por favor, selecciona una estación válida de la lista.',
+        searchError: 'Error de búsqueda',
+        searchErrorDescription: 'Ocurrió un error durante la búsqueda. Por favor, inténtalo de nuevo.',
+
+        // SEARCH RESULTS AND TRAIN INFORMATION
         searchResults: 'Resultados de búsqueda',
         train: 'tren',
         trains: 'trenes',
+        departure: 'Salida',
+        arrival: 'Llegada',
         duration: 'Duración',
         direction: 'Dirección',
         intermediateStops: 'paradas intermedias',
         showAllStops: 'Mostrar todas las paradas',
-        arrival: 'Lleg',
-        departure: 'Sal',
+
+        // ========================================
+        // TRAIN RESULTS AND STATUS
+        // ========================================
+        delayed: 'Retrasado',
+        onTime: 'A tiempo',
+        cancelled: 'Cancelado',
+        delayedByMinutes: 'Retrasado por {{minutes}} min',
+        trainCode: 'Tren {{code}}',
 
         // Page content
         findTrainsTitle: 'Encuentra tus trenes de la Circumvesuviana',
@@ -390,6 +446,7 @@ export const translations = {
         oneHour: '+1 hora',
         twoHours: '+2 horas',
         tomorrow: 'Amanhã',
+        quickSelection: 'Seleção Rápida',
 
         // Search button
         searchTrains: 'Pesquisar Comboios',
@@ -411,15 +468,34 @@ export const translations = {
         searchingTrainsInProgress: 'Pesquisando comboios...',
         noTrainsFound: 'Nenhum comboio encontrado',
         noTrainsFoundDescription: 'Tente modificar os critérios de pesquisa ou verifique se as estações estão corretas.',
+        apiError: 'Serviço temporariamente indisponível',
+        apiErrorDescription: 'Tente novamente em alguns momentos. Se o problema persistir, entre em contato com o suporte.',
+        networkError: 'Erro de conexão',
+        networkErrorDescription: 'Verifique sua conexão com a Internet e tente novamente.',
+        invalidStationError: 'Estação inválida',
+        invalidStationErrorDescription: 'Selecione uma estação válida na lista.',
+        searchError: 'Erro de pesquisa',
+        searchErrorDescription: 'Ocorreu um erro durante a pesquisa. Tente novamente.',
+
+        // SEARCH RESULTS AND TRAIN INFORMATION
         searchResults: 'Resultados da pesquisa',
         train: 'comboio',
         trains: 'comboios',
+        departure: 'Partida',
+        arrival: 'Chegada',
         duration: 'Duração',
         direction: 'Direção',
-        intermediateStops: 'paragens intermédias',
-        showAllStops: 'Mostrar todas as paragens',
-        arrival: 'Cheg',
-        departure: 'Part',
+        intermediateStops: 'paradas intermédias',
+        showAllStops: 'Mostrar todas as paradas',
+
+        // ========================================
+        // TRAIN RESULTS AND STATUS
+        // ========================================
+        delayed: 'Atrasado',
+        onTime: 'No horário',
+        cancelled: 'Cancelado',
+        delayedByMinutes: 'Atrasado por {{minutes}} min',
+        trainCode: 'Comboio {{code}}',
 
         // Page content
         findTrainsTitle: 'Encontre seus comboios da Circumvesuviana',
@@ -489,6 +565,7 @@ export const translations = {
         oneHour: '+1 heure',
         twoHours: '+2 heures',
         tomorrow: 'Demain',
+        quickSelection: 'Sélection Rapide',
 
         // Search button
         searchTrains: 'Rechercher des Trains',
@@ -510,15 +587,34 @@ export const translations = {
         searchingTrainsInProgress: 'Recherche de trains...',
         noTrainsFound: 'Aucun train trouvé',
         noTrainsFoundDescription: 'Essayez de modifier les critères de recherche ou vérifiez que les gares sont correctes.',
+        apiError: 'Service temporairement indisponible',
+        apiErrorDescription: 'Veuillez réessayer dans quelques instants. Si le problème persiste, contactez le support.',
+        networkError: 'Erreur de connexion',
+        networkErrorDescription: 'Vérifiez votre connexion Internet et réessayez.',
+        invalidStationError: 'Gare invalide',
+        invalidStationErrorDescription: 'Veuillez sélectionner une gare valide dans la liste.',
+        searchError: 'Erreur de recherche',
+        searchErrorDescription: 'Une erreur est survenue lors de la recherche. Veuillez réessayer.',
+
+        // SEARCH RESULTS AND TRAIN INFORMATION
         searchResults: 'Résultats de recherche',
         train: 'train',
         trains: 'trains',
+        departure: 'Départ',
+        arrival: 'Arrivée',
         duration: 'Durée',
         direction: 'Direction',
         intermediateStops: 'arrêts intermédiaires',
-        showAllStops: 'Montrer tous les arrêts',
-        arrival: 'Arr',
-        departure: 'Dép',
+        showAllStops: 'Afficher tous les arrêts',
+
+        // ========================================
+        // TRAIN RESULTS AND STATUS
+        // ========================================
+        delayed: 'Retardé',
+        onTime: 'À l\'heure',
+        cancelled: 'Annulé',
+        delayedByMinutes: 'Retardé de {{minutes}} min',
+        trainCode: 'Train {{code}}',
 
         // Page content
         findTrainsTitle: 'Trouvez vos trains de la Circumvesuviana',
@@ -588,6 +684,7 @@ export const translations = {
         oneHour: '+1 Stunde',
         twoHours: '+2 Stunden',
         tomorrow: 'Morgen',
+        quickSelection: 'Schnellauswahl',
 
         // Search button
         searchTrains: 'Züge Suchen',
@@ -609,15 +706,34 @@ export const translations = {
         searchingTrainsInProgress: 'Suche Züge...',
         noTrainsFound: 'Keine Züge gefunden',
         noTrainsFoundDescription: 'Versuchen Sie, die Suchkriterien zu ändern oder überprüfen Sie, ob die Bahnhöfe korrekt sind.',
+        apiError: 'Dienst vorübergehend nicht verfügbar',
+        apiErrorDescription: 'Bitte versuchen Sie es in wenigen Augenblicken erneut. Wenn das Problem weiterhin besteht, wenden Sie sich an den Support.',
+        networkError: 'Verbindungsfehler',
+        networkErrorDescription: 'Überprüfen Sie Ihre Internetverbindung und versuchen Sie es erneut.',
+        invalidStationError: 'Ungültiger Bahnhof',
+        invalidStationErrorDescription: 'Bitte wählen Sie einen gültigen Bahnhof aus der Liste aus.',
+        searchError: 'Suchfehler',
+        searchErrorDescription: 'Bei der Suche ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.',
+
+        // SEARCH RESULTS AND TRAIN INFORMATION
         searchResults: 'Suchergebnisse',
-        train: 'Zug',
-        trains: 'Züge',
+        train: 'zug',
+        trains: 'züge',
+        departure: 'Abfahrt',
+        arrival: 'Ankunft',
         duration: 'Dauer',
         direction: 'Richtung',
-        intermediateStops: 'Zwischenstopps',
+        intermediateStops: 'zwischenstopps',
         showAllStops: 'Alle Haltestellen anzeigen',
-        arrival: 'Ank',
-        departure: 'Abf',
+
+        // ========================================
+        // TRAIN RESULTS AND STATUS
+        // ========================================
+        delayed: 'Verspätet',
+        onTime: 'Pünktlich',
+        cancelled: 'Storniert',
+        delayedByMinutes: 'Verspätet um {{minutes}} Min',
+        trainCode: 'Zug {{code}}',
 
         // Page content
         findTrainsTitle: 'Finden Sie Ihre Circumvesuviana-Züge',
