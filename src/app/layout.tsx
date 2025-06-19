@@ -38,34 +38,62 @@ const spaceGrotesk = Space_Grotesk({
  * Optimized for Italian users searching for Circumvesuviana train information
  */
 export const metadata: Metadata = {
-  title: "VesuviaSearch - Ricerca Treni Circumvesuviana Napoli Sorrento",
+  title: {
+    default: "VesuviaSearch - Treni Circumvesuviana Napoli Sorrento | Orari EAV in Tempo Reale",
+    template: "%s | VesuviaSearch - Treni Circumvesuviana",
+  },
   description:
-    "Trova facilmente i treni della Circumvesuviana Napoli-Sorrento. Ricerca semplice e veloce degli orari dei treni EAV. Orari aggiornati, Campania Express, stazioni intermedie.",
+    "🚂 Trova facilmente i treni della Circumvesuviana tra Napoli e Sorrento. Orari aggiornati EAV, Campania Express, stazioni intermedie. Ricerca veloce e gratuita per trasporto pubblico in Campania.",
 
-  // SEO keywords for better search visibility
+  // Enhanced SEO keywords targeting public transport searches
   keywords: [
-    "circumvesuviana",
+    // Primary transport keywords
     "treni napoli sorrento",
+    "circumvesuviana",
+    "trasporto pubblico napoli",
+    "trasporto pubblico sorrento",
+    "vesuviana",
+    "pubblico trasporto campania",
+    "come arrivare sorrento napoli",
+    "come raggiungere sorrento",
+    "mezzi pubblici napoli sorrento",
+
+    // EAV and official transport
     "orari circumvesuviana",
     "EAV",
+    "ente autonomo volturno",
     "campania express",
-    "vesuviana",
-    "treni campania",
-    "napoli sorrento treno",
     "orari treni vesuviana",
+    "treni campania",
+    "ferrovia circumvesuviana",
+
+    // Specific routes and stations
+    "napoli sorrento treno",
+    "sorrento napoli treno",
     "stazioni circumvesuviana",
     "pompei scavi",
     "ercolano",
     "torre annunziata",
-    "castellammare",
+    "castellammare di stabia",
     "vico equense",
-    "meta",
+    "meta di sorrento",
     "piano di sorrento",
     "sant'agnello",
-    "sorrento",
-    "trasporto pubblico campania",
-    "ricerca treni",
+
+    // Tourist and travel keywords
+    "come arrivare pompei",
+    "treno per pompei",
+    "come andare a sorrento",
+    "trasporti costiera amalfitana",
+    "turismo napoli sorrento",
+    "viaggio napoli sorrento",
+
+    // Real-time and search features
     "orari tempo reale",
+    "ricerca treni",
+    "biglietti circumvesuviana",
+    "prezzi treni vesuviana",
+    "app treni campania",
   ],
 
   // Author and publisher information
@@ -88,9 +116,9 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "VesuviaSearch - Ricerca Treni Circumvesuviana",
+    title: "VesuviaSearch - Treni Circumvesuviana Napoli Sorrento | Orari EAV",
     description:
-      "Trova facilmente i treni della Circumvesuviana Napoli-Sorrento. Ricerca semplice e veloce degli orari dei treni.",
+      "🚂 Trova facilmente i treni della Circumvesuviana tra Napoli e Sorrento. Orari aggiornati EAV, Campania Express. Il modo più veloce per pianificare il tuo viaggio in Campania.",
     url: "https://vesuvia-search.vercel.app",
     siteName: "VesuviaSearch",
     locale: "it_IT",
@@ -100,14 +128,15 @@ export const metadata: Metadata = {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "VesuviaSearch - Ricerca Treni Circumvesuviana",
+        alt: "VesuviaSearch - Ricerca Treni Circumvesuviana Napoli Sorrento",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "VesuviaSearch - Ricerca Treni Circumvesuviana",
-    description: "Trova facilmente i treni della Circumvesuviana Napoli-Sorrento",
+    title: "VesuviaSearch - Treni Circumvesuviana Napoli Sorrento",
+    description:
+      "🚂 Trova facilmente i treni della Circumvesuviana tra Napoli e Sorrento. Orari EAV aggiornati, ricerca veloce e gratuita.",
     images: ["/og-image.jpg"],
     creator: "@vesuviasearch",
   },
@@ -144,7 +173,7 @@ export const metadata: Metadata = {
   applicationName: "VesuviaSearch",
   generator: "Next.js",
   abstract:
-    "Applicazione web per la ricerca degli orari dei treni della Circumvesuviana sulla linea Napoli-Sorrento",
+    "Applicazione web gratuita per la ricerca degli orari dei treni della Circumvesuviana sulla linea Napoli-Sorrento. Trasporto pubblico in Campania con orari aggiornati EAV.",
   archives: ["https://vesuvia-search.vercel.app"],
   assets: ["https://vesuvia-search.vercel.app"],
   other: {
@@ -160,38 +189,50 @@ export const metadata: Metadata = {
     "apple-mobile-web-app-title": "VesuviaSearch",
     "application-name": "VesuviaSearch",
     "geo.region": "IT-72",
-    "geo.placename": "Napoli, Campania",
+    "geo.placename": "Napoli, Campania, Italia",
     "geo.position": "40.8518;14.2681",
     ICBM: "40.8518, 14.2681",
     language: "Italian",
-    coverage: "Worldwide",
+    coverage: "Italy, Europe",
     distribution: "Global",
     rating: "General",
     "revisit-after": "1 day",
-    target: "all",
-    audience: "all",
-    subject: "Treni Circumvesuviana, Trasporto Pubblico Campania",
+    target: "tourists, travelers, commuters, students",
+    audience: "travelers to Campania, tourists visiting Naples and Sorrento",
+    subject: "Treni Circumvesuviana, Trasporto Pubblico Campania, Orari EAV, Vesuviana",
     copyright: "© 2025 VesuviaSearch",
     "reply-to": "contact@vesuvia-search.com",
     owner: "VesuviaSearch",
     url: "https://vesuvia-search.vercel.app",
     "identifier-URL": "https://vesuvia-search.vercel.app",
     directory: "submission",
-    pagename: "VesuviaSearch",
-    category: "transportation, travel, italy, campania, trains",
-    "resource-type": "document",
-    classification: "Travel and Transportation",
-    "DC.Title": "VesuviaSearch - Ricerca Treni Circumvesuviana",
+    pagename: "VesuviaSearch - Treni Circumvesuviana",
+    category: "transportation, travel, italy, campania, trains, public transport",
+    "resource-type": "interactive application",
+    classification: "Travel and Transportation Services",
+
+    // Enhanced Dublin Core metadata
+    "DC.Title": "VesuviaSearch - Treni Circumvesuviana Napoli Sorrento",
     "DC.Creator": "VesuviaSearch",
-    "DC.Subject": "Circumvesuviana, Treni, Napoli, Sorrento, Campania",
-    "DC.Description": "Ricerca orari treni Circumvesuviana Napoli-Sorrento",
+    "DC.Subject": "Circumvesuviana, Treni, Napoli, Sorrento, Campania, Trasporto Pubblico, EAV",
+    "DC.Description":
+      "Applicazione web per la ricerca degli orari dei treni della Circumvesuviana tra Napoli e Sorrento",
     "DC.Publisher": "VesuviaSearch",
     "DC.Date": "2025",
-    "DC.Type": "Service",
+    "DC.Type": "Interactive Resource",
     "DC.Format": "text/html",
     "DC.Language": "it",
-    "DC.Coverage": "Italy",
+    "DC.Coverage": "Campania, Italy",
     "DC.Rights": "© 2025 VesuviaSearch",
+
+    // Additional SEO tags
+    robots: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+    googlebot: "index, follow",
+    bingbot: "index, follow",
+    slurp: "index, follow",
+    HandheldFriendly: "True",
+    MobileOptimized: "320",
+    viewport: "width=device-width, initial-scale=1",
   },
 };
 

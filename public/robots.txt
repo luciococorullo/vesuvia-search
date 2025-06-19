@@ -10,13 +10,33 @@ Disallow: /admin/
 Disallow: /_next/
 Disallow: /.*
 
-# Allow important pages
+# Allow important pages for SEO
 Allow: /$
 Allow: /search
 Allow: /stations
+Allow: /route/
+Allow: /station/
+Allow: /come-arrivare-sorrento
+Allow: /come-arrivare-pompei
+Allow: /campania-express
+Allow: /orari-circumvesuviana
+Allow: /prezzi-biglietti
 
 # Crawl delay
 Crawl-delay: 1
+
+# Specific rules for major search engines
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Slurp
+Allow: /
+Crawl-delay: 2
 
 # Host
 Host: https://vesuvia-search.vercel.app
