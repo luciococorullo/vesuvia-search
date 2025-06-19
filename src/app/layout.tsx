@@ -5,6 +5,7 @@ import { LanguageProvider } from "@/contexts/LanguageContext";
 import { QueryProvider } from "@/contexts/QueryProvider";
 import { structuredData } from "@/lib/structured-data";
 import { Analytics } from "@vercel/analytics/next";
+import Footer from "@/components/Footer";
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
@@ -178,9 +179,12 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`${spaceGrotesk.variable} antialiased`}>
+      <body className={`${spaceGrotesk.variable} antialiased min-h-screen flex flex-col`}>
         <QueryProvider>
-          <LanguageProvider>{children}</LanguageProvider>
+          <LanguageProvider>
+            <div className="flex-1">{children}</div>
+            <Footer />
+          </LanguageProvider>
         </QueryProvider>
         <Analytics />
       </body>

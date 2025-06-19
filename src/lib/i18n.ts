@@ -99,7 +99,14 @@ export const translations = {
         operatingDaysWeekdaysOnly: 'Solo feriali',
         operatingDaysWeekendsOnly: 'Solo festivi',
         operatingDaysDaily: 'Tutti i giorni',
-        operatingDaysWeekdaysAndSaturday: 'Feriali e sabato'
+        operatingDaysWeekdaysAndSaturday: 'Feriali e sabato',
+
+        // Footer
+        footerDisclaimer: 'Questo progetto non ha alcuna affiliazione con EAV (Ente Autonomo Volturno).',
+        footerEducationalProject: 'Questo è un progetto open source educativo creato solo a scopo didattico.',
+        footerMadeWith: 'Realizzato con',
+        footerBy: 'da',
+        footerEducationalCopyright: 'Progetto Educativo'
     },
 
     en: {
@@ -191,7 +198,14 @@ export const translations = {
         operatingDaysWeekdaysOnly: 'Weekdays only',
         operatingDaysWeekendsOnly: 'Weekends only',
         operatingDaysDaily: 'Daily',
-        operatingDaysWeekdaysAndSaturday: 'Weekdays and Saturday'
+        operatingDaysWeekdaysAndSaturday: 'Weekdays and Saturday',
+
+        // Footer
+        footerDisclaimer: 'This project has no affiliation with EAV (Ente Autonomo Volturno).',
+        footerEducationalProject: 'This is an open source educational project created for learning purposes only.',
+        footerMadeWith: 'Made with',
+        footerBy: 'by',
+        footerEducationalCopyright: 'Educational Project'
     },
 
     es: {
@@ -283,7 +297,14 @@ export const translations = {
         operatingDaysWeekdaysOnly: 'Solo laborables',
         operatingDaysWeekendsOnly: 'Solo fines de semana',
         operatingDaysDaily: 'Diario',
-        operatingDaysWeekdaysAndSaturday: 'Laborables y sábado'
+        operatingDaysWeekdaysAndSaturday: 'Laborables y sábado',
+
+        // Footer
+        footerDisclaimer: 'Este proyecto no tiene afiliación con EAV (Ente Autonomo Volturno).',
+        footerEducationalProject: 'Este es un proyecto educativo de código abierto creado solo con fines de aprendizaje.',
+        footerMadeWith: 'Hecho con',
+        footerBy: 'por',
+        footerEducationalCopyright: 'Proyecto Educativo'
     },
 
     pt: {
@@ -375,7 +396,14 @@ export const translations = {
         operatingDaysWeekdaysOnly: 'Apenas dias úteis',
         operatingDaysWeekendsOnly: 'Apenas fins de semana',
         operatingDaysDaily: 'Diário',
-        operatingDaysWeekdaysAndSaturday: 'Dias úteis e sábado'
+        operatingDaysWeekdaysAndSaturday: 'Dias úteis e sábado',
+
+        // Footer
+        footerDisclaimer: 'Este projeto não tem afiliação com EAV (Ente Autonomo Volturno).',
+        footerEducationalProject: 'Este é um projeto educacional de código aberto criado apenas para fins de aprendizagem.',
+        footerMadeWith: 'Feito com',
+        footerBy: 'por',
+        footerEducationalCopyright: 'Projeto Educacional'
     },
 
     fr: {
@@ -467,7 +495,14 @@ export const translations = {
         operatingDaysWeekdaysOnly: 'Jours ouvrables seulement',
         operatingDaysWeekendsOnly: 'Week-ends seulement',
         operatingDaysDaily: 'Quotidien',
-        operatingDaysWeekdaysAndSaturday: 'Jours ouvrables et samedi'
+        operatingDaysWeekdaysAndSaturday: 'Jours ouvrables et samedi',
+
+        // Footer
+        footerDisclaimer: 'Ce projet n\'a aucune affiliation avec EAV (Ente Autonomo Volturno).',
+        footerEducationalProject: 'Il s\'agit d\'un projet éducatif open source créé uniquement à des fins d\'apprentissage.',
+        footerMadeWith: 'Fait avec',
+        footerBy: 'par',
+        footerEducationalCopyright: 'Projet Éducatif'
     },
 
     de: {
@@ -559,7 +594,14 @@ export const translations = {
         operatingDaysWeekdaysOnly: 'Nur Werktage',
         operatingDaysWeekendsOnly: 'Nur Wochenenden',
         operatingDaysDaily: 'Täglich',
-        operatingDaysWeekdaysAndSaturday: 'Werktage und Samstag'
+        operatingDaysWeekdaysAndSaturday: 'Werktage und Samstag',
+
+        // Footer
+        footerDisclaimer: 'Dieses Projekt hat keine Verbindung zu EAV (Ente Autonomo Volturno).',
+        footerEducationalProject: 'Dies ist ein Open-Source-Bildungsprojekt, das nur zu Lernzwecken erstellt wurde.',
+        footerMadeWith: 'Gemacht mit',
+        footerBy: 'von',
+        footerEducationalCopyright: 'Bildungsprojekt'
     }
 } as const;
 
