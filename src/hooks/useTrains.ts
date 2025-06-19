@@ -1,15 +1,52 @@
+/**
+ * @fileoverview Custom React hooks for train data management
+ * 
+ * This file contains React Query hooks for managing train, station, and search
+ * data throughout the VesuviaSearch application. It provides a centralized
+ * interface for all API calls with caching, loading states, and error handling.
+ * 
+ * Features:
+ * - Station management (fetch, create)
+ * - Train management (fetch, create, search)
+ * - Search functionality (routes, departures)
+ * - Optimistic updates and cache invalidation
+ * - TypeScript support with proper typing
+ * 
+ * @author VesuviaSearch Team
+ * @version 1.0.0
+ */
+
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Station, TrainWithDetails, SearchResult, CreateStation, CreateTrain } from '@/lib/types';
 
-// API functions
+// ============================================================================
+// API FUNCTIONS
+// ============================================================================
+
+/**
+ * Collection of API functions for server communication
+ * These functions handle HTTP requests and response parsing
+ */
 const api = {
-    // Stations
+    // ========================================
+    // STATION API FUNCTIONS
+    // ========================================
+
+    /**
+     * Fetch all railway stations
+     * @returns Promise<Station[]> Array of all stations
+     */
     getStations: async (): Promise<Station[]> => {
         const response = await fetch('/api/stations');
         if (!response.ok) throw new Error('Failed to fetch stations');
         return response.json();
     },
 
+    /**
+     * Create a new railway station
+     * @param data Station creation data
+     * @returns Promise<Station> Created station
+     */
     createStation: async (data: CreateStation): Promise<Station> => {
         const response = await fetch('/api/stations', {
             method: 'POST',
@@ -20,13 +57,23 @@ const api = {
         return response.json();
     },
 
-    // Trains
+    // ========================================
+    // TRAIN API FUNCTIONS
+    // ========================================
+
+    /**
+     * Fetch trains with optional filtering
+     * @param params Optional filter parameters
+     * @returns Promise<TrainWithDetails[]> Array of trains with full details
+     */
     getTrains: async (params?: {
         isCampaniaExpress?: boolean;
         category?: string;
         direction?: string;
     }): Promise<TrainWithDetails[]> => {
         const searchParams = new URLSearchParams();
+
+        // Build query parameters
         if (params?.isCampaniaExpress !== undefined) {
             searchParams.set('isCampaniaExpress', params.isCampaniaExpress.toString());
         }
@@ -38,6 +85,11 @@ const api = {
         return response.json();
     },
 
+    /**
+     * Create a new train schedule
+     * @param data Train creation data
+     * @returns Promise<TrainWithDetails> Created train with details
+     */
     createTrain: async (data: CreateTrain): Promise<TrainWithDetails> => {
         const response = await fetch('/api/trains', {
             method: 'POST',

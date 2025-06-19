@@ -1,13 +1,46 @@
 {
   "name": "vesuvia-search",
-  "version": "0.1.0",
-  "private": true,
+  "version": "1.0.0",
+  "description": "A modern web application for searching Circumvesuviana train schedules between Naples and Sorrento",
+  "private": false,
+  "author": {
+    "name": "VesuviaSearch Team",
+    "url": "https://github.com/luciococorullo/vesuvia-search"
+  },
+  "license": "MIT",
+  "homepage": "https://vesuvia-search.vercel.app",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/luciococorullo/vesuvia-search.git"
+  },
+  "bugs": {
+    "url": "https://github.com/luciococorullo/vesuvia-search/issues"
+  },
+  "keywords": [
+    "circumvesuviana",
+    "train",
+    "schedule",
+    "naples",
+    "sorrento",
+    "italy",
+    "transportation",
+    "nextjs",
+    "typescript",
+    "prisma"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
     "vercel-build": "bash scripts/vercel-build.sh",
     "start": "next start",
     "lint": "next lint",
+    "lint:fix": "next lint --fix",
+    "type-check": "tsc --noEmit",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
     "db:migrate": "prisma migrate deploy",
@@ -15,9 +48,10 @@
     "db:reset": "npx prisma db push --force-reset && npm run db:seed",
     "db:setup": "npm run db:push && npm run db:seed",
     "db:setup-prod": "npm run db:migrate && npm run db:seed",
-    "db:load-complete": "node scripts/load-complete-data.js",
     "db:clear": "npx ts-node scripts/clear-db.ts",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "clean": "rm -rf .next out build dist",
+    "test": "echo \"No tests specified\" && exit 0"
   },
   "dependencies": {
     "@prisma/client": "^6.9.0",

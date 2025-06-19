@@ -1,3 +1,20 @@
+/**
+ * @fileoverview Root layout component for VesuviaSearch
+ *
+ * This is the main layout component that wraps all pages in the application.
+ * It provides:
+ * - Global font configuration (Space Grotesk)
+ * - SEO metadata and structured data
+ * - Language context provider for i18n
+ * - TanStack Query provider for data fetching
+ * - Analytics integration
+ * - Global CSS styles
+ * - Footer component
+ *
+ * @author VesuviaSearch Team
+ * @version 1.0.0
+ */
+
 import type { Metadata } from "next";
 import { Space_Grotesk } from "next/font/google";
 import "./globals.css";
@@ -7,15 +24,25 @@ import { structuredData } from "@/lib/structured-data";
 import { Analytics } from "@vercel/analytics/next";
 import Footer from "@/components/Footer";
 
+/**
+ * Font configuration using Google Fonts
+ * Space Grotesk provides a modern, clean look suitable for transportation apps
+ */
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
   subsets: ["latin"],
 });
 
+/**
+ * SEO metadata configuration
+ * Optimized for Italian users searching for Circumvesuviana train information
+ */
 export const metadata: Metadata = {
   title: "VesuviaSearch - Ricerca Treni Circumvesuviana Napoli Sorrento",
   description:
     "Trova facilmente i treni della Circumvesuviana Napoli-Sorrento. Ricerca semplice e veloce degli orari dei treni EAV. Orari aggiornati, Campania Express, stazioni intermedie.",
+
+  // SEO keywords for better search visibility
   keywords: [
     "circumvesuviana",
     "treni napoli sorrento",
@@ -40,9 +67,13 @@ export const metadata: Metadata = {
     "ricerca treni",
     "orari tempo reale",
   ],
+
+  // Author and publisher information
   authors: [{ name: "VesuviaSearch" }],
   creator: "VesuviaSearch",
   publisher: "VesuviaSearch",
+
+  // Disable automatic detection of contact information
   formatDetection: {
     email: false,
     address: false,

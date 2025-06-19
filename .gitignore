@@ -1,6 +1,6 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# dependencies
+# Dependencies
 /node_modules
 /.pnp
 .pnp.*
@@ -10,44 +10,124 @@
 !.yarn/releases
 !.yarn/versions
 
-# testing
+# Testing
 /coverage
 *.test.js
 *.test.ts
 test-*.js
 test-*.ts
+__tests__/
+*.spec.js
+*.spec.ts
 
-# next.js
+# Next.js
 /.next/
 /out/
+.next/
+next-env.d.ts
 
-# production
+# Production
 /build
+/dist
 
-# database
-# Uncomment the lines below when using external database in production
-# *.db
-# *.db-journal
-# *.sqlite
-# *.sqlite3
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 
-# prisma
+# Database (keep local SQLite for development)
+*.db-journal
+*.sqlite-wal
+*.sqlite-shm
+
+# Prisma
 /prisma/migrations/
 node_modules/.prisma/
 prisma/generated/
 
-# data files
+# Data files and backups
 *.json.bak
 *.xlsx
 *.xls
+*.csv.backup
+backup/
+dumps/
 
-# misc
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+*.log
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# IDE and Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
 .DS_Store
-*.pem
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
 
-# debug
-npm-debug.log*
+# Temporary folders
+tmp/
+temp/
+
+# TypeScript
+*.tsbuildinfo
+
+# ESLint cache
+.eslintcache
+
+# Stylelint cache
+.stylelintcache
+
+# Vercel
+.vercel
+
+# Turbo
+.turbo
+
+# Local SSL certificates
+*.pem
+
+# Coverage reports
+coverage/
+.nyc_output/
+
+# Dependency directories
+jspm_packages/
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*

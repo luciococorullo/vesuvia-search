@@ -1,3 +1,25 @@
+/**
+ * @fileoverview Internationalization (i18n) configuration and translations
+ * 
+ * This file contains language definitions, translation objects, and types for
+ * the multilingual support in VesuviaSearch. The application supports 6 languages
+ * with dynamic language switching and browser detection.
+ * 
+ * Supported languages:
+ * - Italian (it) - Primary language
+ * - English (en) - Default fallback
+ * - Spanish (es)
+ * - Portuguese (pt)
+ * - French (fr)
+ * - German (de)
+ * 
+ * @author VesuviaSearch Team
+ * @version 1.0.0
+ */
+
+/**
+ * Supported languages configuration with display names and flag emojis
+ */
 export const languages = {
     it: { name: 'Italiano', flag: '🇮🇹' },
     en: { name: 'English', flag: '🇬🇧' },
@@ -7,44 +29,72 @@ export const languages = {
     de: { name: 'Deutsch', flag: '🇩🇪' }
 } as const;
 
+/**
+ * Language code type derived from the languages object
+ */
 export type Language = keyof typeof languages;
 
+/**
+ * Comprehensive translations object containing all UI text in supported languages
+ * 
+ * Structure:
+ * - Header/Navigation: App title, navigation elements
+ * - Forms: Labels, placeholders, validation messages
+ * - Search: Search functionality, filters, results
+ * - Time/Date: Date picker, time selection
+ * - Errors: Error messages and validation
+ * - Train Data: Categories, directions, operating days
+ */
 export const translations = {
     it: {
-        // Header/Navigation
+        // ========================================
+        // HEADER AND NAVIGATION
+        // ========================================
         findTrains: 'Cerca Treni',
         searchSchedules: 'Cerca orari dei treni e prenota il tuo viaggio',
 
-        // Form labels
+        // ========================================
+        // FORM LABELS AND INPUTS
+        // ========================================
         from: 'Da',
         to: 'A',
         departureTime: 'Orario di Partenza',
         departureStation: 'Stazione di partenza',
         arrivalStation: 'Stazione di arrivo',
 
-        // Quick time buttons
+        // ========================================
+        // QUICK TIME SELECTION BUTTONS
+        // ========================================
         now: 'Ora',
         oneHour: '+1 ora',
         twoHours: '+2 ore',
         tomorrow: 'Domani',
 
-        // Search button
+        // ========================================
+        // SEARCH FUNCTIONALITY
+        // ========================================
         searchTrains: 'Cerca Treni',
         searchingTrains: 'Ricerca treni...',
 
-        // Error messages
+        // ========================================
+        // VALIDATION AND ERROR MESSAGES
+        // ========================================
         departureRequired: 'La stazione di partenza è obbligatoria',
         arrivalRequired: 'La stazione di arrivo è obbligatoria',
         stationsDifferent: 'La stazione di arrivo deve essere diversa da quella di partenza',
         timeRequired: 'L\'orario di partenza è obbligatorio',
 
-        // Date picker
+        // ========================================
+        // DATE AND TIME PICKER
+        // ========================================
         selectDateTime: 'Seleziona data e ora',
         date: 'Data',
         time: 'Ora',
         selectDate: 'Seleziona data',
 
-        // Train results
+        // ========================================
+        // SEARCH RESULTS AND TRAIN INFORMATION
+        // ========================================
         searchingTrainsInProgress: 'Ricerca treni in corso...',
         noTrainsFound: 'Nessun treno trovato',
         noTrainsFoundDescription: 'Prova a modificare i criteri di ricerca o verifica che le stazioni siano corrette.',
@@ -58,7 +108,9 @@ export const translations = {
         arrival: 'Arr',
         departure: 'Part',
 
-        // Page content
+        // ========================================
+        // PAGE CONTENT AND TITLES
+        // ========================================
         findTrainsTitle: 'Trova i tuoi treni della Circumvesuviana',
         findTrainsSubtitle: 'Ricerca semplice e veloce per la linea Napoli-Sorrento',
         loading: 'Caricamento...',
@@ -67,35 +119,49 @@ export const translations = {
         campaniaExpressOnly: 'Solo Campania Express',
         campaniaExpressLabel: 'Campania Express',
 
-        // Additional useful translations
+        // ========================================
+        // GENERAL UI ELEMENTS
+        // ========================================
         error: 'Errore',
         retry: 'Riprova',
         noData: 'Nessun dato disponibile',
 
-        // Tab labels
+        // ========================================
+        // TAB NAVIGATION
+        // ========================================
         departureDepartureTab: 'Partenza - Arrivo',
         departureOnlyTab: 'Partenza',
 
-        // Form labels and placeholders (specific for departure tab)
+        // ========================================
+        // DEPARTURE-SPECIFIC FORMS
+        // ========================================
         departureStationLabel: 'Stazione di Partenza',
         selectDepartureStation: 'Seleziona stazione di partenza',
         departureTimeLabel: 'Orario di Partenza',
         filtersLabel: 'Filtri',
 
-        // Button labels for departure searches
+        // ========================================
+        // DEPARTURE SEARCH BUTTONS
+        // ========================================
         searchingNextDepartures: 'Ricerca prossime partenze...',
         searchNextDepartures: 'Cerca Prossime Partenze',
 
-        // Train categories
+        // ========================================
+        // TRAIN CATEGORIES
+        // ========================================
         categoryRegionale: 'Regionale',
         categoryIntercity: 'Diretto (D)',
         categoryCampaniaExpress: 'Campania Express',
 
-        // Direction labels
+        // ========================================
+        // DIRECTION LABELS
+        // ========================================
         directionNapoli: 'Napoli',
         directionSorrento: 'Sorrento',
 
-        // Operating days
+        // ========================================
+        // OPERATING DAYS
+        // ========================================
         operatingDaysWeekdaysOnly: 'Solo feriali',
         operatingDaysWeekendsOnly: 'Solo festivi',
         operatingDaysDaily: 'Tutti i giorni',

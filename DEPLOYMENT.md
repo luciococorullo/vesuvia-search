@@ -45,12 +45,12 @@ The deployment is now automated:
 ```bash
 # For local development
 npm run db:clear          # Clear all data
-npm run db:load-complete   # Load fresh data
+npm run db:seed   # Load fresh data
 
 # For production (manual)
 npx prisma generate        # Generate client
 npx prisma db push         # Create tables
-npm run db:load-complete   # Load data
+npm run db:seed   # Load data
 ```
 
 ### Troubleshooting

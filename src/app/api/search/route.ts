@@ -1,9 +1,42 @@
+/**
+ * @fileoverview Train Search API Route
+ * 
+ * This API endpoint handles train schedule searches between stations on the
+ * Circumvesuviana network. It supports flexible station matching (by code or name),
+ * time-based filtering, and Campania Express filtering.
+ * 
+ * Endpoint: GET /api/search
+ * 
+ * Query Parameters:
+ * - from: Source station (code or name)
+ * - to: Destination station (code or name)  
+ * - date: Travel date (YYYY-MM-DD format, optional)
+ * - time: Departure time (HH:MM format, optional)
+ * - isCampaniaExpress: Filter for Campania Express only (boolean, optional)
+ * 
+ * @author VesuviaSearch Team
+ * @version 1.0.0
+ */
+
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { TrainSearchSchema } from '@/lib/types';
 
+/**
+ * GET handler for train search requests
+ * 
+ * Processes search queries and returns matching train schedules with full details
+ * including stations, stops, and timing information.
+ * 
+ * @param request - Next.js request object with search parameters
+ * @returns Promise<NextResponse> JSON response with search results
+ */
 export async function GET(request: NextRequest) {
     try {
+        // ========================================
+        // PARSE AND VALIDATE SEARCH PARAMETERS
+        // ========================================
+
         const { searchParams } = new URL(request.url);
         const searchData = {
             from: searchParams.get('from') || '',
@@ -18,9 +51,14 @@ export async function GET(request: NextRequest) {
             Object.entries(searchData).filter(([, value]) => value !== undefined)
         );
 
+        // Validate search parameters using Zod schema
         const validatedSearch = TrainSearchSchema.parse(cleanedSearchData);
 
-        // Trova le stazioni per codice o nome
+        // ========================================
+        // FIND MATCHING STATIONS
+        // ========================================
+
+        // Search for stations by both code and name to support flexible input
         const [fromStations, toStations] = await Promise.all([
             prisma.station.findMany({
                 where: {
@@ -40,6 +78,7 @@ export async function GET(request: NextRequest) {
             })
         ]);
 
+        // Return early if no matching stations found
         if (fromStations.length === 0 || toStations.length === 0) {
             return NextResponse.json({
                 trains: [],
