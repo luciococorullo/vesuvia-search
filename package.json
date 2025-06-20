@@ -51,7 +51,8 @@
     "db:clear": "npx ts-node scripts/clear-db.ts",
     "postinstall": "prisma generate",
     "clean": "rm -rf .next out build dist",
-    "test": "echo \"No tests specified\" && exit 0"
+    "test": "echo \"No tests specified\" && exit 0",
+    "test:destinations": "npx tsx scripts/test-destinations-api.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.9.0",

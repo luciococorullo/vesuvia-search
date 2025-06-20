@@ -20,9 +20,13 @@ import {
     EAVTrainResult,
     EAVSearchParams,
     formatDateForEAV,
-    formatTimeForEAV
+    formatTimeForEAV,
+    NormalizedDestination
 } from '@/lib/types';
 import { EAV_STATIONS, findStationByName } from '@/lib/eav-stations';
+
+// Re-export destinations hook for convenience
+export { useEAVDestinations } from './useEAVDestinations';
 
 // ============================================================================
 // API RESPONSE TYPES
@@ -181,6 +185,25 @@ export const useEAVStationsForStationAutocomplete = () => {
         id: parseInt(station.id), // Convert string ID to number
         name: station.nome,
         code: station.id, // Use ID as code
+    }));
+
+    return {
+        data: stations,
+        isLoading: false,
+        isError: false,
+        error: null
+    };
+};
+
+/**
+ * Helper hook to get destination stations for autocomplete based on departure station
+ * Converts destination stations to match the Station interface expected by StationAutocomplete
+ */
+export const useDestinationStationsForAutocomplete = (destinations: NormalizedDestination[]) => {
+    const stations = destinations.map(dest => ({
+        id: dest.Id,
+        name: dest.Nome,
+        code: dest.Id.toString(), // Use ID as code
     }));
 
     return {

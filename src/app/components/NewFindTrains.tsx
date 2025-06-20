@@ -25,10 +25,13 @@ import {
   useEAVStationsForStationAutocomplete,
   useEAVSearchTrainsMutation,
   useEAVDeparturesMutation,
+  useEAVDestinations,
+  useDestinationStationsForAutocomplete,
   validateStationName,
   type EAVSearchResponse,
   type EAVDeparturesResponse,
 } from "@/hooks/useEAVTrains";
+import { findStationByName } from "@/lib/eav-stations";
 
 export function NewFindTrains() {
   const { t, isLoaded } = useLanguage();
@@ -65,6 +68,24 @@ export function NewFindTrains() {
     useEAVStationsForStationAutocomplete();
   const searchMutation = useEAVSearchTrainsMutation();
   const departuresMutation = useEAVDeparturesMutation();
+
+  // Get departure station ID for destinations lookup
+  const departureStationObj = findStationByName(departureStation);
+  const departureStationId = departureStationObj?.id;
+
+  // Destinations hook - only fetch when we have a valid departure station
+  const { data: destinationsData, isLoading: destinationsLoading } = useEAVDestinations(
+    departureStationId,
+    !!departureStationId
+  );
+
+  // Convert destinations to autocomplete format for arrival station
+  const destinations = destinationsData?.destinations || [];
+  const { data: arrivalStations = [] } = useDestinationStationsForAutocomplete(destinations);
+
+  // Use all stations for departure, filtered destinations for arrival
+  const availableArrivalStations =
+    departureStationId && destinations.length > 0 ? arrivalStations : stations;
 
   // Validation for search tab
   const validateForm = () => {
@@ -135,9 +156,12 @@ export function NewFindTrains() {
 
   // Handle station swap (search tab only)
   const handleSwapStations = () => {
+    // Only allow swap if both stations are selected
+    if (!departureStation || !arrivalStation) return;
+
     const temp = departureStation;
     setDepartureStation(arrivalStation);
-    setArrivalStation(temp);
+    setArrivalStation(""); // Clear arrival and let it be populated by destinations
     setErrors({ departure: "", arrival: "", time: "" });
   };
 
@@ -190,6 +214,16 @@ export function NewFindTrains() {
     }
   };
 
+  // Handle departure station change - clear arrival station when departure changes
+  const handleDepartureStationChange = (newDepartureStation: string) => {
+    setDepartureStation(newDepartureStation);
+    // Clear arrival station when departure changes to force user to select from valid destinations
+    if (arrivalStation) {
+      setArrivalStation("");
+      setErrors((prev) => ({ ...prev, arrival: "" }));
+    }
+  };
+
   // Quick time setters
   const setQuickTime = (offsetHours: number) => {
     const now = new Date();
@@ -234,7 +268,7 @@ export function NewFindTrains() {
                 <StationAutocomplete
                   stations={stations}
                   value={departureStation}
-                  onChange={setDepartureStation}
+                  onChange={handleDepartureStationChange}
                   placeholder={t("departureStation")}
                   error={errors.departure}
                   className="w-full"
@@ -260,15 +294,29 @@ export function NewFindTrains() {
                 <Label htmlFor="arrival" className="text-sm font-medium text-gray-700 mb-2 block">
                   <MapPin className="h-4 w-4 inline mr-1" />
                   {t("to")}
+                  {destinationsLoading && (
+                    <span className="text-xs text-gray-500 ml-2">
+                      (Caricamento destinazioni...)
+                    </span>
+                  )}
                 </Label>
                 <StationAutocomplete
-                  stations={stations}
+                  stations={availableArrivalStations}
                   value={arrivalStation}
                   onChange={setArrivalStation}
-                  placeholder={t("arrivalStation")}
+                  placeholder={
+                    departureStationId
+                      ? t("arrivalStation")
+                      : "Seleziona prima la stazione di partenza"
+                  }
                   error={errors.arrival}
                   className="w-full"
                 />
+                {departureStationId && destinations.length > 0 && (
+                  <p className="text-xs text-gray-500 mt-1">
+                    {destinations.length} destinazioni disponibili da {departureStation}
+                  </p>
+                )}
               </div>
             </div>
 

@@ -278,6 +278,42 @@ export interface EAVSearchParams {
 }
 
 /**
+ * EAV destination station from DestinazioniFromStazione API
+ */
+export interface EAVDestination {
+    Codice: number;
+    Descrizione: string;
+    Bacino: number;
+}
+
+/**
+ * Normalized destination for our app use
+ */
+export interface NormalizedDestination {
+    Id: number;
+    Nome: string;
+    Lat?: number;
+    Long?: number;
+    Chilometrica?: number;
+}
+
+/**
+ * EAV destinations API response structure
+ */
+export interface EAVDestinationsResponse {
+    destinations: NormalizedDestination[];
+    success: boolean;
+    error?: string;
+}
+
+/**
+ * EAV destinations API request parameters
+ */
+export interface EAVDestinationsParams {
+    id: string; // Station ID
+}
+
+/**
  * Utility function to parse EAV date format
  * Converts "/Date(1750364940000)/" to JavaScript Date
  */
