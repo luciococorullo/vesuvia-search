@@ -209,7 +209,7 @@ export function YourComponent() {
 
 ```typescript
 // Search trains
-const response = await fetch('/api/search?from=napoli&to=sorrento&time=14:30');
+const response = await fetch('/api/search?from=napoli-porta-nolana&to=caserta&time=14:30');
 const data = await response.json();
 
 // Get departures

@@ -1,6 +1,6 @@
 # VesuviaSearch 🚂
 
-**VesuviaSearch** is a modern web application that simplifies train schedule searches for the Circumvesuviana railway line between Naples and Sorrento. Built with Next.js 15 and TypeScript, it provides a fast, responsive, and multilingual experience for travelers.
+**VesuviaSearch** is a modern web application that simplifies train schedule searches for the EAV Circumvesuviana railway network in Campania, Italy. Built with Next.js 15 and TypeScript, it provides a fast, responsive, and multilingual experience for travelers across the entire regional network.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Next.js](https://img.shields.io/badge/Next.js-15-black)](https://nextjs.org/)
@@ -9,7 +9,7 @@
 
 ## 🌟 Features
 
-- 🔍 **Fast Search**: Quick train schedule lookup between Circumvesuviana stations
+- 🔍 **Fast Search**: Quick train schedule lookup across the entire EAV Circumvesuviana network
 - � **Multilingual**: Support for Italian, English, Spanish, Portuguese, French, and German
 - 📱 **Responsive Design**: Optimized for mobile, tablet, and desktop devices
 - 🚂 **Smart Filtering**: Filter by Campania Express trains and departure times
@@ -158,7 +158,7 @@ POSTGRES_URL="your-postgres-connection-string"
 
 ```javascript
 // Search trains from Naples to Sorrento
-const response = await fetch('/api/search?from=napoli&to=sorrento&time=14:30');
+const response = await fetch('/api/search?from=napoli-porta-nolana&to=caserta&time=14:30');
 const data = await response.json();
 ```
 

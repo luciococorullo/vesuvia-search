@@ -16,7 +16,8 @@ import { z } from 'zod';
 // ============================================================================
 
 /**
- * Direction enum for train routes between Naples and Sorrento
+ * Direction enum for train routes in the EAV Circumvesuviana network
+ * Currently focused on the main trunk line between Naples and Sorrento
  */
 export const DirectionSchema = z.enum(['NAPOLI', 'SORRENTO']);
 /**

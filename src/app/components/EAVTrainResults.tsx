@@ -19,7 +19,6 @@ import {
   AlertTriangle,
   XCircle,
   CheckCircle,
-  ArrowRight,
   Clock,
   RotateCcw,
   ChevronDown,

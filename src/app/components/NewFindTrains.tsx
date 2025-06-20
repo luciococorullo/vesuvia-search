@@ -159,7 +159,6 @@ export function NewFindTrains() {
     // Only allow swap if both stations are selected
     if (!departureStation || !arrivalStation) return;
 
-    const temp = departureStation;
     setDepartureStation(arrivalStation);
     setArrivalStation(""); // Clear arrival and let it be populated by destinations
     setErrors({ departure: "", arrival: "", time: "" });

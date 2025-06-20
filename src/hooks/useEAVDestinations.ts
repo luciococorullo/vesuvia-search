@@ -16,7 +16,6 @@
 
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {
-    EAVDestination,
     EAVDestinationsResponse,
     EAVDestinationsParams,
     NormalizedDestination

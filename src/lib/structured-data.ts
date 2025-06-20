@@ -6,7 +6,7 @@ export const structuredData = {
             "@id": "https://vesuvia-search.vercel.app/#website",
             "url": "https://vesuvia-search.vercel.app/",
             "name": "VesuviaSearch",
-            "description": "Ricerca treni Circumvesuviana Napoli-Sorrento",
+            "description": "Ricerca treni rete EAV Circumvesuviana Campania",
             "inLanguage": "it-IT",
             "potentialAction": {
                 "@type": "SearchAction",
@@ -44,8 +44,8 @@ export const structuredData = {
             },
             "about": {
                 "@type": "Service",
-                "name": "Ricerca Orari Treni Circumvesuviana",
-                "description": "Servizio di ricerca orari e informazioni sui treni della linea Circumvesuviana Napoli-Sorrento"
+                "name": "Ricerca Orari Treni EAV Circumvesuviana",
+                "description": "Servizio di ricerca orari e informazioni sui treni della rete EAV Circumvesuviana in Campania"
             }
         },
         {

@@ -208,7 +208,7 @@ export const translations = {
         // PAGE CONTENT AND TITLES
         // ========================================
         findTrainsTitle: 'Trova i tuoi treni della Circumvesuviana',
-        findTrainsSubtitle: 'Ricerca semplice e veloce per la linea Napoli-Sorrento',
+        findTrainsSubtitle: 'Ricerca semplice e veloce per la rete EAV in Campania',
         loading: 'Caricamento...',
         swapStations: 'Scambia stazioni',
         filters: 'Filtri',
@@ -365,7 +365,7 @@ export const translations = {
 
         // Page content
         findTrainsTitle: 'Find your Circumvesuviana trains',
-        findTrainsSubtitle: 'Simple and fast search for the Naples-Sorrento line',
+        findTrainsSubtitle: 'Simple and fast search for the EAV Circumvesuviana network in Campania',
         loading: 'Loading...',
         swapStations: 'Swap stations',
         filters: 'Filters',
@@ -498,7 +498,7 @@ export const translations = {
 
         // Page content
         findTrainsTitle: 'Encuentra tus trenes de la Circumvesuviana',
-        findTrainsSubtitle: 'Búsqueda simple y rápida para la línea Nápoles-Sorrento',
+        findTrainsSubtitle: 'Búsqueda simple y rápida para la red EAV Circumvesuviana en Campania',
         loading: 'Cargando...',
         swapStations: 'Intercambiar estaciones',
         filters: 'Filtros',
@@ -631,7 +631,7 @@ export const translations = {
 
         // Page content
         findTrainsTitle: 'Encontre seus comboios da Circumvesuviana',
-        findTrainsSubtitle: 'Pesquisa simples e rápida para a linha Nápoles-Sorrento',
+        findTrainsSubtitle: 'Pesquisa simples e rápida para a rede EAV Circumvesuviana na Campânia',
         loading: 'Carregando...',
         swapStations: 'Trocar estações',
         filters: 'Filtros',
@@ -764,7 +764,7 @@ export const translations = {
 
         // Page content
         findTrainsTitle: 'Trouvez vos trains de la Circumvesuviana',
-        findTrainsSubtitle: 'Recherche simple et rapide pour la ligne Naples-Sorrente',
+        findTrainsSubtitle: 'Recherche simple et rapide pour le réseau EAV Circumvesuviana en Campanie',
         loading: 'Chargement...',
         swapStations: 'Échanger les gares',
         filters: 'Filtres',
@@ -897,7 +897,7 @@ export const translations = {
 
         // Page content
         findTrainsTitle: 'Finden Sie Ihre Circumvesuviana-Züge',
-        findTrainsSubtitle: 'Einfache und schnelle Suche für die Linie Neapel-Sorrento',
+        findTrainsSubtitle: 'Einfache und schnelle Suche für das EAV Circumvesuviana-Netz in Kampanien',
         loading: 'Lädt...',
         swapStations: 'Bahnhöfe tauschen',
         filters: 'Filter',

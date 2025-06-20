@@ -3,7 +3,7 @@
  *
  * This is the root page component that renders the main train search interface.
  * It includes the navigation bar and the main search functionality for finding
- * Circumvesuviana trains between Naples and Sorrento.
+ * EAV Circumvesuviana trains across the entire regional network in Campania.
  *
  * @author VesuviaSearch Team
  * @version 1.0.0

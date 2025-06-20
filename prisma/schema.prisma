@@ -54,7 +54,7 @@ model Station {
 model Train {
   id                Int         @id @default(autoincrement())
   trainNumber       String?     @map("train_number")      // Optional train identifier
-  direction         String      // "NAPOLI" or "SORRENTO" 
+  direction         String      // Train direction in the EAV network (currently "NAPOLI" or "SORRENTO") 
   departureTime     String      @map("departure_time")    // HH:MM format
   operatingDays     String      @map("operating_days")    // When train operates
   isCampaniaExpress Boolean     @default(false) @map("is_campania_express") // Premium service flag

@@ -178,7 +178,6 @@ export async function POST(request: NextRequest) {
                 const transferStations = segments.slice(0, -1).map(segment => segment.arrivalStation);
 
                 const firstSegment = corsa.percorsi[0];
-                const lastSegment = corsa.percorsi[corsa.percorsi.length - 1];
 
                 return {
                     id: `${firstSegment.codice}-${index}`,

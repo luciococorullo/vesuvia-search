@@ -138,8 +138,8 @@ prisma/
 
 ```text
 data/
-├── 📄 orari_napoli_sorrento.csv    # Naples to Sorrento schedules
-└── 📄 orari_sorrento_napoli.csv    # Sorrento to Naples schedules
+├── 📄 orari_napoli_sorrento.csv    # Naples to Sorrento schedules (legacy data)
+└── 📄 orari_sorrento_napoli.csv    # Sorrento to Naples schedules (legacy data)
 ```
 
 **Purpose:**

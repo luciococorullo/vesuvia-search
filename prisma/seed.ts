@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-// These are the actual stations on the Napoli-Sorrento direct line (from official route map)
+// These are the actual stations on the Napoli-Sorrento direct line (main trunk line in EAV network)
 const NAPOLI_SORRENTO_STATIONS = [
     'Napoli Porta Nolana',
     'Napoli P. Garibaldi',

@@ -68,7 +68,7 @@ Search for trains between two stations with optional filters.
 
 **Example Request:**
 ```
-GET /api/search?from=napoli&to=sorrento&time=14:30&isCampaniaExpress=true
+GET /api/search?from=napoli-porta-nolana&to=caserta&time=14:30&isCampaniaExpress=true
 ```
 
 **Response:**
@@ -372,7 +372,7 @@ const getDepartures = async (stationCode: string) => {
 
 ```bash
 # Search trains
-curl -X GET "https://your-domain.com/api/search?from=napoli&to=sorrento&time=14:30" \
+curl -X GET "https://your-domain.com/api/search?from=napoli-porta-nolana&to=caserta&time=14:30" \
   -H "Accept: application/json"
 
 # Get departures

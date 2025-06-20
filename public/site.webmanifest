@@ -1,7 +1,7 @@
 {
     "name": "VesuviaSearch",
     "short_name": "VesuviaSearch",
-    "description": "Ricerca treni Circumvesuviana Napoli-Sorrento",
+    "description": "Ricerca treni rete EAV Circumvesuviana Campania",
     "start_url": "/",
     "display": "standalone",
     "background_color": "#ffffff",
