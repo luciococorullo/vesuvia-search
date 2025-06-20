@@ -165,6 +165,22 @@ export const translations = {
         searchNextDepartures: 'Cerca Prossime Partenze',
 
         // ========================================
+        // DEPARTURES RESULTS
+        // ========================================
+        nextDeparturesFrom: 'Prossime partenze da',
+        nextArrivalsTo: 'Prossimi arrivi a',
+        searchingArrivals: 'Ricerca arrivi...',
+        noDeparturesFound: 'Nessuna partenza trovata',
+        noArrivalsFound: 'Nessun arrivo trovato',
+        noDeparturesFromStation: 'Nessuna partenza trovata da',
+        noArrivalsToStation: 'Nessun arrivo trovato a',
+        departuresFromStation: 'Partenze da stazione',
+        arrivalsToStation: 'Arrivi alla stazione',
+        departuresFound: 'partenze trovate',
+        arrivalsFound: 'arrivi trovati',
+        platform: 'Binario',
+
+        // ========================================
         // TRAIN CATEGORIES
         // ========================================
         categoryRegionale: 'Regionale',
@@ -287,6 +303,20 @@ export const translations = {
         searchingNextDepartures: 'Searching next departures...',
         searchNextDepartures: 'Search Next Departures',
 
+        // Departures results
+        nextDeparturesFrom: 'Next departures from',
+        nextArrivalsTo: 'Next arrivals to',
+        searchingArrivals: 'Searching arrivals...',
+        noDeparturesFound: 'No departures found',
+        noArrivalsFound: 'No arrivals found',
+        noDeparturesFromStation: 'No departures found from',
+        noArrivalsToStation: 'No arrivals found to',
+        departuresFromStation: 'Departures from station',
+        arrivalsToStation: 'Arrivals to station',
+        departuresFound: 'departures found',
+        arrivalsFound: 'arrivals found',
+        platform: 'Platform',
+
         // Train categories
         categoryRegionale: 'Regional',
         categoryIntercity: 'Direct (D)',
@@ -406,6 +436,20 @@ export const translations = {
         searchingNextDepartures: 'Buscando próximas salidas...',
         searchNextDepartures: 'Buscar Próximas Salidas',
 
+        // Departures results
+        nextDeparturesFrom: 'Próximas partidas de',
+        nextArrivalsTo: 'Próximas llegadas a',
+        searchingArrivals: 'Buscando llegadas...',
+        noDeparturesFound: 'No se encontraron salidas',
+        noArrivalsFound: 'No se encontraron llegadas',
+        noDeparturesFromStation: 'No se encontraron salidas desde',
+        noArrivalsToStation: 'No se encontraron llegadas a',
+        departuresFromStation: 'Salidas desde estación',
+        arrivalsToStation: 'Llegadas a estación',
+        departuresFound: 'salidas encontradas',
+        arrivalsFound: 'llegadas encontradas',
+        platform: 'Andén',
+
         // Train categories
         categoryRegionale: 'Regional',
         categoryIntercity: 'Directo (D)',
@@ -419,14 +463,14 @@ export const translations = {
         operatingDaysWeekdaysOnly: 'Solo laborables',
         operatingDaysWeekendsOnly: 'Solo fines de semana',
         operatingDaysDaily: 'Diario',
-        operatingDaysWeekdaysAndSaturday: 'Laborables y sábado',
+        operatingDaysWeekdaysAndSaturday: 'Laborables e sábado',
 
         // Footer
-        footerDisclaimer: 'Este proyecto no tiene afiliación con EAV (Ente Autonomo Volturno).',
-        footerEducationalProject: 'Este es un proyecto educativo de código abierto creado solo con fines de aprendizaje.',
-        footerMadeWith: 'Hecho con',
+        footerDisclaimer: 'Este projeto não tem afiliación com EAV (Ente Autonomo Volturno).',
+        footerEducationalProject: 'Este é um projeto educativo de código aberto criado solo com fins de aprendizagem.',
+        footerMadeWith: 'Feito com',
         footerBy: 'por',
-        footerEducationalCopyright: 'Proyecto Educativo'
+        footerEducationalCopyright: 'Projeto Educativo'
     },
 
     pt: {
@@ -522,8 +566,22 @@ export const translations = {
         filtersLabel: 'Filtros',
 
         // Button labels for departure searches
-        searchingNextDepartures: 'Pesquisando próximas partidas...',
-        searchNextDepartures: 'Pesquisar Próximas Partidas',
+        searchingNextDepartures: 'Procurando próximas partidas...',
+        searchNextDepartures: 'Buscar Próximas Partidas',
+
+        // Departures results
+        nextDeparturesFrom: 'Próximas partidas de',
+        nextArrivalsTo: 'Próximas chegadas a',
+        searchingArrivals: 'Procurando chegadas...',
+        noDeparturesFound: 'Nenhuma partida encontrada',
+        noArrivalsFound: 'Nenhuma chegada encontrada',
+        noDeparturesFromStation: 'Nenhuma partida encontrada de',
+        noArrivalsToStation: 'Nenhuma chegada encontrada para',
+        departuresFromStation: 'Partidas da estação',
+        arrivalsToStation: 'Chegadas à estação',
+        departuresFound: 'partidas encontradas',
+        arrivalsFound: 'chegadas encontradas',
+        platform: 'Plataforma',
 
         // Train categories
         categoryRegionale: 'Regional',
@@ -644,6 +702,20 @@ export const translations = {
         searchingNextDepartures: 'Recherche prochains départs...',
         searchNextDepartures: 'Rechercher Prochains Départs',
 
+        // Departures results
+        nextDeparturesFrom: 'Prochaines départs de',
+        nextArrivalsTo: 'Prochaines arrivées à',
+        searchingArrivals: 'Recherche arrivées...',
+        noDeparturesFound: 'Aucun départ trouvé',
+        noArrivalsFound: 'Aucune arrivée trouvée',
+        noDeparturesFromStation: 'Aucun départ trouvé depuis',
+        noArrivalsToStation: 'Aucune arrivée trouvée vers',
+        departuresFromStation: 'Départs de la gare',
+        arrivalsToStation: 'Arrivées à la gare',
+        departuresFound: 'départs trouvés',
+        arrivalsFound: 'arrivées trouvées',
+        platform: 'Voie',
+
         // Train categories
         categoryRegionale: 'Régional',
         categoryIntercity: 'Direct (D)',
@@ -763,6 +835,20 @@ export const translations = {
         searchingNextDepartures: 'Suche nächste Abfahrten...',
         searchNextDepartures: 'Nächste Abfahrten Suchen',
 
+        // Departures results
+        nextDeparturesFrom: 'Nächste Abfahrten von',
+        nextArrivalsTo: 'Nächste Ankünfte nach',
+        searchingArrivals: 'Suche Ankünfte...',
+        noDeparturesFound: 'Keine Abfahrten gefunden',
+        noArrivalsFound: 'Keine Ankünfte gefunden',
+        noDeparturesFromStation: 'Keine Abfahrten gefunden von',
+        noArrivalsToStation: 'Keine Ankünfte gefunden nach',
+        departuresFromStation: 'Abfahrten vom Bahnhof',
+        arrivalsToStation: 'Ankünfte am Bahnhof',
+        departuresFound: 'Abfahrten gefunden',
+        arrivalsFound: 'Ankünfte gefunden',
+        platform: 'Gleis',
+
         // Train categories
         categoryRegionale: 'Regional',
         categoryIntercity: 'Direkt (D)',
@@ -770,7 +856,7 @@ export const translations = {
 
         // Direction labels
         directionNapoli: 'Neapel',
-        directionSorrento: 'Sorrent',
+        directionSorrento: 'Sorrento',
 
         // Operating days
         operatingDaysWeekdaysOnly: 'Nur Werktage',

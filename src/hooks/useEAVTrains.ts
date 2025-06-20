@@ -216,3 +216,91 @@ export const getStationSuggestions = (searchTerm: string): string[] => {
         .map(station => station.nome)
         .slice(0, 10); // Limit to 10 suggestions
 };
+
+// ============================================================================
+// DEPARTURES API TYPES
+// ============================================================================
+
+/**
+ * Departure/Arrival result from EAV departures API
+ */
+export interface EAVDepartureResult {
+    id: string;
+    trainNumber: string;
+    destination: string;
+    time: string;
+    delay?: string;
+    platform?: string;
+    trainType?: string;
+    status?: string;
+}
+
+/**
+ * EAV Departures API response structure
+ */
+export interface EAVDeparturesResponse {
+    success: boolean;
+    trains: EAVDepartureResult[];
+    station?: string;
+    stationId?: string;
+    type?: 'arrivals' | 'departures';
+    error?: string;
+    message?: string;
+}
+
+/**
+ * Parameters for departures search
+ */
+export interface EAVDeparturesRequest {
+    stationName: string;
+    type?: 'arrivals' | 'departures';
+}
+
+// ============================================================================
+// DEPARTURES HOOKS
+// ============================================================================
+
+/**
+ * Hook for searching departures/arrivals from a specific station
+ * 
+ * @returns React Query mutation for departures search
+ */
+export const useEAVDeparturesMutation = () => {
+    return useMutation<EAVDeparturesResponse, Error, EAVDeparturesRequest>({
+        mutationFn: async ({ stationName, type = 'departures' }: EAVDeparturesRequest) => {
+            // Find station by name to get the ID
+            const station = findStationByName(stationName);
+            if (!station) {
+                throw new Error(`Station not found: ${stationName}`);
+            }
+
+            const requestBody = {
+                stazione: station.id,
+                tipo: type === 'arrivals' ? 'A' : 'P'
+            };
+
+            console.log('Calling EAV departures API with:', requestBody);
+
+            const response = await fetch('/api/eav-departures', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestBody),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+            }
+
+            const data: EAVDeparturesResponse = await response.json();
+
+            if (!data.success) {
+                throw new Error(data.error || 'API request failed');
+            }
+
+            return data;
+        },
+    });
+};
