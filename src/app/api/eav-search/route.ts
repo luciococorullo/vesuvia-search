@@ -21,6 +21,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import {
     EAVApiResponse,
     EAVTrainResult,
+    EAVJourneySegment,
     parseEAVDate,
     EAVSearchParams
 } from '@/lib/types';
@@ -161,7 +162,7 @@ export async function POST(request: NextRequest) {
 
             if (isConnection) {
                 // Multi-segment journey with transfers
-                const segments: any[] = corsa.percorsi.map((percorso) => ({
+                const segments: EAVJourneySegment[] = corsa.percorsi.map((percorso) => ({
                     trainCode: percorso.codice,
                     departureTime: parseEAVDate(percorso.partenza).toISOString(),
                     arrivalTime: parseEAVDate(percorso.arrivo).toISOString(),

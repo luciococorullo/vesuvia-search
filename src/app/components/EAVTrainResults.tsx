@@ -368,9 +368,6 @@ function EAVTrainCard({ train }: EAVTrainCardProps) {
                 {t("trainCode").replace("{{code}}", train.trainCode.toString())}
               </div>
               <span className="text-gray-600 text-sm font-medium">{train.trainType}</span>
-              <div className="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-semibold">
-                {t("directJourney")}
-              </div>
             </div>
 
             {/* Status badge */}

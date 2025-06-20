@@ -87,7 +87,9 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
    * @returns Translated string in current language, fallback to English, or key itself
    */
   const t = (key: TranslationKey): string => {
-    return translations[language][key] || translations["en"][key] || key;
+    const currentLangTranslations = translations[language] as Record<string, string>;
+    const englishTranslations = translations["en"] as Record<string, string>;
+    return currentLangTranslations[key] || englishTranslations[key] || key;
   };
 
   return (

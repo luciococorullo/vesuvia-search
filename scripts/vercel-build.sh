@@ -1,67 +1,110 @@
 #!/bin/bash
 
+# Enhanced Vercel Build Script for VesuviaSearch
+# Version: 2.0.0
+# Updated: June 2025
+
+set -euo pipefail  # Exit on error, undefined variables, pipe failures
+
 # Lock file to prevent multiple simultaneous executions
 LOCK_FILE="/tmp/vesuvia-build.lock"
+BUILD_LOG="/tmp/vesuvia-build.log"
 
-# Function to clean up lock file on exit
+# Function to log messages with timestamp
+log() {
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1" | tee -a "$BUILD_LOG"
+}
+
+# Function to log errors
+log_error() {
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] ❌ ERROR: $1" | tee -a "$BUILD_LOG" >&2
+}
+
+# Function to clean up lock file and logs on exit
 cleanup() {
+    local exit_code=$?
     rm -f "$LOCK_FILE"
+    if [ $exit_code -ne 0 ]; then
+        log_error "Build failed with exit code $exit_code"
+        log "Build logs available at: $BUILD_LOG"
+    else
+        log "✅ Build completed successfully"
+        # Clean up old log on success
+        rm -f "$BUILD_LOG"
+    fi
+    exit $exit_code
 }
 
 # Set trap to clean up on exit
 trap cleanup EXIT
 
+# Initialize build log
+log "🚀 Starting VesuviaSearch build process..."
+log "Build ID: $$"
+log "Node version: $(node --version)"
+log "NPM version: $(npm --version)"
+
 # Check if already running
 if [ -f "$LOCK_FILE" ]; then
-    echo "⚠️  Build already in progress, waiting..."
-    # Wait up to 5 minutes for other build to complete
-    for i in {1..300}; do
+    log "⚠️  Build already in progress, waiting..."
+    # Wait up to 8 minutes for other build to complete
+    for i in {1..480}; do
         if [ ! -f "$LOCK_FILE" ]; then
             break
+        fi
+        if [ $((i % 60)) -eq 0 ]; then
+            log "Still waiting... ($((i/60)) minutes elapsed)"
         fi
         sleep 1
     done
     
     if [ -f "$LOCK_FILE" ]; then
-        echo "❌ Timeout waiting for previous build, removing stale lock"
+        log_error "Timeout waiting for previous build (8 minutes), removing stale lock"
         rm -f "$LOCK_FILE"
     fi
 fi
 
-# Create lock file
-echo $$ > "$LOCK_FILE"
+# Create lock file with additional metadata
+{
+    echo "$$"
+    echo "$(date)"
+    echo "${VERCEL_ENV:-development}"
+    echo "${VERCEL_GIT_COMMIT_SHA:-unknown}"
+} > "$LOCK_FILE"
 
-# Check if this is production (Vercel) or development
-if [ "$VERCEL_ENV" = "production" ] || [ "$NODE_ENV" = "production" ]; then
-    echo "🚀 Production build detected - Build ID: $$"
-    echo "🌍 Environment: VERCEL_ENV=$VERCEL_ENV, NODE_ENV=$NODE_ENV"
-    
-    # Use PostgreSQL schema for production
-    cp prisma/schema.prod.prisma prisma/schema.prisma
-    
-    # Generate Prisma client for PostgreSQL
-    npx prisma generate
-    
-    # Run migrations (this will create tables if they don't exist)
-    npx prisma db push
-    
-    # Check if data already exists
-    echo "🔍 Checking if database already has data..."
-    STATION_COUNT=$(npx prisma db execute --stdin <<< "SELECT COUNT(*) as count FROM Station;" 2>/dev/null | tail -1 | grep -o '[0-9]*' || echo "0")
-    
-    if [ "$STATION_COUNT" -gt "0" ]; then
-        echo "📊 Database already has $STATION_COUNT stations, skipping data load"
-    else
-        echo "📊 Database is empty, loading complete data from CSV files..."
-        # Load complete data from CSV files
-        npm run db:seed
-    fi
-    
-    # Build the application
-    npx next build
-else
-    echo "🛠️ Development build"
-    # Use SQLite schema for development (default)
-    npx prisma generate
-    npx next build
+# Detect environment with enhanced logic
+is_production=false
+if [ "$VERCEL_ENV" = "production" ] || [ "$NODE_ENV" = "production" ] || [ "$VERCEL" = "1" ]; then
+    is_production=true
 fi
+
+if [ "$is_production" = true ]; then
+    log "🚀 Production build detected"
+    log "🌍 Environment details:"
+    log "   VERCEL_ENV: ${VERCEL_ENV:-unset}"
+    log "   NODE_ENV: ${NODE_ENV:-unset}"
+    log "   VERCEL: ${VERCEL:-unset}"
+    log "   VERCEL_GIT_COMMIT_SHA: ${VERCEL_GIT_COMMIT_SHA:-unset}"
+    log "   VERCEL_GIT_COMMIT_REF: ${VERCEL_GIT_COMMIT_REF:-unset}"
+    
+    # Note: Database operations removed as DB is no longer used
+    
+    # Build the application with enhanced error handling
+    log "🏗️  Building Next.js application for production..."
+    if ! npm run build; then
+        log_error "Next.js build failed"
+        exit 1
+    fi
+    log "✅ Production build completed successfully"
+else
+    log "🛠️ Development build detected"
+    log "🌍 Environment: ${NODE_ENV:-development}"
+fi
+
+# Build the Next.js application
+log "🏗️  Building Next.js application..."
+if ! npm run build; then
+    log_error "Next.js build failed"
+    exit 1
+fi
+log "✅ Build completed successfully"
