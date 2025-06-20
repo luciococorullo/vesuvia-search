@@ -8,7 +8,75 @@
  * Supported languages:
  * - Italian (it) - Primary language
  * - English (en) - Default fallback
- * - Spanish (es)
+ * - Span        // ========================================
+        // TRAIN RESULTS AND STATUS
+        // ========================================
+               // ========================================
+        // TRAIN RESULTS AND STATUS
+        // ========================================
+               // ========================================
+        // TRAIN RESULTS AND STATUS
+        // ========================================
+               // ========================================
+        // TRAIN RESULTS AND STATUS
+        // ========================================
+        delayed: 'Verspätet',
+        onTime: 'Pünktlich',
+        cancelled: 'Gestrichen',
+        delayedByMinutes: 'Verspätet um {{minutes}} Min',
+        trainCode: 'Zug {{code}}',
+        connectionJourney: 'Reise mit Umstieg',
+        directJourney: 'Direkte Reise',
+        changeAt: 'Umstieg in',
+        segment: 'Abschnitt',
+        transfer: 'Umstieg',
+        transferTime: 'Umstiegszeit',
+        totalDuration: 'Gesamtdauer',
+        showDetails: 'Details anzeigen',
+        hideDetails: 'Details ausblenden',
+        journeyDetails: 'Reisedetails',: 'En retard',
+        onTime: 'À l\'heure',
+        cancelled: 'Annulé',
+        delayedByMinutes: 'En retard de {{minutes}} min',
+        trainCode: 'Train {{code}}',
+        connectionJourney: 'Voyage avec correspondance',
+        directJourney: 'Voyage direct',
+        changeAt: 'Changement à',
+        segment: 'Segment',
+        transfer: 'Correspondance',
+        transferTime: 'Temps de correspondance',
+        totalDuration: 'Durée totale',
+        showDetails: 'Afficher les détails',
+        hideDetails: 'Masquer les détails',
+        journeyDetails: 'Détails du voyage',: 'Atrasado',
+        onTime: 'Na hora',
+        cancelled: 'Cancelado',
+        delayedByMinutes: 'Atrasado {{minutes}} min',
+        trainCode: 'Comboio {{code}}',
+        connectionJourney: 'Viagem com ligação',
+        directJourney: 'Viagem direta',
+        changeAt: 'Mudança em',
+        segment: 'Segmento',
+        transfer: 'Transferência',
+        transferTime: 'Tempo de transferência',
+        totalDuration: 'Duração total',
+        showDetails: 'Mostrar detalhes',
+        hideDetails: 'Ocultar detalhes',
+        journeyDetails: 'Detalhes da viagem',: 'Retrasado',
+        onTime: 'A tiempo',
+        cancelled: 'Cancelado',
+        delayedByMinutes: 'Retrasado {{minutes}} min',
+        trainCode: 'Tren {{code}}',
+        connectionJourney: 'Viaje con transbordo',
+        directJourney: 'Viaje directo',
+        changeAt: 'Cambio en',
+        segment: 'Tramo',
+        transfer: 'Transbordo',
+        transferTime: 'Tiempo de transbordo',
+        totalDuration: 'Duración total',
+        showDetails: 'Mostrar detalles',
+        hideDetails: 'Ocultar detalles',
+        journeyDetails: 'Detalles del viaje',
  * - Portuguese (pt)
  * - French (fr)
  * - German (de)
@@ -125,6 +193,16 @@ export const translations = {
         cancelled: 'Annullato',
         delayedByMinutes: 'In ritardo di {{minutes}} min',
         trainCode: 'Treno {{code}}',
+        connectionJourney: 'Viaggio con cambio',
+        directJourney: 'Viaggio diretto',
+        changeAt: 'Cambio a',
+        segment: 'Tratta',
+        transfer: 'Cambio',
+        transferTime: 'Tempo di cambio',
+        totalDuration: 'Durata totale',
+        showDetails: 'Mostra dettagli',
+        hideDetails: 'Nascondi dettagli',
+        journeyDetails: 'Dettagli del viaggio',
 
         // ========================================
         // PAGE CONTENT AND TITLES
@@ -274,6 +352,16 @@ export const translations = {
         cancelled: 'Cancelled',
         delayedByMinutes: 'Delayed by {{minutes}} min',
         trainCode: 'Train {{code}}',
+        connectionJourney: 'Connection journey',
+        directJourney: 'Direct journey',
+        changeAt: 'Change at',
+        segment: 'Segment',
+        transfer: 'Transfer',
+        transferTime: 'Transfer time',
+        totalDuration: 'Total duration',
+        showDetails: 'Show details',
+        hideDetails: 'Hide details',
+        journeyDetails: 'Journey details',
 
         // Page content
         findTrainsTitle: 'Find your Circumvesuviana trains',

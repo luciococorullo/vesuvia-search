@@ -251,6 +251,22 @@ export interface EAVApiResponse {
 }
 
 /**
+ * Single segment of a journey (for connections)
+ */
+export interface EAVJourneySegment {
+    trainCode: number;
+    departureTime: string; // ISO string format
+    arrivalTime: string; // ISO string format
+    departureStation: string;
+    arrivalStation: string;
+    trainType: string;
+    isDelayed: boolean;
+    delayMinutes: number;
+    isCancelled: boolean;
+    line: string;
+}
+
+/**
  * Simplified train result for our app
  */
 export interface EAVTrainResult {
@@ -265,6 +281,10 @@ export interface EAVTrainResult {
     delaMinutes: number;
     isCancelled: boolean;
     line: string;
+    // New properties for multi-segment journeys
+    isConnection: boolean; // True if this journey requires transfers
+    segments?: EAVJourneySegment[]; // All segments if it's a connection
+    transferStations?: string[]; // List of transfer stations
 }
 
 /**

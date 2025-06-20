@@ -157,25 +157,64 @@ export async function POST(request: NextRequest) {
 
         // Transform EAV data to our format
         const trains: EAVTrainResult[] = eavData.CorsePercorso.map((corsa, index) => {
-            // Get the main route details from the first percorso
-            const mainPercorso = corsa.percorsi[0];
+            const isConnection = corsa.percorsi.length > 1;
 
-            const departureTime = parseEAVDate(corsa.partenza);
-            const arrivalTime = parseEAVDate(corsa.arrivo);
+            if (isConnection) {
+                // Multi-segment journey with transfers
+                const segments: any[] = corsa.percorsi.map((percorso) => ({
+                    trainCode: percorso.codice,
+                    departureTime: parseEAVDate(percorso.partenza).toISOString(),
+                    arrivalTime: parseEAVDate(percorso.arrivo).toISOString(),
+                    departureStation: percorso.Descrizione_origine,
+                    arrivalStation: percorso.Descrizione_destinazione,
+                    trainType: percorso.tipologia,
+                    isDelayed: percorso.ritardo > 0,
+                    delayMinutes: percorso.ritardo,
+                    isCancelled: percorso.soppressa,
+                    line: percorso.DLinea
+                }));
 
-            return {
-                id: `${mainPercorso.codice}-${index}`,
-                trainCode: mainPercorso.codice,
-                departureTime: departureTime.toISOString(), // Convert to ISO string for JSON serialization
-                arrivalTime: arrivalTime.toISOString(), // Convert to ISO string for JSON serialization
-                departureStation: corsa.Descrizione_origine,
-                arrivalStation: corsa.Descrizione_destinazione,
-                trainType: mainPercorso.tipologia,
-                isDelayed: mainPercorso.ritardo > 0,
-                delaMinutes: mainPercorso.ritardo,
-                isCancelled: mainPercorso.soppressa,
-                line: mainPercorso.DLinea
-            };
+                // Extract transfer stations (arrival station of each segment except the last one)
+                const transferStations = segments.slice(0, -1).map(segment => segment.arrivalStation);
+
+                const firstSegment = corsa.percorsi[0];
+                const lastSegment = corsa.percorsi[corsa.percorsi.length - 1];
+
+                return {
+                    id: `${firstSegment.codice}-${index}`,
+                    trainCode: firstSegment.codice, // Use first train code as main reference
+                    departureTime: parseEAVDate(corsa.partenza).toISOString(),
+                    arrivalTime: parseEAVDate(corsa.arrivo).toISOString(),
+                    departureStation: corsa.Descrizione_origine,
+                    arrivalStation: corsa.Descrizione_destinazione,
+                    trainType: firstSegment.tipologia,
+                    isDelayed: corsa.percorsi.some(p => p.ritardo > 0),
+                    delaMinutes: Math.max(...corsa.percorsi.map(p => p.ritardo)),
+                    isCancelled: corsa.percorsi.some(p => p.soppressa),
+                    line: firstSegment.DLinea,
+                    isConnection: true,
+                    segments: segments,
+                    transferStations: transferStations
+                };
+            } else {
+                // Single direct journey
+                const mainPercorso = corsa.percorsi[0];
+
+                return {
+                    id: `${mainPercorso.codice}-${index}`,
+                    trainCode: mainPercorso.codice,
+                    departureTime: parseEAVDate(corsa.partenza).toISOString(),
+                    arrivalTime: parseEAVDate(corsa.arrivo).toISOString(),
+                    departureStation: corsa.Descrizione_origine,
+                    arrivalStation: corsa.Descrizione_destinazione,
+                    trainType: mainPercorso.tipologia,
+                    isDelayed: mainPercorso.ritardo > 0,
+                    delaMinutes: mainPercorso.ritardo,
+                    isCancelled: mainPercorso.soppressa,
+                    line: mainPercorso.DLinea,
+                    isConnection: false
+                };
+            }
         });
 
         // Sort trains by departure time
