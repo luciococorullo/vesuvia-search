@@ -18,7 +18,7 @@ import { DateTimePicker } from "./DateTimePicker";
 import { StationAutocomplete } from "./StationAutocomplete";
 import { EAVTrainResults } from "./EAVTrainResults";
 import { EAVDeparturesResults } from "./EAVDeparturesResults";
-import { ArrowUpDown, MapPin, Search, Clock } from "lucide-react";
+import { MapPin, Search, Clock } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
@@ -154,7 +154,7 @@ export function NewFindTrains() {
     }
   };
 
-  // Handle station swap (search tab only)
+  /*  // Handle station swap (search tab only)
   const handleSwapStations = () => {
     // Only allow swap if both stations are selected
     if (!departureStation || !arrivalStation) return;
@@ -162,7 +162,7 @@ export function NewFindTrains() {
     setDepartureStation(arrivalStation);
     setArrivalStation(""); // Clear arrival and let it be populated by destinations
     setErrors({ departure: "", arrival: "", time: "" });
-  };
+  }; */
 
   // Handle search (search tab)
   const handleSearch = async () => {

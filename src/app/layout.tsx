@@ -24,7 +24,7 @@ import { structuredData } from "@/lib/structured-data";
 import { Analytics } from "@vercel/analytics/next";
 import Footer from "@/components/Footer";
 import PWAInit from "@/components/PWAInit";
-import PWADebug from "@/components/PWADebug";
+// import PWADebug from "@/components/PWADebug";
 
 /**
  * Font configuration using Google Fonts

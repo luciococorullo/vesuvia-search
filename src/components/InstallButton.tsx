@@ -99,7 +99,10 @@ export default function InstallButton() {
       return;
     }
 
-    if (!pwaManager) return;
+    if (!pwaManager) {
+      console.error("PWA Manager not available");
+      return;
+    }
 
     setIsInstalling(true);
 
@@ -108,11 +111,22 @@ export default function InstallButton() {
 
       if (result?.outcome === "accepted") {
         console.log("User accepted the install prompt");
+        // You can add a success notification here if needed
       } else if (result?.outcome === "dismissed") {
         console.log("User dismissed the install prompt");
+      } else if (result === null) {
+        console.log("Install prompt could not be shown");
+        // Fallback for browsers that don't support the install prompt
+        alert(
+          "To install this app, use your browser's 'Add to Home Screen' or 'Install App' option in the menu."
+        );
       }
     } catch (error) {
       console.error("Error showing install prompt:", error);
+      // Fallback message
+      alert(
+        "To install this app, use your browser's 'Add to Home Screen' or 'Install App' option in the menu."
+      );
     } finally {
       setIsInstalling(false);
     }
@@ -129,11 +143,11 @@ export default function InstallButton() {
       disabled={isInstalling}
       variant="outline"
       size="sm"
-      className="flex items-center gap-1 bg-blue-50 hover:bg-blue-100 border-blue-200 text-blue-700 h-10"
+      className="flex items-center gap-2 bg-blue-50 hover:bg-blue-100 border-blue-200 text-blue-700 h-10"
     >
       {isInstalling ? (
         <>
-          <div className="w-4 h-8 border-2 border-blue-600 border-t-transparent rounded-full animate-spin" />
+          <div className="w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full animate-spin" />
           {t("installing")}
         </>
       ) : (
@@ -152,6 +166,7 @@ export default function InstallButton() {
             <polyline points="7,10 12,15 17,10" />
             <line x1="12" y1="15" x2="12" y2="3" />
           </svg>
+          {isIOS ? t("installApp") : t("installApp")}
         </>
       )}
     </Button>

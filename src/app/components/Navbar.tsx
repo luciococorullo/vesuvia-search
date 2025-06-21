@@ -17,12 +17,7 @@ export default function Navbar() {
     <div className="flex items-center justify-between w-full p-4 border-b-2 border-red-500 bg-white shadow-lg">
       <NavigationMenu className="flex items-center h-full">
         <div className="flex items-center space-x-3">
-          <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center">
-            <span className="text-white font-bold text-sm">V</span>
-          </div>
-          <h1 className="text-2xl font-bold text-blue-800">
-            Vesuvia<span className="text-red-500">Search</span>
-          </h1>
+          <h1 className="text-2xl font-bold text-red-500">VesuviaSearch</h1>
         </div>
         {/* <NavigationMenuList>
           <NavigationMenuItem>

@@ -78,22 +78,6 @@
             ]
         }
     ],
-    "screenshots": [
-        {
-            "src": "/screenshots/desktop-home.png",
-            "sizes": "1280x720",
-            "type": "image/png",
-            "form_factor": "wide",
-            "label": "VesuviaSearch Home Page"
-        },
-        {
-            "src": "/screenshots/mobile-home.png",
-            "sizes": "390x844",
-            "type": "image/png",
-            "form_factor": "narrow",
-            "label": "VesuviaSearch Mobile Home"
-        }
-    ],
     "prefer_related_applications": false,
     "edge_side_panel": {
         "preferred_width": 400

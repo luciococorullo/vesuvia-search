@@ -59,6 +59,13 @@ export class PWAManager {
         if (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) {
             console.log('PWA is running in standalone mode');
             this.isInstallable = false;
+        } else {
+            // Also check for iOS Safari standalone mode
+            const isIOSStandalone = (window.navigator as unknown as { standalone?: boolean }).standalone === true;
+            if (isIOSStandalone) {
+                console.log('PWA is running in iOS standalone mode');
+                this.isInstallable = false;
+            }
         }
 
         // For debugging - log current state
@@ -67,28 +74,41 @@ export class PWAManager {
                 isInstallable: this.isInstallable,
                 hasDeferredPrompt: !!this.deferredPrompt,
                 isStandalone: window.matchMedia('(display-mode: standalone)').matches,
-                supportsBeforeInstallPrompt: 'onbeforeinstallprompt' in window
+                isIOSStandalone: (window.navigator as unknown as { standalone?: boolean }).standalone === true,
+                supportsBeforeInstallPrompt: 'onbeforeinstallprompt' in window,
+                userAgent: navigator.userAgent
             });
         }, 1000);
     }
 
     public async showInstallPrompt(): Promise<{ outcome: string; platform: string } | null> {
         if (!this.isInitialized || !this.deferredPrompt) {
+            console.log('Cannot show install prompt:', {
+                isInitialized: this.isInitialized,
+                hasDeferredPrompt: !!this.deferredPrompt
+            });
             return null;
         }
 
-        // Show the install prompt
-        await this.deferredPrompt.prompt();
+        try {
+            // Show the install prompt
+            await this.deferredPrompt.prompt();
 
-        // Wait for the user to respond to the prompt
-        const { outcome, platform } = await this.deferredPrompt.userChoice;
+            // Wait for the user to respond to the prompt
+            const { outcome, platform } = await this.deferredPrompt.userChoice;
 
-        // Clear the deferredPrompt so it can be garbage collected
-        this.deferredPrompt = null;
-        this.isInstallable = false;
-        this.notifyInstallPromptCallbacks(false);
+            console.log('Install prompt result:', { outcome, platform });
 
-        return { outcome, platform };
+            // Clear the deferredPrompt so it can be garbage collected
+            this.deferredPrompt = null;
+            this.isInstallable = false;
+            this.notifyInstallPromptCallbacks(false);
+
+            return { outcome, platform };
+        } catch (error) {
+            console.error('Error showing install prompt:', error);
+            return null;
+        }
     }
 
     public getIsInstallable(): boolean {
