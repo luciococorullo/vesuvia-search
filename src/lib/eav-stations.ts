@@ -66,6 +66,90 @@ export const EAV_STATIONS: EAVStation[] = [
         "chilometrica": 4.486
     },
     {
+        "id": "7",
+        "nome": "Ponticelli",
+        "lat": 40.851023,
+        "long": 14.333336,
+        "chilometrica": 0
+    },
+    {
+        "id": "8",
+        "nome": "Cercola",
+        "lat": 40.856301,
+        "long": 14.355284,
+        "chilometrica": 0
+    },
+    {
+        "id": "9",
+        "nome": "Pollena Trocchia",
+        "lat": 40.859843,
+        "long": 14.380188,
+        "chilometrica": 0
+    },
+    {
+        "id": "12",
+        "nome": "S. Anastasia",
+        "lat": 40.870059,
+        "long": 14.400303,
+        "chilometrica": 0
+    },
+    {
+        "id": "14",
+        "nome": "Somma Vesuviana",
+        "lat": 40.874074,
+        "long": 14.438364,
+        "chilometrica": 0
+    },
+    {
+        "id": "16",
+        "nome": "Ottaviano",
+        "lat": 40.852868,
+        "long": 14.480637,
+        "chilometrica": 0
+    },
+    {
+        "id": "18",
+        "nome": "S. Giuseppe",
+        "lat": 40.837373,
+        "long": 14.501191,
+        "chilometrica": 0
+    },
+    {
+        "id": "20",
+        "nome": "Terzigno",
+        "lat": 40.814159,
+        "long": 14.497272,
+        "chilometrica": 0
+    },
+    {
+        "id": "22",
+        "nome": "Poggiomarino",
+        "lat": 40.800957,
+        "long": 14.540077,
+        "chilometrica": 0
+    },
+    {
+        "id": "23",
+        "nome": "Striano",
+        "lat": 40.811906,
+        "long": 14.577021,
+        "chilometrica": 0
+    },
+    {
+        "id": "24",
+        "nome": "S. Valentino Torio",
+        "lat": 40.797129,
+        "long": 14.600155,
+        "chilometrica": 0
+    },
+    {
+        "id": "25",
+        "nome": "Sarno",
+        "lat": 40.812210,
+        "long": 14.618466,
+        "chilometrica": 0
+    },
+    {
         "id": "26",
         "nome": "S. Maria del Pozzo",
         "lat": 40.84018,
@@ -323,6 +407,377 @@ export const EAV_STATIONS: EAVStation[] = [
         "lat": 40.86235,
         "long": 14.33829,
         "chilometrica": 3.972
+    },
+    {
+        "id": "42",
+        "nome": "Boscotrecase",
+        "lat": 40.768640,
+        "long": 14.461099,
+        "chilometrica": 0
+    },
+    {
+        "id": "45",
+        "nome": "Pompei Santuario",
+        "lat": 40.751134,
+        "long": 14.501608,
+        "chilometrica": 0
+    },
+    {
+        "id": "46",
+        "nome": "Scafati",
+        "lat": 40.753598,
+        "long": 14.524419,
+        "chilometrica": 0
+    },
+    {
+        "id": "66",
+        "nome": "Casalnuovo",
+        "lat": 40.907802,
+        "long": 14.347487,
+        "chilometrica": 0
+    },
+    {
+        "id": "69",
+        "nome": "Pomigliano d'Arco",
+        "lat": 40.914691,
+        "long": 14.393016,
+        "chilometrica": 0
+    },
+    {
+        "id": "70",
+        "nome": "Casoria Arpino - Volla",
+        "lat": 40.888150,
+        "long": 14.329680,
+        "chilometrica": 0
+    },
+    {
+        "id": "73",
+        "nome": "Via Vittorio Veneto",
+        "lat": 40.919475,
+        "long": 14.442251,
+        "chilometrica": 0
+    },
+    {
+        "id": "76",
+        "nome": "Scisciano",
+        "lat": 40.912661,
+        "long": 14.480314,
+        "chilometrica": 0
+    },
+    {
+        "id": "77",
+        "nome": "Saviano",
+        "lat": 40.912176,
+        "long": 14.509323,
+        "chilometrica": 0
+    },
+    {
+        "id": "78",
+        "nome": "Nola",
+        "lat": 40.929364,
+        "long": 14.526792,
+        "chilometrica": 0
+    },
+    {
+        "id": "79",
+        "nome": "Cimitile",
+        "lat": 40.939130,
+        "long": 14.530495,
+        "chilometrica": 0
+    },
+    {
+        "id": "81",
+        "nome": "Cicciano",
+        "lat": 40.960562,
+        "long": 14.543252,
+        "chilometrica": 0
+    },
+    {
+        "id": "82",
+        "nome": "Roccarainola",
+        "lat": 40.966367,
+        "long": 14.560060,
+        "chilometrica": 0
+    },
+    {
+        "id": "84",
+        "nome": "Baiano",
+        "lat": 40.952895,
+        "long": 14.616973,
+        "chilometrica": 0
+    },
+    {
+        "id": "86",
+        "nome": "Alfa Lancia Varco 4",
+        "lat": 40.930254,
+        "long": 14.399977,
+        "chilometrica": 0
+    },
+    {
+        "id": "96",
+        "nome": "Madonnelle",
+        "lat": 40.871179,
+        "long": 14.334486,
+        "chilometrica": 5.037
+    },
+    {
+        "id": "98",
+        "nome": "Acerra",
+        "lat": 40.947300,
+        "long": 14.382543,
+        "chilometrica": 0
+    },
+    {
+        "id": "107",
+        "nome": "Pozzuoli",
+        "lat": 40.824780,
+        "long": 14.121430,
+        "chilometrica": 0
+    },
+    {
+        "id": "109",
+        "nome": "Quarto",
+        "lat": 40.880240,
+        "long": 14.136240,
+        "chilometrica": 0
+    },
+    {
+        "id": "112",
+        "nome": "Aversa",
+        "lat": 40.974147,
+        "long": 14.213685,
+        "chilometrica": 0
+    },
+    {
+        "id": "124",
+        "nome": "Giugliano",
+        "lat": 40.927877,
+        "long": 14.217663,
+        "chilometrica": 0
+    },
+    {
+        "id": "161",
+        "nome": "San Felice a Cancello",
+        "lat": 41.013724,
+        "long": 14.478115,
+        "chilometrica": 0
+    },
+    {
+        "id": "174",
+        "nome": "Arpaia Airola S. Agata",
+        "lat": 41.040081,
+        "long": 14.554989,
+        "chilometrica": 0
+    },
+    {
+        "id": "214",
+        "nome": "S. Maria a Vico",
+        "lat": 41.028460,
+        "long": 14.462703,
+        "chilometrica": 0
+    },
+    {
+        "id": "229",
+        "nome": "Alvignano",
+        "lat": 41.247010,
+        "long": 14.338036,
+        "chilometrica": 0
+    },
+    {
+        "id": "238",
+        "nome": "Caiazzo",
+        "lat": 41.179723,
+        "long": 14.364157,
+        "chilometrica": 0
+    },
+    {
+        "id": "245",
+        "nome": "Cervinara",
+        "lat": 41.028690,
+        "long": 14.616964,
+        "chilometrica": 0
+    },
+    {
+        "id": "278",
+        "nome": "Piana di Monte Verna",
+        "lat": 41.169866,
+        "long": 14.328311,
+        "chilometrica": 0
+    },
+    {
+        "id": "293",
+        "nome": "S. Martino V.C. Montes. Pann",
+        "lat": 41.036679,
+        "long": 14.653744,
+        "chilometrica": 0
+    },
+    {
+        "id": "301",
+        "nome": "Alife",
+        "lat": 41.323540,
+        "long": 14.339274,
+        "chilometrica": 0
+    },
+    {
+        "id": "308",
+        "nome": "Benevento RFI",
+        "lat": 41.141910,
+        "long": 14.769617,
+        "chilometrica": 0
+    },
+    {
+        "id": "323",
+        "nome": "Dragoni",
+        "lat": 41.271154,
+        "long": 14.313066,
+        "chilometrica": 0
+    },
+    {
+        "id": "430",
+        "nome": "Piedimonte Matese",
+        "lat": 41.351067,
+        "long": 14.367954,
+        "chilometrica": 0
+    },
+    {
+        "id": "701",
+        "nome": "Napoli Centrale RFI",
+        "lat": 40.852469,
+        "long": 14.272186,
+        "chilometrica": 0
+    },
+    {
+        "id": "703",
+        "nome": "S. Angelo in Formis",
+        "lat": 41.120232,
+        "long": 14.248423,
+        "chilometrica": 0
+    },
+    {
+        "id": "707",
+        "nome": "Tufara V. Arpaise Ceppaloni",
+        "lat": 41.061514,
+        "long": 14.706117,
+        "chilometrica": 0
+    },
+    {
+        "id": "710",
+        "nome": "Benevento Appia",
+        "lat": 41.133178,
+        "long": 14.766296,
+        "chilometrica": 0
+    },
+    {
+        "id": "711",
+        "nome": "Piscinola Scampia",
+        "lat": 40.892929,
+        "long": 14.239837,
+        "chilometrica": 0
+    },
+    {
+        "id": "715",
+        "nome": "Cancello RFI",
+        "lat": 40.994288,
+        "long": 14.419593,
+        "chilometrica": 0
+    },
+    {
+        "id": "716",
+        "nome": "Maddaloni Inferiore RFI",
+        "lat": 41.035973,
+        "long": 14.380607,
+        "chilometrica": 0
+    },
+    {
+        "id": "717",
+        "nome": "Caserta RFI",
+        "lat": 41.068809,
+        "long": 14.328269,
+        "chilometrica": 0
+    },
+    {
+        "id": "718",
+        "nome": "S. Maria Capua Vetere RFI",
+        "lat": 41.073549,
+        "long": 14.254141,
+        "chilometrica": 0
+    },
+    {
+        "id": "720",
+        "nome": "Pontelatone",
+        "lat": 41.145241,
+        "long": 14.273547,
+        "chilometrica": 0
+    },
+    {
+        "id": "801",
+        "nome": "Montesanto",
+        "lat": 40.847050,
+        "long": 14.245330,
+        "chilometrica": 0
+    },
+    {
+        "id": "803",
+        "nome": "Fuorigrotta",
+        "lat": 40.828010,
+        "long": 14.201640,
+        "chilometrica": 0
+    },
+    {
+        "id": "808",
+        "nome": "Bagnoli",
+        "lat": 40.815180,
+        "long": 14.166820,
+        "chilometrica": 0
+    },
+    {
+        "id": "811",
+        "nome": "Gerolomini",
+        "lat": 40.820650,
+        "long": 14.135300,
+        "chilometrica": 0
+    },
+    {
+        "id": "814",
+        "nome": "Cantieri",
+        "lat": 40.832010,
+        "long": 14.111670,
+        "chilometrica": 0
+    },
+    {
+        "id": "818",
+        "nome": "Fusaro",
+        "lat": 40.818650,
+        "long": 14.061730,
+        "chilometrica": 0
+    },
+    {
+        "id": "819",
+        "nome": "Torregaveta",
+        "lat": 40.811640,
+        "long": 14.045260,
+        "chilometrica": 0
+    },
+    {
+        "id": "821",
+        "nome": "Soccavo",
+        "lat": 40.843910,
+        "long": 14.200910,
+        "chilometrica": 0
+    },
+    {
+        "id": "824",
+        "nome": "Pianura",
+        "lat": 40.856010,
+        "long": 14.162810,
+        "chilometrica": 0
+    },
+    {
+        "id": "830",
+        "nome": "Licola",
+        "lat": 40.871480,
+        "long": 14.058850,
+        "chilometrica": 0
     }
 ];
 
