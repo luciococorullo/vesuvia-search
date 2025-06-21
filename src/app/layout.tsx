@@ -241,7 +241,7 @@ export default function RootLayout({
       </head>
       <body className={`${spaceGrotesk.variable} antialiased min-h-screen flex flex-col`}>
         <PWAInit />
-        <PWADebug />
+        {/* <PWADebug /> */}
         <QueryProvider>
           <LanguageProvider>
             <div className="flex-1">{children}</div>

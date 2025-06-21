@@ -215,11 +215,38 @@ export function NewFindTrains() {
 
   // Handle departure station change - clear arrival station when departure changes
   const handleDepartureStationChange = (newDepartureStation: string) => {
-    setDepartureStation(newDepartureStation);
-    // Clear arrival station when departure changes to force user to select from valid destinations
-    if (arrivalStation) {
-      setArrivalStation("");
-      setErrors((prev) => ({ ...prev, arrival: "" }));
+    // Only update if the value actually changed to prevent unnecessary re-renders
+    if (newDepartureStation !== departureStation) {
+      setDepartureStation(newDepartureStation);
+      // Clear arrival station when departure changes to force user to select from valid destinations
+      if (arrivalStation) {
+        setArrivalStation("");
+        setErrors((prev) => ({ ...prev, arrival: "" }));
+      }
+    }
+  };
+
+  // Handle arrival station change
+  const handleArrivalStationChange = (newArrivalStation: string) => {
+    // Only update if the value actually changed to prevent unnecessary re-renders
+    if (newArrivalStation !== arrivalStation) {
+      setArrivalStation(newArrivalStation);
+      // Clear errors when user selects a station
+      if (errors.arrival) {
+        setErrors((prev) => ({ ...prev, arrival: "" }));
+      }
+    }
+  };
+
+  // Handle from station change (departures tab)
+  const handleFromStationChange = (newFromStation: string) => {
+    // Only update if the value actually changed to prevent unnecessary re-renders
+    if (newFromStation !== fromStation) {
+      setFromStation(newFromStation);
+      // Clear errors when user selects a station
+      if (fromErrors.station) {
+        setFromErrors((prev) => ({ ...prev, station: "" }));
+      }
     }
   };
 
@@ -257,12 +284,16 @@ export function NewFindTrains() {
         <TabsContent value="search">
           {/* Search Form */}
           <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-5">
+            {/* Station Selection Row */}
+            <div className="grid gap-4 md:grid-cols-2 mb-6">
               {/* Departure Station */}
-              <div className="lg:col-span-2">
-                <Label htmlFor="departure" className="text-sm font-medium text-gray-700 mb-2 block">
-                  <MapPin className="h-4 w-4 inline mr-1" />
-                  {t("from")}
+              <div className="space-y-2">
+                <Label
+                  htmlFor="fromStation"
+                  className="text-sm font-medium text-gray-700 flex items-center gap-2"
+                >
+                  <MapPin className="h-4 w-4 text-green-500" />
+                  {t("departureStationLabel")}
                 </Label>
                 <StationAutocomplete
                   stations={stations}
@@ -274,25 +305,11 @@ export function NewFindTrains() {
                 />
               </div>
 
-              {/* Swap Button */}
-              <div className="flex items-end justify-center">
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="icon"
-                  onClick={handleSwapStations}
-                  className="h-12 w-12 rounded-full border-gray-300"
-                  title={t("swapStations")}
-                >
-                  <ArrowUpDown className="h-4 w-4" />
-                </Button>
-              </div>
-
               {/* Arrival Station */}
-              <div className="lg:col-span-2">
-                <Label htmlFor="arrival" className="text-sm font-medium text-gray-700 mb-2 block">
-                  <MapPin className="h-4 w-4 inline mr-1" />
-                  {t("to")}
+              <div className="space-y-2">
+                <Label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                  <MapPin className="h-4 w-4 text-red-500" />
+                  {t("arrivalStation")}
                   {destinationsLoading && (
                     <span className="text-xs text-gray-500 ml-2">
                       (Caricamento destinazioni...)
@@ -302,7 +319,7 @@ export function NewFindTrains() {
                 <StationAutocomplete
                   stations={availableArrivalStations}
                   value={arrivalStation}
-                  onChange={setArrivalStation}
+                  onChange={handleArrivalStationChange}
                   placeholder={
                     departureStationId
                       ? t("arrivalStation")
@@ -312,7 +329,7 @@ export function NewFindTrains() {
                   className="w-full"
                 />
                 {departureStationId && destinations.length > 0 && (
-                  <p className="text-xs text-gray-500 mt-1">
+                  <p className="text-xs text-gray-500">
                     {destinations.length} destinazioni disponibili da {departureStation}
                   </p>
                 )}
@@ -320,21 +337,20 @@ export function NewFindTrains() {
             </div>
 
             {/* Date Time and Quick Actions */}
-            <div className="grid gap-6 md:grid-cols-2 mt-6">
+            <div className="grid gap-4 md:grid-cols-2">
               {/* Date Time Picker */}
-              <div>
-                <Label className="text-sm font-medium text-gray-700 mb-2 block">
-                  {t("departureTime")}
+              <div className="space-y-2">
+                <Label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                  <Clock className="h-4 w-4 text-purple-500" />
+                  {t("departureTimeLabel")}
                 </Label>
                 <DateTimePicker date={departureTime} setDate={setDepartureTime} />
-                {errors.time && <p className="mt-1 text-sm text-red-600">{errors.time}</p>}
+                {errors.time && <p className="text-sm text-red-600">{errors.time}</p>}
               </div>
 
               {/* Quick Time Buttons */}
-              <div>
-                <Label className="text-sm font-medium text-gray-700 mb-2 block">
-                  {t("quickSelection")}
-                </Label>
+              <div className="space-y-2">
+                <Label className="text-sm font-medium text-gray-700">{t("quickSelection")}</Label>
                 <div className="flex flex-wrap gap-2">
                   <Button
                     type="button"
@@ -381,7 +397,7 @@ export function NewFindTrains() {
               <Button
                 onClick={handleSearch}
                 disabled={searchMutation.isPending || stationsLoading}
-                className="w-full h-12 text-base font-medium bg-blue-600 hover:bg-blue-700"
+                className="w-full h-12 text-base font-medium bg-red-500 hover:bg-red-600"
               >
                 {searchMutation.isPending ? (
                   <>
@@ -404,10 +420,10 @@ export function NewFindTrains() {
           <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
             <div className="space-y-6">
               {/* Station Selection */}
-              <div>
+              <div className="space-y-2">
                 <Label
                   htmlFor="fromStation"
-                  className="text-sm font-medium text-gray-700 mb-2 flex items-center gap-2"
+                  className="text-sm font-medium text-gray-700 flex items-center gap-2"
                 >
                   <MapPin className="h-4 w-4 text-green-500" />
                   {t("departureStationLabel")}
@@ -415,7 +431,7 @@ export function NewFindTrains() {
                 <StationAutocomplete
                   stations={stations}
                   value={fromStation}
-                  onChange={setFromStation}
+                  onChange={handleFromStationChange}
                   placeholder={t("selectDepartureStation")}
                   error={fromErrors.station}
                   className="w-full"
@@ -423,23 +439,19 @@ export function NewFindTrains() {
               </div>
 
               {/* Date and Time Selection */}
-              <div className="grid gap-6 md:grid-cols-2">
-                <div>
-                  <Label className="text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+              <div className="grid gap-4 md:grid-cols-2">
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium text-gray-700 flex items-center gap-2">
                     <Clock className="h-4 w-4 text-purple-500" />
                     {t("departureTimeLabel")}
                   </Label>
                   <DateTimePicker date={fromDepartureTime} setDate={setFromDepartureTime} />
-                  {fromErrors.time && (
-                    <p className="mt-1 text-sm text-red-600">{fromErrors.time}</p>
-                  )}
+                  {fromErrors.time && <p className="text-sm text-red-600">{fromErrors.time}</p>}
                 </div>
 
                 {/* Quick Time Buttons */}
-                <div>
-                  <Label className="text-sm font-medium text-gray-700 mb-2 block">
-                    {t("quickSelection")}
-                  </Label>
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium text-gray-700">{t("quickSelection")}</Label>
                   <div className="flex flex-wrap gap-2">
                     <Button
                       type="button"
