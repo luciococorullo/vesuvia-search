@@ -10,12 +10,15 @@
 ## 🌟 Features
 
 - 🔍 **Fast Search**: Quick train schedule lookup across the entire EAV Circumvesuviana network
-- � **Multilingual**: Support for Italian, English, Spanish, Portuguese, French, and German
+- 🌐 **Multilingual**: Support for Italian, English, Spanish, Portuguese, French, and German
 - 📱 **Responsive Design**: Optimized for mobile, tablet, and desktop devices
+- 📲 **Progressive Web App**: Installable app with offline support and native-like experience
 - 🚂 **Smart Filtering**: Filter by Campania Express trains and departure times
 - ⏱️ **Real-time Schedules**: Up-to-date train timing information
 - 🎯 **Station Autocomplete**: Intelligent station search with code and name matching
 - 📊 **Detailed Results**: Complete journey information with intermediate stops
+- 🔄 **Offline Support**: Cached pages work without internet connection
+- ⚡ **Fast Loading**: Service worker caching for improved performance
 
 ## 🛠️ Tech Stack
 
@@ -96,6 +99,39 @@ vesuvia-search/
 ├── scripts/                  # Build and utility scripts
 └── public/                   # Static assets
 ```
+
+## 📱 Progressive Web App (PWA)
+
+VesuviaSearch is a fully-featured Progressive Web App that can be installed on your device for a native app-like experience.
+
+### Installation
+
+#### Mobile Devices
+1. Open VesuviaSearch in your mobile browser
+2. Look for the **"Install App"** button in the navigation
+3. Tap to install and add to your home screen
+
+#### Desktop
+1. Visit VesuviaSearch in Chrome, Edge, or Safari
+2. Click the **"Install App"** button or look for the install icon in the address bar
+3. Follow the prompts to install
+
+### PWA Features
+
+- 📲 **Installable**: Add to home screen on mobile and desktop
+- 🔄 **Offline Support**: Previously visited pages work without internet
+- ⚡ **Fast Performance**: Service worker caching for instant loading
+- 🔔 **Native Integration**: Behaves like a native app when installed
+- 🔄 **Auto Updates**: Automatic updates when new versions are available
+
+### Technical Implementation
+
+- **Web App Manifest**: `/public/manifest.json`
+- **Service Worker**: `/public/sw.js`
+- **Icons**: Multiple sizes in `/public/icons/`
+- **Offline Page**: Fallback for uncached pages
+
+For detailed PWA documentation, see [docs/PWA_GUIDE.md](docs/PWA_GUIDE.md).
 
 ## 🗄️ Database
 

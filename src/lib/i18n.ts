@@ -8,75 +8,7 @@
  * Supported languages:
  * - Italian (it) - Primary language
  * - English (en) - Default fallback
- * - Span        // ========================================
-        // TRAIN RESULTS AND STATUS
-        // ========================================
-               // ========================================
-        // TRAIN RESULTS AND STATUS
-        // ========================================
-               // ========================================
-        // TRAIN RESULTS AND STATUS
-        // ========================================
-               // ========================================
-        // TRAIN RESULTS AND STATUS
-        // ========================================
-        delayed: 'Verspätet',
-        onTime: 'Pünktlich',
-        cancelled: 'Gestrichen',
-        delayedByMinutes: 'Verspätet um {{minutes}} Min',
-        trainCode: 'Zug {{code}}',
-        connectionJourney: 'Reise mit Umstieg',
-        directJourney: 'Direkte Reise',
-        changeAt: 'Umstieg in',
-        segment: 'Abschnitt',
-        transfer: 'Umstieg',
-        transferTime: 'Umstiegszeit',
-        totalDuration: 'Gesamtdauer',
-        showDetails: 'Details anzeigen',
-        hideDetails: 'Details ausblenden',
-        journeyDetails: 'Reisedetails',: 'En retard',
-        onTime: 'À l\'heure',
-        cancelled: 'Annulé',
-        delayedByMinutes: 'En retard de {{minutes}} min',
-        trainCode: 'Train {{code}}',
-        connectionJourney: 'Voyage avec correspondance',
-        directJourney: 'Voyage direct',
-        changeAt: 'Changement à',
-        segment: 'Segment',
-        transfer: 'Correspondance',
-        transferTime: 'Temps de correspondance',
-        totalDuration: 'Durée totale',
-        showDetails: 'Afficher les détails',
-        hideDetails: 'Masquer les détails',
-        journeyDetails: 'Détails du voyage',: 'Atrasado',
-        onTime: 'Na hora',
-        cancelled: 'Cancelado',
-        delayedByMinutes: 'Atrasado {{minutes}} min',
-        trainCode: 'Comboio {{code}}',
-        connectionJourney: 'Viagem com ligação',
-        directJourney: 'Viagem direta',
-        changeAt: 'Mudança em',
-        segment: 'Segmento',
-        transfer: 'Transferência',
-        transferTime: 'Tempo de transferência',
-        totalDuration: 'Duração total',
-        showDetails: 'Mostrar detalhes',
-        hideDetails: 'Ocultar detalhes',
-        journeyDetails: 'Detalhes da viagem',: 'Retrasado',
-        onTime: 'A tiempo',
-        cancelled: 'Cancelado',
-        delayedByMinutes: 'Retrasado {{minutes}} min',
-        trainCode: 'Tren {{code}}',
-        connectionJourney: 'Viaje con transbordo',
-        directJourney: 'Viaje directo',
-        changeAt: 'Cambio en',
-        segment: 'Tramo',
-        transfer: 'Transbordo',
-        transferTime: 'Tiempo de transbordo',
-        totalDuration: 'Duración total',
-        showDetails: 'Mostrar detalles',
-        hideDetails: 'Ocultar detalles',
-        journeyDetails: 'Detalles del viaje',
+ * - Spanish (es)
  * - Portuguese (pt)
  * - French (fr)
  * - German (de)
@@ -284,7 +216,20 @@ export const translations = {
         footerEducationalProject: 'Questo è un progetto open source educativo creato solo a scopo didattico.',
         footerMadeWith: 'Realizzato con',
         footerBy: 'da',
-        footerEducationalCopyright: 'Progetto Educativo'
+        footerEducationalCopyright: 'Progetto Educativo',
+
+        // ========================================
+        // PWA INSTALLATION
+        // ========================================
+        installApp: 'Installa',
+        installing: 'Installazione...',
+        appInstalled: 'App installata con successo',
+        offlineMode: 'Modalità offline',
+        updateAvailable: 'Aggiornamento disponibile',
+        updateApp: 'Aggiorna App',
+        iosInstallTitle: 'Installa su iOS',
+        iosInstallInstructions: 'Per installare questa app sul tuo dispositivo iOS:\n\n1. Tocca il pulsante Condividi (quadrato con freccia)\n2. Scorri verso il basso e tocca "Aggiungi alla schermata Home"\n3. Tocca "Aggiungi" nell\'angolo in alto a destra',
+        addToHomeScreen: 'Aggiungi alla Home'
     },
 
     en: {
@@ -425,7 +370,18 @@ export const translations = {
         footerEducationalProject: 'This is an open source educational project created for learning purposes only.',
         footerMadeWith: 'Made with',
         footerBy: 'by',
-        footerEducationalCopyright: 'Educational Project'
+        footerEducationalCopyright: 'Educational Project',
+
+        // PWA Installation
+        installApp: 'Install',
+        installing: 'Installing...',
+        appInstalled: 'App installed successfully',
+        offlineMode: 'Offline mode',
+        updateAvailable: 'Update available',
+        updateApp: 'Update App',
+        iosInstallTitle: 'Install on iOS',
+        iosInstallInstructions: 'To install this app on your iOS device:\n\n1. Tap the Share button (square with arrow)\n2. Scroll down and tap "Add to Home Screen"\n3. Tap "Add" in the top right corner',
+        addToHomeScreen: 'Add to Home Screen'
     },
 
     es: {
@@ -558,7 +514,18 @@ export const translations = {
         footerEducationalProject: 'Este é um projeto educativo de código aberto criado solo com fins de aprendizagem.',
         footerMadeWith: 'Feito com',
         footerBy: 'por',
-        footerEducationalCopyright: 'Projeto Educativo'
+        footerEducationalCopyright: 'Projeto Educativo',
+
+        // PWA Installation
+        installApp: 'Instalar',
+        installing: 'Instalando...',
+        appInstalled: 'App instalada con éxito',
+        offlineMode: 'Modo sin conexión',
+        updateAvailable: 'Actualización disponible',
+        updateApp: 'Actualizar App',
+        iosInstallTitle: 'Instalar en iOS',
+        iosInstallInstructions: 'Para instalar esta aplicación en tu dispositivo iOS:\n\n1. Toca el botón Compartir (cuadrado con flecha)\n2. Desplázate hacia abajo y toca "Añadir a pantalla de inicio"\n3. Toca "Añadir" en la esquina superior derecha',
+        addToHomeScreen: 'Añadir a Inicio'
     },
 
     pt: {
@@ -691,7 +658,18 @@ export const translations = {
         footerEducationalProject: 'Este é um projeto educacional de código aberto criado apenas para fins de aprendizagem.',
         footerMadeWith: 'Feito com',
         footerBy: 'por',
-        footerEducationalCopyright: 'Projeto Educacional'
+        footerEducationalCopyright: 'Projeto Educacional',
+
+        // PWA Installation
+        installApp: 'Instalar',
+        installing: 'Instalando...',
+        appInstalled: 'App instalado com sucesso',
+        offlineMode: 'Modo offline',
+        updateAvailable: 'Atualização disponível',
+        updateApp: 'Atualizar App',
+        iosInstallTitle: 'Instalar no iOS',
+        iosInstallInstructions: 'Para instalar esta aplicação no seu dispositivo iOS:\n\n1. Toque no botão Partilhar (quadrado com seta)\n2. Deslize para baixo e toque em "Adicionar ao ecrã inicial"\n3. Toque em "Adicionar" no canto superior direito',
+        addToHomeScreen: 'Adicionar ao Início'
     },
 
     fr: {
@@ -824,7 +802,18 @@ export const translations = {
         footerEducationalProject: 'Il s\'agit d\'un projet éducatif open source créé uniquement à des fins d\'apprentissage.',
         footerMadeWith: 'Fait avec',
         footerBy: 'par',
-        footerEducationalCopyright: 'Projet Éducatif'
+        footerEducationalCopyright: 'Projet Éducatif',
+
+        // PWA Installation
+        installApp: 'Installer',
+        installing: 'Installation...',
+        appInstalled: 'App installée avec succès',
+        offlineMode: 'Mode hors ligne',
+        updateAvailable: 'Mise à jour disponible',
+        updateApp: 'Mettre à jour l\'App',
+        iosInstallTitle: 'Installer sur iOS',
+        iosInstallInstructions: 'Pour installer cette application sur votre appareil iOS:\n\n1. Appuyez sur le bouton Partager (carré avec flèche)\n2. Faites défiler vers le bas et appuyez sur "Ajouter à l\'écran d\'accueil"\n3. Appuyez sur "Ajouter" dans le coin supérieur droit',
+        addToHomeScreen: 'Ajouter à l\'Accueil'
     },
 
     de: {
@@ -957,7 +946,18 @@ export const translations = {
         footerEducationalProject: 'Dies ist ein Open-Source-Bildungsprojekt, das nur zu Lernzwecken erstellt wurde.',
         footerMadeWith: 'Gemacht mit',
         footerBy: 'von',
-        footerEducationalCopyright: 'Bildungsprojekt'
+        footerEducationalCopyright: 'Bildungsprojekt',
+
+        // PWA Installation
+        installApp: 'Installieren',
+        installing: 'Installiere...',
+        appInstalled: 'App erfolgreich installiert',
+        offlineMode: 'Offline-Modus',
+        updateAvailable: 'Update verfügbar',
+        updateApp: 'App Aktualisieren',
+        iosInstallTitle: 'Auf iOS installieren',
+        iosInstallInstructions: 'Um diese App auf Ihrem iOS-Gerät zu installieren:\n\n1. Tippen Sie auf die Teilen-Schaltfläche (Quadrat mit Pfeil)\n2. Scrollen Sie nach unten und tippen Sie auf "Zum Home-Bildschirm"\n3. Tippen Sie auf "Hinzufügen" in der oberen rechten Ecke',
+        addToHomeScreen: 'Zum Home hinzufügen'
     }
 } as const;
 

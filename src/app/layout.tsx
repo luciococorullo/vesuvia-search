@@ -23,6 +23,8 @@ import { QueryProvider } from "@/contexts/QueryProvider";
 import { structuredData } from "@/lib/structured-data";
 import { Analytics } from "@vercel/analytics/next";
 import Footer from "@/components/Footer";
+import PWAInit from "@/components/PWAInit";
+import PWADebug from "@/components/PWADebug";
 
 /**
  * Font configuration using Google Fonts
@@ -41,6 +43,9 @@ export const metadata: Metadata = {
   title: "VesuviaSearch - Ricerca Treni EAV Circumvesuviana Campania",
   description:
     "Trova facilmente i treni della rete EAV Circumvesuviana in Campania. Ricerca semplice e veloce degli orari dei treni su tutte le linee. Orari aggiornati, Campania Express, stazioni e destinazioni.",
+
+  // PWA Configuration
+  manifest: "/manifest.json",
 
   // SEO keywords for better search visibility
   keywords: [
@@ -142,7 +147,6 @@ export const metadata: Metadata = {
       },
     ],
   },
-  manifest: "/site.webmanifest",
   category: "travel",
   classification: "transportation",
   referrer: "origin-when-cross-origin",
@@ -209,6 +213,25 @@ export default function RootLayout({
   return (
     <html lang="it">
       <head>
+        {/* PWA Meta Tags */}
+        <meta name="application-name" content="VesuviaSearch" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="VesuviaSearch" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="msapplication-config" content="/browserconfig.xml" />
+        <meta name="msapplication-TileColor" content="#dc2626" />
+        <meta name="msapplication-tap-highlight" content="no" />
+        <meta name="theme-color" content="#dc2626" />
+
+        {/* Apple Touch Icons */}
+        <link rel="apple-touch-icon" href="/icons/icon-152x152.svg" />
+        <link rel="apple-touch-icon" sizes="152x152" href="/icons/icon-152x152.svg" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/icons/icon-192x192.svg" />
+
+        {/* Favicon */}
+        <link rel="icon" type="image/svg+xml" href="/icons/icon-72x72.svg" />
+
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -217,6 +240,8 @@ export default function RootLayout({
         />
       </head>
       <body className={`${spaceGrotesk.variable} antialiased min-h-screen flex flex-col`}>
+        <PWAInit />
+        <PWADebug />
         <QueryProvider>
           <LanguageProvider>
             <div className="flex-1">{children}</div>

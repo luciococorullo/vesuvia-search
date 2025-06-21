@@ -2,6 +2,15 @@
 
 import { NavigationMenu } from "@/components/ui/navigation-menu";
 import { LanguageSelector } from "@/components/LanguageSelector";
+import ErrorBoundary from "@/components/ErrorBoundary";
+import { Suspense } from "react";
+import dynamic from "next/dynamic";
+
+// Dynamically import InstallButton to avoid chunk loading issues
+const InstallButton = dynamic(() => import("@/components/InstallButton"), {
+  ssr: false,
+  loading: () => null,
+});
 
 export default function Navbar() {
   return (
@@ -33,7 +42,14 @@ export default function Navbar() {
         </NavigationMenuList> */}
       </NavigationMenu>
 
-      <LanguageSelector />
+      <div className="flex items-center gap-3">
+        <ErrorBoundary fallback={null}>
+          <Suspense fallback={<div className="w-24 h-16" />}>
+            <InstallButton />
+          </Suspense>
+        </ErrorBoundary>
+        <LanguageSelector />
+      </div>
     </div>
   );
 }
