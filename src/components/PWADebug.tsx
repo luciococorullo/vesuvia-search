@@ -9,8 +9,23 @@
 
 import { useState, useEffect } from "react";
 
+interface PWADebugInfo {
+  userAgent: string;
+  isHTTPS: boolean;
+  isLocalhost: boolean;
+  displayMode: string;
+  isStandalone: boolean;
+  isIOS: boolean;
+  isAndroid: boolean;
+  isChrome: boolean;
+  isSafari: boolean;
+  serviceWorkerSupported: boolean;
+  manifestSupported: boolean;
+  beforeInstallPromptSupported: boolean;
+}
+
 export default function PWADebug() {
-  const [debugInfo, setDebugInfo] = useState<any>({});
+  const [debugInfo, setDebugInfo] = useState<PWADebugInfo | null>(null);
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
@@ -39,7 +54,7 @@ export default function PWADebug() {
   }, []);
 
   // Only show in development
-  if (process.env.NODE_ENV !== "development" || !isClient) {
+  if (process.env.NODE_ENV !== "development" || !isClient || !debugInfo) {
     return null;
   }
 
