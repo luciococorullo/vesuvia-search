@@ -1,6 +1,6 @@
 # VesuviaSearch 🚂
 
-**VesuviaSearch** is a modern web application that simplifies train schedule searches for the EAV Circumvesuviana railway network in Campania, Italy. Built with Next.js 15 and TypeScript, it provides a fast, responsive, and multilingual experience for travelers across the entire regional network.
+**VesuviaSearch** is a modern web application that simplifies train schedule searches for the entire EAV railway network in Campania, Italy. Built with Next.js 15 and TypeScript, it provides a fast, responsive, and multilingual experience with real-time train information and enhanced offline capabilities.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Next.js](https://img.shields.io/badge/Next.js-15-black)](https://nextjs.org/)
@@ -9,26 +9,29 @@
 
 ## 🌟 Features
 
-- 🔍 **Fast Search**: Quick train schedule lookup across the entire EAV Circumvesuviana network
+- 🔍 **Complete Network Coverage**: Train schedule lookup across the entire EAV railway network in Campania
+- 🚨 **Real-time Information**: Live train data, delays, and cancellation notifications via official EAV API
 - 🌐 **Multilingual**: Support for Italian, English, Spanish, Portuguese, French, and German
-- 📱 **Responsive Design**: Optimized for mobile, tablet, and desktop devices
-- 📲 **Progressive Web App**: Installable app with offline support and native-like experience
-- 🚂 **Smart Filtering**: Filter by Campania Express trains and departure times
-- ⏱️ **Real-time Schedules**: Up-to-date train timing information
-- 🎯 **Station Autocomplete**: Intelligent station search with code and name matching
-- 📊 **Detailed Results**: Complete journey information with intermediate stops
-- 🔄 **Offline Support**: Cached pages work without internet connection
-- ⚡ **Fast Loading**: Service worker caching for improved performance
+- 📱 **Glass Morphism UI**: Beautiful, modern interface with seamless glass effects
+- 📲 **Enhanced PWA**: Improved offline support with background syncing and notifications
+- 🚂 **Smart Filtering**: Filter by Campania Express trains, departure times, and real-time status
+- ⏱️ **Live Departures**: Station departure boards with up-to-date timing information
+- 🎯 **Advanced Station Search**: Intelligent station search with code, name, and region matching
+- 📊 **Complete Journey Details**: Comprehensive route data with intermediate stops and platform information
+- 🔄 **Robust Offline Mode**: Enhanced caching system that works reliably without internet connection
+- ⚡ **Optimized Performance**: Service worker caching and data prefetching for instant loading
 
 ## 🛠️ Tech Stack
 
-- **Frontend**: Next.js 15 with App Router, React 19, TypeScript
-- **Styling**: Tailwind CSS with custom components
-- **Database**: SQLite with Prisma ORM
-- **State Management**: TanStack Query for server state
-- **UI Components**: Radix UI primitives with custom styling
-- **Icons**: Lucide React
-- **Deployment**: Vercel (production ready)
+- **Frontend**: Next.js 15 with App Router, React 19, TypeScript 5
+- **API Integration**: Official EAV RESTful API for real-time data
+- **Styling**: Tailwind CSS with advanced animations and custom glass morphism effects
+- **Database**: SQLite with Prisma ORM for local data persistence
+- **State Management**: TanStack Query v5 for efficient server state management
+- **UI Components**: Radix UI primitives with custom styling and enhanced accessibility
+- **Icons**: Lucide React for consistent iconography
+- **PWA Features**: Workbox-powered service worker with advanced caching strategies
+- **Deployment**: Vercel Edge Functions for optimal global performance
 
 ## 🚀 Quick Start
 

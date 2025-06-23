@@ -9,10 +9,11 @@
  * - TanStack Query provider for data fetching
  * - Analytics integration
  * - Global CSS styles
+ * - PWA initialization and offline support
  * - Footer component
  *
  * @author VesuviaSearch Team
- * @version 1.0.0
+ * @version 2.0.0
  */
 
 import type { Metadata } from "next";
@@ -24,7 +25,6 @@ import { structuredData } from "@/lib/structured-data";
 import { Analytics } from "@vercel/analytics/next";
 import Footer from "@/components/Footer";
 import PWAInit from "@/components/PWAInit";
-// import PWADebug from "@/components/PWADebug";
 
 /**
  * Font configuration using Google Fonts
@@ -241,7 +241,6 @@ export default function RootLayout({
       </head>
       <body className={`${spaceGrotesk.variable} antialiased min-h-screen flex flex-col`}>
         <PWAInit />
-        {/* <PWADebug /> */}
         <QueryProvider>
           <LanguageProvider>
             <div className="flex-1">{children}</div>

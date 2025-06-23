@@ -1,7 +1,7 @@
 {
   "name": "vesuvia-search",
-  "version": "1.0.0",
-  "description": "A modern web application for searching Circumvesuviana train schedules between Naples and Sorrento",
+  "version": "2.0.0",
+  "description": "A modern web application for searching train schedules across the entire EAV network in Campania, Italy",
   "private": false,
   "author": {
     "name": "VesuviaSearch Team",

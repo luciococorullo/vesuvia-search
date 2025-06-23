@@ -8,16 +8,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+
+- Further performance optimizations
+- Additional language support
+
+## [2.0.0] - 2025-06-23
+
+### Added
+
+- Support for the entire EAV railway network in Campania
+- Real-time train information and departure displays
+- Integration with official EAV API for live data
+- Train delay and cancellation notifications
+- Enhanced PWA capabilities with improved offline support
+- Detailed intermediate stops information
 - Comprehensive code documentation and comments
 - Contributing guidelines and development setup
-- MIT License
-- Environment variables configuration
-- Improved .gitignore for better development experience
 
 ### Changed
-- Enhanced README with detailed setup instructions
-- Improved project structure documentation
+
+- Complete user interface redesign with glass morphism effects
+- Enhanced mobile experience with touch-optimized controls
+- Improved performance with optimized data fetching strategies
 - Better TypeScript type definitions with JSDoc comments
+- Updated README with detailed setup instructions
+- Improved project structure documentation
+
+### Fixed
+
+- Station matching algorithm for better search results
+- Time zone handling for consistent schedule display
+- Various accessibility issues for screen readers
 
 ## [1.0.0] - 2025-06-19
 

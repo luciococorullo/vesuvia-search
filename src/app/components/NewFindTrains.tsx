@@ -33,6 +33,16 @@ import {
 } from "@/hooks/useEAVTrains";
 import { findStationByName } from "@/lib/eav-stations";
 
+// Styles per le animazioni dei tab
+const tabAnimationStyles = {
+  enter: "transform transition-all duration-300 ease-out",
+  enterFrom: "opacity-0 translate-y-4 scale-95",
+  enterTo: "opacity-100 translate-y-0 scale-100",
+  leave: "transform transition-all duration-200 ease-in",
+  leaveFrom: "opacity-100 translate-y-0 scale-100",
+  leaveTo: "opacity-0 translate-y-4 scale-95",
+};
+
 export function NewFindTrains() {
   const { t, isLoaded } = useLanguage();
 
@@ -133,25 +143,42 @@ export function NewFindTrains() {
     return !Object.values(newErrors).some((error) => error !== "");
   };
 
-  // Handle tab change
+  // Handle tab change con animazione fluida
   const handleTabChange = (value: string) => {
-    setActiveTab(value);
+    // Prima di cambiare il tab attivo, aggiungiamo una piccola transizione
+    document.querySelectorAll(".card-interactive").forEach((el) => {
+      (el as HTMLElement).style.opacity = "0";
+      (el as HTMLElement).style.transform = "translateY(10px)";
+    });
 
-    // Reset forms when changing tabs
-    if (value === "search") {
-      // Reset departures tab
-      setFromStation("");
-      setFromDepartureTime(new Date());
-      setDeparturesResults(null);
-      setFromErrors({ station: "", time: "" });
-    } else if (value === "departures") {
-      // Reset search tab
-      setDepartureStation("");
-      setArrivalStation("");
-      setDepartureTime(new Date());
-      setSearchResults(null);
-      setErrors({ departure: "", arrival: "", time: "" });
-    }
+    // Cambiamo il tab dopo un breve delay per consentire l'animazione di fadeout
+    setTimeout(() => {
+      setActiveTab(value);
+
+      // Reset forms when changing tabs
+      if (value === "search") {
+        // Reset departures tab
+        setFromStation("");
+        setFromDepartureTime(new Date());
+        setDeparturesResults(null);
+        setFromErrors({ station: "", time: "" });
+      } else if (value === "departures") {
+        // Reset search tab
+        setDepartureStation("");
+        setArrivalStation("");
+        setDepartureTime(new Date());
+        setSearchResults(null);
+        setErrors({ departure: "", arrival: "", time: "" });
+      }
+
+      // Riattiviamo l'elemento dopo che il tab è cambiato
+      setTimeout(() => {
+        document.querySelectorAll(".card-interactive").forEach((el) => {
+          (el as HTMLElement).style.opacity = "1";
+          (el as HTMLElement).style.transform = "translateY(0)";
+        });
+      }, 50);
+    }, 150);
   };
 
   /*  // Handle station swap (search tab only)
@@ -266,7 +293,7 @@ export function NewFindTrains() {
 
   if (!isLoaded) {
     return (
-      <div className="flex items-center justify-center py-8">
+      <div className="flex items-center justify-center py-8 animate-pulse-gentle">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
         <span className="ml-3 text-blue-800">{t("loading")}</span>
       </div>
@@ -274,44 +301,57 @@ export function NewFindTrains() {
   }
 
   return (
-    <div className="space-y-8">
-      <Tabs value={activeTab} onValueChange={handleTabChange}>
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="search">{t("departureDepartureTab")}</TabsTrigger>
-          <TabsTrigger value="departures">{t("departureOnlyTab")}</TabsTrigger>
+    <div className="space-y-8 max-w-4xl mx-auto">
+      <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
+        <TabsList className="grid w-full grid-cols-2 h-16 p-1 bg-transparent shadow-none border-0 gap-3">
+          <TabsTrigger
+            value="search"
+            className="h-10 mx-1 rounded-lg font-medium transition-all duration-300 ease-in-out transform data-[state=active]:bg-blue-500 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:scale-105 hover:text-blue-700 hover:border-blue-300 hover:shadow-md border border-gray-200"
+          >
+            {t("departureDepartureTab")}
+          </TabsTrigger>
+          <TabsTrigger
+            value="departures"
+            className="h-10 mx-1 rounded-lg font-medium transition-all duration-300 ease-in-out transform data-[state=active]:bg-red-500 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:scale-105 hover:text-red-700 hover:border-red-300 hover:shadow-md border border-gray-200"
+          >
+            {t("departureOnlyTab")}
+          </TabsTrigger>
         </TabsList>
 
-        <TabsContent value="search">
+        <TabsContent
+          value="search"
+          className={`${tabAnimationStyles.enter} ${tabAnimationStyles.enterFrom} ${tabAnimationStyles.enterTo} origin-top`}
+        >
           {/* Search Form */}
-          <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
+          <div className="glass-effect rounded-xl shadow-xl border border-gray-200/50 p-6 card-interactive transition-all duration-500 ease-in-out transform">
             {/* Station Selection Row */}
-            <div className="grid gap-4 md:grid-cols-2 mb-6">
+            <div className="grid gap-6 md:grid-cols-2 mb-6">
               {/* Departure Station */}
-              <div className="space-y-2">
+              <div className="space-y-3 animate-slide-in-left">
                 <Label
                   htmlFor="fromStation"
                   className="text-sm font-medium text-gray-700 flex items-center gap-2"
                 >
-                  <MapPin className="h-4 w-4 text-green-500" />
+                  <MapPin className="h-4 w-4 text-green-500 interactive-bounce" />
                   {t("departureStationLabel")}
                 </Label>
                 <StationAutocomplete
                   stations={stations}
                   value={departureStation}
                   onChange={handleDepartureStationChange}
-                  placeholder={t("departureStation")}
+                  placeholder={t("selectDepartureStation")}
                   error={errors.departure}
                   className="w-full"
                 />
               </div>
 
               {/* Arrival Station */}
-              <div className="space-y-2">
+              <div className="space-y-3 animate-slide-in-left" style={{ animationDelay: "0.1s" }}>
                 <Label className="text-sm font-medium text-gray-700 flex items-center gap-2">
-                  <MapPin className="h-4 w-4 text-red-500" />
+                  <MapPin className="h-4 w-4 text-red-500 interactive-bounce" />
                   {t("arrivalStation")}
                   {destinationsLoading && (
-                    <span className="text-xs text-gray-500 ml-2">
+                    <span className="text-xs text-gray-500 ml-2 animate-pulse-gentle">
                       (Caricamento destinazioni...)
                     </span>
                   )}
@@ -329,7 +369,7 @@ export function NewFindTrains() {
                   className="w-full"
                 />
                 {departureStationId && destinations.length > 0 && (
-                  <p className="text-xs text-gray-500">
+                  <p className="text-xs text-gray-500 animate-fade-in">
                     {destinations.length} destinazioni disponibili da {departureStation}
                   </p>
                 )}
@@ -337,54 +377,52 @@ export function NewFindTrains() {
             </div>
 
             {/* Date Time and Quick Actions */}
-            <div className="grid gap-4 md:grid-cols-2">
+            <div className="grid gap-6 md:grid-cols-2">
               {/* Date Time Picker */}
-              <div className="space-y-2">
+              <div className="space-y-3 animate-slide-in-left" style={{ animationDelay: "0.2s" }}>
                 <Label className="text-sm font-medium text-gray-700 flex items-center gap-2">
-                  <Clock className="h-4 w-4 text-purple-500" />
+                  <Clock className="h-4 w-4 text-purple-500 interactive-bounce" />
                   {t("departureTimeLabel")}
                 </Label>
                 <DateTimePicker date={departureTime} setDate={setDepartureTime} />
-                {errors.time && <p className="text-sm text-red-600">{errors.time}</p>}
+                {errors.time && (
+                  <p className="text-sm text-red-600 animate-wiggle">{errors.time}</p>
+                )}
               </div>
 
               {/* Quick Time Buttons */}
-              <div className="space-y-2">
+              <div className="space-y-2 animate-slide-in-left" style={{ animationDelay: "0.3s" }}>
                 <Label className="text-sm font-medium text-gray-700">{t("quickSelection")}</Label>
                 <div className="flex flex-wrap gap-2">
                   <Button
                     type="button"
                     variant="outline"
-                    size="sm"
                     onClick={() => setDepartureTime(new Date())}
-                    className="text-xs"
+                    className="unified-quick-button"
                   >
                     {t("now")}
                   </Button>
                   <Button
                     type="button"
                     variant="outline"
-                    size="sm"
                     onClick={() => setQuickTime(1)}
-                    className="text-xs"
+                    className="unified-quick-button"
                   >
                     {t("oneHour")}
                   </Button>
                   <Button
                     type="button"
                     variant="outline"
-                    size="sm"
                     onClick={() => setQuickTime(2)}
-                    className="text-xs"
+                    className="unified-quick-button"
                   >
                     {t("twoHours")}
                   </Button>
                   <Button
                     type="button"
                     variant="outline"
-                    size="sm"
                     onClick={setTomorrow}
-                    className="text-xs"
+                    className="unified-quick-button"
                   >
                     {t("tomorrow")}
                   </Button>
@@ -393,20 +431,20 @@ export function NewFindTrains() {
             </div>
 
             {/* Search Button */}
-            <div className="mt-6">
+            <div className="mt-8 animate-slide-up" style={{ animationDelay: "0.4s" }}>
               <Button
                 onClick={handleSearch}
                 disabled={searchMutation.isPending || stationsLoading}
-                className="w-full h-12 text-base font-medium bg-red-500 hover:bg-red-600"
+                className="unified-search-button"
               >
                 {searchMutation.isPending ? (
                   <>
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-3"></div>
                     {t("searchingTrains")}
                   </>
                 ) : (
                   <>
-                    <Search className="h-4 w-4 mr-2" />
+                    <Search className="h-5 w-5 mr-3 interactive-bounce" />
                     {t("searchTrains")}
                   </>
                 )}
@@ -415,17 +453,20 @@ export function NewFindTrains() {
           </div>
         </TabsContent>
 
-        <TabsContent value="departures">
+        <TabsContent
+          value="departures"
+          className={`${tabAnimationStyles.enter} ${tabAnimationStyles.enterFrom} ${tabAnimationStyles.enterTo} origin-top`}
+        >
           {/* Departures Form */}
-          <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
+          <div className="glass-effect rounded-xl shadow-xl border border-gray-200/50 p-6 card-interactive transition-all duration-500 ease-in-out transform">
             <div className="space-y-6">
               {/* Station Selection */}
-              <div className="space-y-2">
+              <div className="space-y-3 animate-slide-in-left">
                 <Label
                   htmlFor="fromStation"
                   className="text-sm font-medium text-gray-700 flex items-center gap-2"
                 >
-                  <MapPin className="h-4 w-4 text-green-500" />
+                  <MapPin className="h-4 w-4 text-green-500 interactive-bounce" />
                   {t("departureStationLabel")}
                 </Label>
                 <StationAutocomplete
@@ -439,66 +480,64 @@ export function NewFindTrains() {
               </div>
 
               {/* Date and Time Selection */}
-              <div className="grid gap-4 md:grid-cols-2">
-                <div className="space-y-2">
+              <div className="grid gap-6 md:grid-cols-2">
+                <div className="space-y-3 animate-slide-in-left" style={{ animationDelay: "0.1s" }}>
                   <Label className="text-sm font-medium text-gray-700 flex items-center gap-2">
-                    <Clock className="h-4 w-4 text-purple-500" />
+                    <Clock className="h-4 w-4 text-purple-500 interactive-bounce" />
                     {t("departureTimeLabel")}
                   </Label>
                   <DateTimePicker date={fromDepartureTime} setDate={setFromDepartureTime} />
-                  {fromErrors.time && <p className="text-sm text-red-600">{fromErrors.time}</p>}
+                  {fromErrors.time && (
+                    <p className="text-sm text-red-600 animate-wiggle">{fromErrors.time}</p>
+                  )}
                 </div>
 
                 {/* Quick Time Buttons */}
-                <div className="space-y-2">
+                <div className="space-y-3 animate-slide-in-left" style={{ animationDelay: "0.2s" }}>
                   <Label className="text-sm font-medium text-gray-700">{t("quickSelection")}</Label>
                   <div className="flex flex-wrap gap-2">
                     <Button
                       type="button"
                       variant="outline"
-                      size="sm"
                       onClick={() => setFromDepartureTime(new Date())}
-                      className="text-xs"
+                      className="unified-quick-button secondary"
                     >
                       {t("now")}
                     </Button>
                     <Button
                       type="button"
                       variant="outline"
-                      size="sm"
                       onClick={() => {
                         const now = new Date();
                         now.setHours(now.getHours() + 1);
                         setFromDepartureTime(now);
                       }}
-                      className="text-xs"
+                      className="unified-quick-button secondary"
                     >
                       {t("oneHour")}
                     </Button>
                     <Button
                       type="button"
                       variant="outline"
-                      size="sm"
                       onClick={() => {
                         const now = new Date();
                         now.setHours(now.getHours() + 2);
                         setFromDepartureTime(now);
                       }}
-                      className="text-xs"
+                      className="unified-quick-button secondary"
                     >
                       {t("twoHours")}
                     </Button>
                     <Button
                       type="button"
                       variant="outline"
-                      size="sm"
                       onClick={() => {
                         const tomorrow = new Date();
                         tomorrow.setDate(tomorrow.getDate() + 1);
                         tomorrow.setHours(9, 0, 0, 0);
                         setFromDepartureTime(tomorrow);
                       }}
-                      className="text-xs"
+                      className="unified-quick-button secondary"
                     >
                       {t("tomorrow")}
                     </Button>
@@ -507,20 +546,20 @@ export function NewFindTrains() {
               </div>
 
               {/* Search Button */}
-              <div>
+              <div className="animate-slide-up" style={{ animationDelay: "0.3s" }}>
                 <Button
                   onClick={handleDeparturesSearch}
                   disabled={departuresMutation.isPending || stationsLoading}
-                  className="w-full h-12 text-base font-medium bg-red-500 hover:bg-red-600"
+                  className="unified-search-button secondary"
                 >
                   {departuresMutation.isPending ? (
                     <>
-                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-3"></div>
                       {t("searchingNextDepartures")}
                     </>
                   ) : (
                     <>
-                      <Search className="h-4 w-4 mr-2" />
+                      <Search className="h-5 w-5 mr-3 interactive-bounce" />
                       {t("searchNextDepartures")}
                     </>
                   )}
@@ -533,26 +572,30 @@ export function NewFindTrains() {
 
       {/* Search Results */}
       {activeTab === "search" && searchResults && (
-        <EAVTrainResults
-          trains={searchResults.trains}
-          isLoading={searchMutation.isPending}
-          error={searchResults.error}
-          originStation={searchResults.originStation}
-          destinationStation={searchResults.destinationStation}
-          searchDate={searchResults.searchDate}
-          searchTime={searchResults.searchTime}
-        />
+        <div className="transition-all duration-500 ease-in-out transform animate-slide-up">
+          <EAVTrainResults
+            trains={searchResults.trains}
+            isLoading={searchMutation.isPending}
+            error={searchResults.error}
+            originStation={searchResults.originStation}
+            destinationStation={searchResults.destinationStation}
+            searchDate={searchResults.searchDate}
+            searchTime={searchResults.searchTime}
+          />
+        </div>
       )}
 
       {/* Departures Results */}
       {activeTab === "departures" && departuresResults && (
-        <EAVDeparturesResults
-          trains={departuresResults.trains}
-          isLoading={departuresMutation.isPending}
-          error={departuresResults.error}
-          station={departuresResults.station}
-          type="departures"
-        />
+        <div className="transition-all duration-500 ease-in-out transform animate-slide-up">
+          <EAVDeparturesResults
+            trains={departuresResults.trains}
+            isLoading={departuresMutation.isPending}
+            error={departuresResults.error}
+            station={departuresResults.station}
+            type="departures"
+          />
+        </div>
       )}
     </div>
   );

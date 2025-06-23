@@ -14,10 +14,12 @@ const InstallButton = dynamic(() => import("@/components/InstallButton"), {
 
 export default function Navbar() {
   return (
-    <div className="flex items-center justify-between w-full p-4 border-b-2 border-red-500 bg-white shadow-lg">
+    <div className="flex items-center justify-between w-full p-4 border-b-2 border-red-500 shadow-lg sticky top-0 z-50 backdrop-blur-sm bg-white/95">
       <NavigationMenu className="flex items-center h-full">
         <div className="flex items-center space-x-3">
-          <h1 className="text-2xl font-bold text-red-500">VesuviaSearch</h1>
+          <h1 className="text-2xl font-bold text-red-500 cursor-pointer transition-all duration-300 hover:scale-110 hover:text-red-600 hover:drop-shadow-lg active:scale-105 interactive-bounce text-with-shadow">
+            VesuviaSearch
+          </h1>
         </div>
         {/* <NavigationMenuList>
           <NavigationMenuItem>
@@ -37,9 +39,9 @@ export default function Navbar() {
         </NavigationMenuList> */}
       </NavigationMenu>
 
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-3 animate-slide-in-left">
         <ErrorBoundary fallback={null}>
-          <Suspense fallback={<div className="w-24 h-16" />}>
+          <Suspense fallback={<div className="w-24 h-16 shimmer-loading rounded-lg" />}>
             <InstallButton />
           </Suspense>
         </ErrorBoundary>

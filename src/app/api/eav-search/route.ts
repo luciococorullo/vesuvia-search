@@ -2,8 +2,8 @@
  * @fileoverview EAV Official API Route
  * 
  * This API endpoint calls the official EAV train planner API to get real-time
- * train schedules between stations. It replaces the database-based approach
- * with direct calls to the official EAV service.
+ * train schedules between stations. It provides comprehensive journey information
+ * including delays, cancellations, and platform changes.
  * 
  * Endpoint: POST /api/eav-search
  * 
@@ -12,6 +12,9 @@
  * - destinazione: Destination station ID (from EAV stations)
  * - data: Travel date (DD/MM/YYYY format)
  * - ora: Departure time (HH:MM format)
+ * 
+ * @author VesuviaSearch Team
+ * @version 2.0.0
  * 
  * @author VesuviaSearch Team
  * @version 1.0.0

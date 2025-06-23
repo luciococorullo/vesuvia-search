@@ -3,10 +3,11 @@
  * 
  * This file contains all TypeScript types and Zod validation schemas used throughout
  * the application for type safety and runtime validation. It includes schemas for
- * stations, trains, train stops, and search functionality.
+ * stations, trains, train stops, real-time status information, and search functionality.
+ * Version 2.0.0 adds comprehensive EAV API response types and validation schemas.
  * 
  * @author VesuviaSearch Team
- * @version 1.0.0
+ * @version 2.0.0
  */
 
 import { z } from 'zod';

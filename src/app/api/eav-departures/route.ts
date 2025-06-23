@@ -2,21 +2,17 @@
  * @fileoverview EAV Departures API Route
  * 
  * This API endpoint calls the official EAV departures API to get real-time
- * departure information from a specific station            return NextResponse.json({
-                success: true,
-                trains: departures,
-                station: station.nome,
-                stationId: stazione,
-                type: tipo === 'A' ? 'arrivals' : 'departures',
-                message: departures.length > 0 ? 'successDeparturesFound' : 'noDeparturesFound'
-            } as EAVDepartureResponse); Endpoint: POST /api/eav-departures
+ * departure information from a specific station with status updates, including
+ * delays and cancellations.
+ * 
+ * Endpoint: POST /api/eav-departures
  * 
  * Body Parameters:
  * - stazione: Station ID (from EAV stations)
- * - tipo: A = arrivals, P = departures (default: A)
- * 
+ * - tipo: Type of information ('P' for departures, 'A' for arrivals)
+ *
  * @author VesuviaSearch Team
- * @version 1.0.0
+ * @version 2.0.0
  */
 
 import { NextRequest, NextResponse } from 'next/server';

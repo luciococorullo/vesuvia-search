@@ -1,11 +1,12 @@
 /**
  * @fileoverview EAV Departures Results Component
  *
- * This component displays departure/arrival results from the EAV API
- * in a clean, mobile-friendly format.
+ * This component displays live departure/arrival results from the official EAV API
+ * in a clean, modern, mobile-friendly format with real-time updates and 
+ * status indicators for delays and cancellations.
  *
  * @author VesuviaSearch Team
- * @version 1.0.0
+ * @version 2.0.0
  */
 
 "use client";
@@ -59,10 +60,10 @@ export function EAVDeparturesResults({
   // Loading state
   if (isLoading) {
     return (
-      <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
+      <div className="glass-effect rounded-xl shadow-lg border border-gray-200 p-6 animate-pulse-gentle">
         <div className="flex items-center justify-center py-8">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-          <span className="ml-3 text-blue-800">
+          <span className="ml-3 text-blue-800 animate-fade-in">
             {type === "departures" ? t("searchingNextDepartures") : t("searchingArrivals")}
           </span>
         </div>
@@ -73,15 +74,15 @@ export function EAVDeparturesResults({
   // Error state
   if (error) {
     return (
-      <div className="bg-white rounded-xl shadow-lg border border-red-200 p-6">
+      <div className="glass-effect rounded-xl shadow-lg border border-red-200 p-6 animate-slide-up card-interactive">
         <div className="flex items-center gap-3 text-red-600 mb-4">
-          <AlertCircle className="h-5 w-5" />
+          <AlertCircle className="h-5 w-5 animate-bounce-in" />
           <h3 className="font-semibold">{t("error")}</h3>
         </div>
         <p className="text-red-700 mb-4">{error}</p>
         <button
           onClick={() => window.location.reload()}
-          className="text-blue-600 hover:text-blue-800 underline"
+          className="text-blue-600 hover:text-blue-800 underline button-interactive px-3 py-2 rounded-lg mobile-touch-target"
         >
           {t("retry")}
         </button>
@@ -92,9 +93,9 @@ export function EAVDeparturesResults({
   // No results state
   if (!trains || trains.length === 0) {
     return (
-      <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
+      <div className="glass-effect rounded-xl shadow-lg border border-gray-200 p-6 animate-fade-in">
         <div className="text-center py-8">
-          <Train className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+          <Train className="h-12 w-12 text-gray-400 mx-auto mb-4 animate-bounce-in" />
           <h3 className="text-lg font-semibold text-gray-700 mb-2">
             {type === "departures" ? t("noDeparturesFound") : t("noArrivalsFound")}
           </h3>
@@ -114,25 +115,25 @@ export function EAVDeparturesResults({
   // Results header with blue card style
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 animate-slide-up">
       {/* Departures Header - Blue Card Style */}
       {station && (
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
-          <div className="flex items-center justify-center gap-3">
-            <Clock className="h-5 w-5 text-blue-600" />
-            <span className="font-semibold text-blue-900">
+        <div className="glass-effect border border-blue-200 rounded-xl p-4 card-interactive animate-fade-in">
+          <div className="flex items-center justify-center gap-3 flex-wrap">
+            <Clock className="h-5 w-5 text-blue-600 interactive-bounce" />
+            <span className="font-semibold text-blue-900 text-sm md:text-base">
               {type === "departures" ? t("nextDeparturesFrom") : t("nextArrivalsTo")}
             </span>
-            <MapPin className="h-4 w-4 text-blue-600" />
+            <MapPin className="h-4 w-4 text-blue-600 interactive-bounce" />
             <div className="h-px bg-blue-300 flex-1 max-w-16"></div>
-            <Train className="h-5 w-5 text-blue-600" />
+            <Train className="h-5 w-5 text-blue-600 interactive-bounce" />
             <div className="h-px bg-blue-300 flex-1 max-w-16"></div>
-            <span className="font-semibold text-blue-900">{station}</span>
+            <span className="font-semibold text-blue-900 text-sm md:text-base">{station}</span>
           </div>
 
           {(searchDate || searchTime) && (
-            <div className="flex items-center justify-center gap-2 text-blue-700 text-sm mt-2">
-              <Calendar className="h-4 w-4" />
+            <div className="flex items-center justify-center gap-2 text-blue-700 text-sm mt-2 animate-slide-in-left">
+              <Calendar className="h-4 w-4 interactive-bounce" />
               {searchDate && <span>{searchDate}</span>}
               {searchTime && <span>{searchTime}</span>}
             </div>
@@ -141,16 +142,22 @@ export function EAVDeparturesResults({
       )}
 
       {/* Results Summary */}
-      <div className="flex items-center justify-between">
-        <h2 className="text-xl font-semibold text-gray-900">
+      <div className="flex items-center justify-between animate-slide-in-left">
+        <h2 className="text-xl md:text-2xl font-semibold text-gray-900 text-with-shadow">
           {trains.length} {type === "departures" ? t("departuresFound") : t("arrivalsFound")}
         </h2>
       </div>
 
       {/* Results List */}
-      <div className="space-y-3">
+      <div className="space-y-4">
         {trains.map((train, index) => (
-          <DepartureCard key={train.id || index} train={train} type={type} />
+          <div
+            key={train.id || index}
+            style={{ animationDelay: `${index * 0.1}s` }}
+            className="animate-slide-in-left"
+          >
+            <DepartureCard train={train} type={type} />
+          </div>
         ))}
       </div>
     </div>
@@ -188,8 +195,9 @@ function DepartureCard({ train, type }: DepartureCardProps) {
     if (isDelayed) {
       return {
         icon: <AlertTriangle className="h-4 w-4" />,
-        text: `+${delayMinutes} min`,
+        text: t("delayedByMinutes").replace("{{minutes}}", delayMinutes.toString()),
         color: "text-orange-600 bg-orange-50",
+        mobileText: `+${delayMinutes} min`,
       };
     }
 
@@ -216,57 +224,67 @@ function DepartureCard({ train, type }: DepartureCardProps) {
   const status = getStatusDisplay();
 
   return (
-    <div className="bg-white rounded-lg shadow-md border border-gray-200 p-4 hover:shadow-lg transition-shadow">
-      <div className="flex items-center justify-between">
-        {/* Train Info */}
-        <div className="flex-1">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="flex items-center gap-2">
-              <Train className="h-4 w-4 text-blue-600" />
-              <span className="font-semibold text-gray-800">{train.trainNumber}</span>
-            </div>
-
-            {train.trainType && (
-              <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">
-                {train.trainType}
-              </span>
-            )}
-
-            {/* Status Badge - Prominent Display */}
-            <div
-              className={`flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${status.color}`}
-            >
-              {status.icon}
-              {status.text}
-            </div>
-          </div>
-
-          <div className="flex items-center gap-2 text-gray-600">
-            <MapPin className="h-4 w-4" />
-            <span>
-              {type === "departures" ? t("to") : t("from")} <strong>{train.destination}</strong>
-            </span>
-          </div>
-
-          {train.platform && (
-            <div className="mt-1 text-sm text-gray-500">
-              {t("platform")} {train.platform}
-            </div>
-          )}
-        </div>
-
-        {/* Time Display */}
-        <div className="text-right">
+    <div className="glass-effect rounded-lg shadow-md border border-gray-200 p-4 card-interactive ripple-effect">
+      {/* Header Row with Status */}
+      <div className="flex items-center justify-between mb-2">
+        {/* Train number and type */}
+        <div className="flex items-center gap-2 md:gap-3 flex-wrap">
           <div className="flex items-center gap-2">
-            <Clock className="h-4 w-4 text-gray-500" />
-            <span className="text-lg font-bold text-gray-800">{train.time}</span>
+            <Train className="h-4 w-4 text-blue-600 flex-shrink-0 interactive-bounce" />
+            <span className="font-semibold text-gray-800">{train.trainNumber}</span>
           </div>
 
-          {/* Additional status info if needed */}
-          {train.status && !status.text.includes(train.status) && (
-            <div className="mt-1 text-xs text-gray-500">{train.status}</div>
+          {train.trainType && (
+            <div className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-3 py-1 rounded-full text-xs font-semibold shadow-sm">
+              {train.trainType}
+            </div>
           )}
         </div>
+
+        {/* Status Badge - Moved to top right */}
+        <div
+          className={`flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium ${status.color} shadow-sm`}
+        >
+          {status.icon}
+          <span className="sm:hidden">{status.mobileText || status.text}</span>
+          <span className="hidden sm:inline">{status.text}</span>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="mt-2">
+        {/* Main row with destination and time */}
+        <div className="flex items-center justify-between gap-3">
+          {/* Destination */}
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2 text-gray-600">
+              <MapPin className="h-4 w-4 flex-shrink-0 interactive-bounce" />
+              <span className="text-sm md:text-base overflow-hidden">
+                {type === "departures" ? t("to") : t("from")} <strong>{train.destination}</strong>
+              </span>
+            </div>
+
+            {/* Platform */}
+            {train.platform && (
+              <div className="text-sm text-gray-500 mt-2">
+                <span className="bg-gray-100 px-2 py-1 rounded-full font-medium">
+                  {t("platform")} {train.platform}
+                </span>
+              </div>
+            )}
+          </div>
+
+          {/* Time Display */}
+          <div className="flex-shrink-0 flex items-center gap-2 justify-end">
+            <Clock className="h-4 w-4 text-gray-500 interactive-bounce" />
+            <span className="text-lg md:text-xl font-bold text-gray-800">{train.time}</span>
+          </div>
+        </div>
+
+        {/* Additional status info if needed */}
+        {train.status && !status.text.includes(train.status) && (
+          <div className="text-xs text-gray-500 mt-1">{train.status}</div>
+        )}
       </div>
     </div>
   );
