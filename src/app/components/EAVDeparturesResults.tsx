@@ -2,7 +2,7 @@
  * @fileoverview EAV Departures Results Component
  *
  * This component displays live departure/arrival results from the official EAV API
- * in a clean, modern, mobile-friendly format with real-time updates and 
+ * in a clean, modern, mobile-friendly format with real-time updates and
  * status indicators for delays and cancellations.
  *
  * @author VesuviaSearch Team

@@ -1,3 +1,4 @@
+# VesuviaSearch - Orari Treni Napoli e Provincia
 User-agent: *
 Allow: /
 
@@ -10,13 +11,32 @@ Disallow: /admin/
 Disallow: /_next/
 Disallow: /.*
 
-# Allow important pages
+# Explicitly allow important pages
 Allow: /$
 Allow: /search
 Allow: /stations
+Allow: /search?from=*&to=*
+Allow: /offline
 
-# Crawl delay
+# Crawl optimization for major search engines
+User-agent: Googlebot
+Allow: /
 Crawl-delay: 1
+
+User-agent: bingbot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Yandex
+Allow: /
+Crawl-delay: 2
+
+User-agent: DuckDuckBot
+Allow: /
+Crawl-delay: 1
+
+# Host directive to prevent duplicate content
+Host: https://vesuvia-search.vercel.app
 
 # Host
 Host: https://vesuvia-search.vercel.app
