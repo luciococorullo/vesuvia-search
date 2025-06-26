@@ -6,7 +6,7 @@
  * Circumvesuviana service.
  *
  * @author VesuviaSearch Team
- * @version 2.0.0
+ * @version 2.1.0
  */
 
 "use client";
@@ -477,72 +477,6 @@ export function NewFindTrains() {
                   error={fromErrors.station}
                   className="w-full"
                 />
-              </div>
-
-              {/* Date and Time Selection */}
-              <div className="grid gap-6 md:grid-cols-2">
-                <div className="space-y-3 animate-slide-in-left" style={{ animationDelay: "0.1s" }}>
-                  <Label className="text-sm font-medium text-gray-700 flex items-center gap-2">
-                    <Clock className="h-4 w-4 text-purple-500 interactive-bounce" />
-                    {t("departureTimeLabel")}
-                  </Label>
-                  <DateTimePicker date={fromDepartureTime} setDate={setFromDepartureTime} />
-                  {fromErrors.time && (
-                    <p className="text-sm text-red-600 animate-wiggle">{fromErrors.time}</p>
-                  )}
-                </div>
-
-                {/* Quick Time Buttons */}
-                <div className="space-y-3 animate-slide-in-left" style={{ animationDelay: "0.2s" }}>
-                  <Label className="text-sm font-medium text-gray-700">{t("quickSelection")}</Label>
-                  <div className="flex flex-wrap gap-2">
-                    <Button
-                      type="button"
-                      variant="outline"
-                      onClick={() => setFromDepartureTime(new Date())}
-                      className="unified-quick-button secondary"
-                    >
-                      {t("now")}
-                    </Button>
-                    <Button
-                      type="button"
-                      variant="outline"
-                      onClick={() => {
-                        const now = new Date();
-                        now.setHours(now.getHours() + 1);
-                        setFromDepartureTime(now);
-                      }}
-                      className="unified-quick-button secondary"
-                    >
-                      {t("oneHour")}
-                    </Button>
-                    <Button
-                      type="button"
-                      variant="outline"
-                      onClick={() => {
-                        const now = new Date();
-                        now.setHours(now.getHours() + 2);
-                        setFromDepartureTime(now);
-                      }}
-                      className="unified-quick-button secondary"
-                    >
-                      {t("twoHours")}
-                    </Button>
-                    <Button
-                      type="button"
-                      variant="outline"
-                      onClick={() => {
-                        const tomorrow = new Date();
-                        tomorrow.setDate(tomorrow.getDate() + 1);
-                        tomorrow.setHours(9, 0, 0, 0);
-                        setFromDepartureTime(tomorrow);
-                      }}
-                      className="unified-quick-button secondary"
-                    >
-                      {t("tomorrow")}
-                    </Button>
-                  </div>
-                </div>
               </div>
 
               {/* Search Button */}
