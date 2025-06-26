@@ -42,10 +42,10 @@ export default function FAQPage() {
     mainEntity: [
       {
         "@type": "Question",
-        name: "Quanto costa un biglietto della Circumvesuviana da Napoli a Sorrento?",
+        name: "Come posso raggiungere Sorrento con la Circumvesuviana?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "Il biglietto standard da Napoli a Sorrento costa €3,60. È disponibile anche il Campania Express, un servizio turistico premium con costi maggiori (circa €15) ma più comfort e fermate limitate.",
+          text: "La Circumvesuviana offre un servizio frequente per Sorrento. È il modo più comodo per raggiungere la Penisola Sorrentina da Napoli.",
         },
       },
       {
@@ -86,16 +86,16 @@ export default function FAQPage() {
       />
 
       <Navbar />
-      
+
       <div className="max-w-6xl mx-auto px-4 py-12">
-        <SEOBreadcrumbs 
+        <SEOBreadcrumbs
           items={[
             { name: "Home", url: "/" },
-            { name: "Orari Treni Napoli", url: "/" }
+            { name: "Orari Treni Napoli", url: "/" },
           ]}
           currentPage="FAQ Treni Napoli"
         />
-        
+
         <h1 className="text-3xl md:text-4xl font-bold text-blue-800 mb-6 text-center">
           Domande frequenti sui treni a Napoli e provincia
         </h1>
@@ -118,9 +118,9 @@ export default function FAQPage() {
                 <h3 className="text-xl font-semibold mb-2">Cos&apos;è la Circumvesuviana?</h3>
                 <p>
                   La <strong>Circumvesuviana</strong> è una rete ferroviaria che serve l&apos;area
-                  vesuviana nella provincia di Napoli, gestita dall&apos;Ente Autonomo Volturno (EAV).
-                  Collega Napoli con diverse località come Sorrento, Pompei, Ercolano e molte altre
-                  città e paesi nell&apos;area del Vesuvio.
+                  vesuviana nella provincia di Napoli, gestita dall&apos;Ente Autonomo Volturno
+                  (EAV). Collega Napoli con diverse località come Sorrento, Pompei, Ercolano e molte
+                  altre città e paesi nell&apos;area del Vesuvio.
                 </p>
               </div>
 
@@ -191,7 +191,8 @@ export default function FAQPage() {
                     minuti di viaggio)
                   </li>
                   <li>
-                    L&apos;ingresso agli scavi archeologici è a pochi passi dall&apos;uscita della stazione
+                    L&apos;ingresso agli scavi archeologici è a pochi passi dall&apos;uscita della
+                    stazione
                   </li>
                 </ol>
               </div>
@@ -230,8 +231,8 @@ export default function FAQPage() {
                     Scendi alla fermata <strong>Ercolano Scavi</strong> (circa 20 minuti di viaggio)
                   </li>
                   <li>
-                    Dall&apos;uscita della stazione, segui le indicazioni per gli scavi (circa 10 minuti
-                    a piedi in discesa)
+                    Dall&apos;uscita della stazione, segui le indicazioni per gli scavi (circa 10
+                    minuti a piedi in discesa)
                   </li>
                 </ul>
               </div>
@@ -273,9 +274,10 @@ export default function FAQPage() {
                   Qual è l&apos;orario dell&apos;ultimo treno da Sorrento a Napoli?
                 </h3>
                 <p>
-                  Generalmente, l&apos;ultimo treno da Sorrento a Napoli parte intorno alle 21:00. Gli
-                  orari possono variare in base al giorno della settimana e alla stagione. Controlla
-                  sempre gli orari aggiornati su VesuviaSearch prima di pianificare il viaggio.
+                  Generalmente, l&apos;ultimo treno da Sorrento a Napoli parte intorno alle 21:00.
+                  Gli orari possono variare in base al giorno della settimana e alla stagione.
+                  Controlla sempre gli orari aggiornati su VesuviaSearch prima di pianificare il
+                  viaggio.
                 </p>
               </div>
 
@@ -304,14 +306,12 @@ export default function FAQPage() {
 
         {/* Disclaimer Prezzi */}
         <div className="mt-8 bg-yellow-50 border border-yellow-200 rounded-lg p-6">
-          <h3 className="text-lg font-semibold text-yellow-800 mb-3">
-            ℹ️ Informazioni sui Prezzi
-          </h3>
+          <h3 className="text-lg font-semibold text-yellow-800 mb-3">ℹ️ Informazioni sui Prezzi</h3>
           <p className="text-yellow-700 text-sm leading-relaxed">
-            Per informazioni aggiornate sui prezzi dei biglietti EAV e Circumvesuviana, 
-            ti invitiamo a consultare i punti vendita ufficiali EAV, le stazioni o il sito 
-            web ufficiale. I prezzi possono variare e VesuviaSearch fornisce esclusivamente 
-            informazioni sugli orari dei treni.
+            Per informazioni aggiornate sui prezzi dei biglietti EAV e Circumvesuviana, ti invitiamo
+            a consultare i punti vendita ufficiali EAV, le stazioni o il sito web ufficiale. I
+            prezzi possono variare e VesuviaSearch fornisce esclusivamente informazioni sugli orari
+            dei treni.
           </p>
         </div>
 

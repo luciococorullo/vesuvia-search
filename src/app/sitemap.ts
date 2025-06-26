@@ -7,7 +7,7 @@ import { MetadataRoute } from 'next'
 export default function sitemap(): MetadataRoute.Sitemap {
     const baseUrl = 'https://vesuvia-search.vercel.app'
     const currentDate = new Date()
-    
+
     // Define popular destinations to pre-create search links
     const popularDestinations = [
         // Napoli to popular destinations
@@ -25,14 +25,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
         { from: 'Napoli', to: 'Nola', priority: 0.8 },
         { from: 'Napoli', to: 'Baiano', priority: 0.8 },
         { from: 'Napoli', to: 'San Giorgio', priority: 0.8 },
-        
+
         // Return routes to Napoli
         { from: 'Sorrento', to: 'Napoli', priority: 1.0 },
         { from: 'Pompei Scavi', to: 'Napoli', priority: 1.0 },
         { from: 'Ercolano Scavi', to: 'Napoli', priority: 0.9 },
         { from: 'Castellammare', to: 'Napoli', priority: 0.9 },
         { from: 'Vico Equense', to: 'Napoli', priority: 0.9 },
-        
+
         // Popular tourist connections
         { from: 'Sorrento', to: 'Pompei Scavi', priority: 0.9 },
         { from: 'Pompei Scavi', to: 'Sorrento', priority: 0.9 },
@@ -85,6 +85,43 @@ export default function sitemap(): MetadataRoute.Sitemap {
             lastModified: currentDate,
             changeFrequency: 'weekly' as const,
             priority: 0.9,
+        },
+        {
+            url: `${baseUrl}/accessibilita`,
+            lastModified: currentDate,
+            changeFrequency: 'monthly' as const,
+            priority: 0.8,
+        },
+        {
+            url: `${baseUrl}/tempi-viaggio`,
+            lastModified: currentDate,
+            changeFrequency: 'weekly' as const,
+            priority: 0.8,
+        },
+        // Popular route pages for SEO
+        {
+            url: `${baseUrl}/route/napoli-sorrento`,
+            lastModified: currentDate,
+            changeFrequency: 'weekly' as const,
+            priority: 0.9,
+        },
+        {
+            url: `${baseUrl}/route/napoli-pompei`,
+            lastModified: currentDate,
+            changeFrequency: 'weekly' as const,
+            priority: 0.9,
+        },
+        {
+            url: `${baseUrl}/route/napoli-ercolano`,
+            lastModified: currentDate,
+            changeFrequency: 'weekly' as const,
+            priority: 0.8,
+        },
+        {
+            url: `${baseUrl}/route/sorrento-pompei`,
+            lastModified: currentDate,
+            changeFrequency: 'weekly' as const,
+            priority: 0.8,
         },
         {
             url: `${baseUrl}/offline`,

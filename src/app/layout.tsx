@@ -77,14 +77,14 @@ export const metadata: Metadata = {
     "orari treni circumvesuviana",
     "circumvesuviana napoli orari",
     "treni vesuviana",
-    
+
     // Domande frequenti di ricerca
     "come andare da napoli a sorrento",
     "come arrivare a pompei da napoli",
     "orario treno napoli pompei",
     "treno napoli sorrento quanto tempo",
     "orario ultimo treno napoli sorrento",
-    
+
     // Località specifiche della provincia
     "circumvesuviana napoli sorrento",
     "napoli pompei treno",
@@ -95,13 +95,13 @@ export const metadata: Metadata = {
     "meta di sorrento circumvesuviana",
     "piano di sorrento come arrivare",
     "sant'agnello treno da napoli",
-    
+
     // Altre destinazioni EAV
     "sarno treno orari",
     "poggiomarino napoli treno",
     "nola circumvesuviana",
     "baiano eav orari",
-    
+
     // Termini generici
     "trasporto pubblico napoli",
     "ricerca treni campania",
@@ -151,7 +151,8 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Orari Treni Napoli | Circumvesuviana | VesuviaSearch",
-    description: "🚆 Orari in tempo reale dei treni Circumvesuviana ed EAV per Napoli, Sorrento, Pompei e tutta la provincia",
+    description:
+      "🚆 Orari in tempo reale dei treni Circumvesuviana ed EAV per Napoli, Sorrento, Pompei e tutta la provincia",
     images: ["/og-image.jpg"],
     creator: "@vesuviasearch",
     site: "@vesuviasearch",
@@ -192,9 +193,12 @@ export const metadata: Metadata = {
   archives: ["https://vesuvia-search.vercel.app"],
   assets: ["https://vesuvia-search.vercel.app"],
   other: {
+    // Search engine verification codes
     "google-site-verification": "your-google-verification-code",
     "msvalidate.01": "your-bing-verification-code",
     "yandex-verification": "your-yandex-verification-code",
+
+    // PWA and mobile meta tags
     "theme-color": "#dc2626",
     "msapplication-TileColor": "#dc2626",
     "msapplication-config": "/browserconfig.xml",
@@ -203,20 +207,40 @@ export const metadata: Metadata = {
     "apple-mobile-web-app-status-bar-style": "default",
     "apple-mobile-web-app-title": "Orari Treni Napoli",
     "application-name": "VesuviaSearch - Orari Treni Napoli",
-    "geo.region": "IT-72",
-    "geo.placename": "Napoli, Campania",
-    "geo.position": "40.8518;14.2681",
-    ICBM: "40.8518, 14.2681",
+
+    // Enhanced geo-location meta tags for local SEO
+    "geo.region": "IT-72", // Campania region code ISO 3166-2
+    "geo.placename": "Napoli, Campania, Italia",
+    "geo.position": "40.8518;14.2681", // Napoli coordinates
+    ICBM: "40.8518, 14.2681", // Internet Cataloguing of Broadband Multimedia
+    nuts: "ITF3", // NUTS code for Napoli province
+
+    // Dublin Core metadata for better cataloguing
+    "DC.title": "VesuviaSearch - Orari Treni Napoli e Provincia",
+    "DC.creator": "VesuviaSearch",
+    "DC.subject": "Orari treni, Circumvesuviana, Napoli, trasporti pubblici, EAV",
+    "DC.description":
+      "Servizio di ricerca orari treni Circumvesuviana e EAV per Napoli e provincia",
+    "DC.publisher": "VesuviaSearch",
+    "DC.contributor": "VesuviaSearch Team",
+    "DC.date": new Date().toISOString(),
+    "DC.type": "Service",
+    "DC.format": "text/html",
+    "DC.identifier": "https://vesuvia-search.vercel.app",
+    "DC.language": "it",
+    "DC.coverage": "Napoli, Campania, Italia",
+    "DC.rights": "© 2025 VesuviaSearch",
+
+    // Additional SEO meta tags
     language: "Italian",
     coverage: "Napoli e provincia",
     distribution: "Global",
     rating: "General",
     "revisit-after": "1 day",
     target: "all",
-    audience: "residenti Napoli, turisti, pendolari",
+    audience: "residenti Napoli, turisti, pendolari, viaggiatori",
     subject: "Orari Treni Napoli, Circumvesuviana, EAV, Trasporto Pubblico Campania",
     copyright: "© 2025 VesuviaSearch",
-    "reply-to": "contact@vesuvia-search.com",
     owner: "VesuviaSearch",
     url: "https://vesuvia-search.vercel.app",
     "identifier-URL": "https://vesuvia-search.vercel.app",
@@ -225,22 +249,11 @@ export const metadata: Metadata = {
     category: "transportation, travel, italy, napoli, campania, trains, orari treni",
     "resource-type": "document",
     classification: "Travel and Transportation",
-    
-    // Metadati Local Business per SEO locale
+
+    // Additional local business metadata
     "business:contact_data:locality": "Napoli",
     "business:contact_data:region": "Campania",
     "business:contact_data:country_name": "Italia",
-    "DC.Title": "Orari Treni Napoli e Provincia - Circumvesuviana, EAV",
-    "DC.Creator": "VesuviaSearch",
-    "DC.Subject": "Orari Treni Napoli, Circumvesuviana, Treni EAV, Sorrento, Pompei, Ercolano, Trasporti Campania",
-    "DC.Description": "Orari in tempo reale dei treni della Circumvesuviana ed EAV per Napoli e provincia, incluse destinazioni turistiche come Sorrento e Pompei",
-    "DC.Publisher": "VesuviaSearch",
-    "DC.Date": "2025",
-    "DC.Type": "Service",
-    "DC.Format": "text/html",
-    "DC.Language": "it",
-    "DC.Coverage": "Napoli e provincia, Campania, Italy",
-    "DC.Rights": "© 2025 VesuviaSearch",
     "article:tag": "orari treni napoli, circumvesuviana, eav, sorrento, pompei",
   },
 };

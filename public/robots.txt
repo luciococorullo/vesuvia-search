@@ -11,11 +11,17 @@ Disallow: /admin/
 Disallow: /_next/
 Disallow: /.*
 
-# Explicitly allow important pages
+# Explicitly allow important pages for better indexing
 Allow: /$
 Allow: /search
+Allow: /search?*
 Allow: /stations
-Allow: /search?from=*&to=*
+Allow: /stazioni-napoli
+Allow: /destinazioni-turistiche
+Allow: /faq
+Allow: /accessibilita
+Allow: /tempi-viaggio
+Allow: /route/*
 Allow: /offline
 
 # Crawl optimization for major search engines
@@ -35,8 +41,25 @@ User-agent: DuckDuckBot
 Allow: /
 Crawl-delay: 1
 
-# Host directive to prevent duplicate content
-Host: https://vesuvia-search.vercel.app
+# Allow social media crawlers for better sharing
+User-agent: facebookexternalhit
+Allow: /
 
-# Host
+User-agent: Twitterbot
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
+# Prevent scraping from known bad bots
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+# Host directive to prevent duplicate content
 Host: https://vesuvia-search.vercel.app

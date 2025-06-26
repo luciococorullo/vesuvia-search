@@ -25,24 +25,27 @@ export default function Navbar() {
           </Link>
         </div>
         <div className="hidden sm:flex items-center ml-8 space-x-6">
-          <Link 
-            href="/" 
-            className="text-gray-700 hover:text-red-600 font-medium transition-colors"
-          >
+          <Link href="/" className="text-gray-700 hover:text-red-600 font-medium transition-colors">
             Home
           </Link>
-          <a 
-            href="/stazioni-napoli" 
+          <Link
+            href="/stazioni-napoli"
             className="text-gray-700 hover:text-red-600 font-medium transition-colors"
           >
             Stazioni Napoli
-          </a>
-          <a 
-            href="/faq" 
+          </Link>
+          <Link
+            href="/tempi-viaggio"
             className="text-gray-700 hover:text-red-600 font-medium transition-colors"
           >
-            FAQ Treni Napoli
-          </a>
+            Tempi Viaggio
+          </Link>
+          <Link
+            href="/faq"
+            className="text-gray-700 hover:text-red-600 font-medium transition-colors"
+          >
+            FAQ Treni
+          </Link>
         </div>
       </NavigationMenu>
 

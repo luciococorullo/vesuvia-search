@@ -87,9 +87,22 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
    * @returns Translated string in current language, fallback to English, or key itself
    */
   const t = (key: TranslationKey): string => {
-    const currentLangTranslations = translations[language] as Record<string, string>;
-    const englishTranslations = translations["en"] as Record<string, string>;
-    return currentLangTranslations[key] || englishTranslations[key] || key;
+    // Handle nested translation keys with dot notation (e.g., 'routePages.common.metaTitle')
+    const keys = key.split(".");
+    let currentValue: any = translations[language];
+    let englishValue: any = translations["en"];
+
+    // Navigate through nested objects based on the key path
+    for (const k of keys) {
+      currentValue = currentValue?.[k];
+      englishValue = englishValue?.[k];
+    }
+
+    return typeof currentValue === "string"
+      ? currentValue
+      : typeof englishValue === "string"
+      ? englishValue
+      : key;
   };
 
   return (
