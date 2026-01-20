@@ -333,7 +333,7 @@ function EAVTrainCard({ train }: EAVTrainCardProps) {
                           </div>
                         )}
                         {segment.line && (
-                          <span className="text-xs text-gray-500">{segment.line}</span>
+                          <span className="text-xs text-gray-500">Linea: {segment.line}</span>
                         )}
                       </div>
                     </div>
@@ -459,13 +459,22 @@ function EAVTrainCard({ train }: EAVTrainCardProps) {
           </div>
         </div>
 
-        {/* Line info */}
-        {train.line && (
-          <div className="mt-4 text-sm text-gray-600">
-            <span className="font-medium bg-gray-100 px-3 py-1 rounded-full">{train.line}</span>
-          </div>
-        )}
+        {/* Trip and Line info */}
+        <div className="mt-4 flex flex-wrap items-center justify-between gap-2 text-sm text-gray-600">
+          {train.departureStation && train.arrivalStation && (
+            <span className="font-medium bg-gray-100 px-3 py-1 rounded-full">
+              {train.departureStation} - {train.arrivalStation}
+            </span>
+          )}
+
+          {train.line && (
+            <span className="font-medium bg-gray-50 px-3 py-1 rounded-full">
+              {t("line")}: {train.line}
+            </span>
+          )}
+        </div>
       </div>
+
     </div>
   );
 }

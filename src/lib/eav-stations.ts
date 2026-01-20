@@ -284,7 +284,7 @@ export const EAV_STATIONS: EAVStation[] = [
     },
     {
         "id": "52",
-        "nome": "Via Nocera",
+        "nome": "Stabia Scavi",
         "lat": 40.701168,
         "long": 14.491041,
         "chilometrica": 28.895

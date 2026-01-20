@@ -116,6 +116,7 @@ export const translations = {
         invalidStationErrorDescription: 'Seleziona una stazione valida dall\'elenco.',
         searchError: 'Errore di ricerca',
         searchErrorDescription: 'Si è verificato un errore durante la ricerca. Riprova.',
+        line: 'Linea',
 
         // ========================================
         // TRAIN RESULTS AND STATUS
@@ -288,6 +289,7 @@ export const translations = {
         invalidStationErrorDescription: 'Please select a valid station from the list.',
         searchError: 'Search error',
         searchErrorDescription: 'An error occurred during the search. Please try again.',
+        line: 'Line',
 
         // ========================================
         // TRAIN RESULTS AND STATUS
@@ -431,6 +433,7 @@ export const translations = {
         invalidStationErrorDescription: 'Por favor, selecciona una estación válida de la lista.',
         searchError: 'Error de búsqueda',
         searchErrorDescription: 'Ocurrió un error durante la búsqueda. Por favor, inténtalo de nuevo.',
+        line: 'Linea',
 
         // SEARCH RESULTS AND TRAIN INFORMATION
         searchResults: 'Resultados de búsqueda',
@@ -575,6 +578,7 @@ export const translations = {
         invalidStationErrorDescription: 'Selecione uma estação válida na lista.',
         searchError: 'Erro de pesquisa',
         searchErrorDescription: 'Ocorreu um erro durante a pesquisa. Tente novamente.',
+        line: 'Linha',
 
         // SEARCH RESULTS AND TRAIN INFORMATION
         searchResults: 'Resultados da pesquisa',
@@ -719,6 +723,7 @@ export const translations = {
         invalidStationErrorDescription: 'Veuillez sélectionner une gare valide dans la liste.',
         searchError: 'Erreur de recherche',
         searchErrorDescription: 'Une erreur est survenue lors de la recherche. Veuillez réessayer.',
+        line: 'Ligne',
 
         // SEARCH RESULTS AND TRAIN INFORMATION
         searchResults: 'Résultats de recherche',
@@ -863,6 +868,7 @@ export const translations = {
         invalidStationErrorDescription: 'Bitte wählen Sie einen gültigen Bahnhof aus der Liste aus.',
         searchError: 'Suchfehler',
         searchErrorDescription: 'Bei der Suche ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.',
+        line: 'Linie',
 
         // SEARCH RESULTS AND TRAIN INFORMATION
         searchResults: 'Suchergebnisse',
