@@ -9,6 +9,9 @@
 !.yarn/plugins
 !.yarn/releases
 !.yarn/versions
+jspm_packages/
+.npm
+.yarn-integrity
 
 # Testing
 /coverage
@@ -19,11 +22,11 @@ test-*.ts
 __tests__/
 *.spec.js
 *.spec.ts
+.nyc_output/
 
 # Next.js
 /.next/
 /out/
-.next/
 next-env.d.ts
 
 # Production
@@ -32,12 +35,10 @@ next-env.d.ts
 
 # Environment variables
 .env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.env.*
+!.env.example
 
-# Database (keep local SQLite for development)
+# Database
 *.db-journal
 *.sqlite-wal
 *.sqlite-shm
@@ -85,18 +86,21 @@ pids
 ehthumbs.db
 Thumbs.db
 
-# Temporary folders
+# Temporary files and folders
 tmp/
 temp/
+*.tmp
+*.temp
 
 # TypeScript
 *.tsbuildinfo
+*.d.ts.map
 
-# ESLint cache
+# Caches
 .eslintcache
-
-# Stylelint cache
 .stylelintcache
+.cache/
+.parcel-cache/
 
 # Vercel
 .vercel
@@ -107,67 +111,8 @@ temp/
 # Local SSL certificates
 *.pem
 
-# Coverage reports
-coverage/
-.nyc_output/
-
-# Dependency directories
-jspm_packages/
-
-# Optional npm cache directory
-.npm
-
-# Optional eslint cache
-.eslintcache
-
 # Optional REPL history
 .node_repl_history
 
 # Output of 'npm pack'
 *.tgz
-
-# Yarn Integrity file
-.yarn-integrity
-yarn-debug.log*
-yarn-error.log*
-.pnpm-debug.log*
-
-# env files (can opt-in for committing if needed)
-.env*
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
-# vercel
-.vercel
-
-# typescript
-*.tsbuildinfo
-next-env.d.ts
-*.d.ts.map
-
-# IDE and editors
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-
-# OS generated files
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-
-# Temporary files
-*.tmp
-*.temp
-*.log
-
-# Cache directories
-.cache/
-.parcel-cache/
-.eslintcache
