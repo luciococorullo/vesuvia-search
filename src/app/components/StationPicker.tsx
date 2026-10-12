@@ -189,7 +189,7 @@ export function StationPicker({
     >
       <div className="flex items-center justify-between px-5 pb-2 pt-4">
         <span aria-hidden="true" className="absolute left-1/2 top-2 h-1 w-10 -translate-x-1/2 rounded-full bg-line md:hidden" />
-        <h2 id={`${uid}-title`} className="font-serif text-[22px] font-semibold tracking-[-0.02em]">
+        <h2 id={`${uid}-title`} className="text-[22px] font-semibold tracking-[-0.02em]">
           {title}
         </h2>
         <button

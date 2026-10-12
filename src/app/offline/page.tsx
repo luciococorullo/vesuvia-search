@@ -11,7 +11,7 @@ export default function OfflinePage() {
       <div className="mb-5 grid h-16 w-16 place-items-center rounded-full bg-sand text-muted">
         <WifiOff aria-hidden="true" className="h-7 w-7" />
       </div>
-      <h1 className="font-serif text-[28px] font-semibold tracking-[-0.02em]">{t("offlineTitle")}</h1>
+      <h1 className="text-[28px] font-semibold tracking-[-0.02em]">{t("offlineTitle")}</h1>
       <p className="mt-2 text-sm text-muted">{t("offlineBody")}</p>
       <div className="mt-6 flex gap-2">
         <button

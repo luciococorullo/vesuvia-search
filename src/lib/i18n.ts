@@ -74,7 +74,7 @@ const it = {
 
   // Results
   edit: "Modifica",
-  resultsSubtitle: "{day} · dalle {time}",
+  fromTime: "dalle {time}",
   oneSolution: "1 soluzione",
   nSolutions: "{n} soluzioni",
   direct: "Diretto",
@@ -190,7 +190,7 @@ const en: Dictionary = {
   destVico: "Sea and hills",
 
   edit: "Edit",
-  resultsSubtitle: "{day} · from {time}",
+  fromTime: "from {time}",
   oneSolution: "1 option",
   nSolutions: "{n} options",
   direct: "Direct",
@@ -300,7 +300,7 @@ const es: Dictionary = {
   destVico: "Mar y colinas",
 
   edit: "Modificar",
-  resultsSubtitle: "{day} · desde las {time}",
+  fromTime: "desde las {time}",
   oneSolution: "1 opción",
   nSolutions: "{n} opciones",
   direct: "Directo",
@@ -410,7 +410,7 @@ const pt: Dictionary = {
   destVico: "Mar e colinas",
 
   edit: "Editar",
-  resultsSubtitle: "{day} · a partir das {time}",
+  fromTime: "a partir das {time}",
   oneSolution: "1 opção",
   nSolutions: "{n} opções",
   direct: "Direto",
@@ -520,7 +520,7 @@ const fr: Dictionary = {
   destVico: "Mer et collines",
 
   edit: "Modifier",
-  resultsSubtitle: "{day} · à partir de {time}",
+  fromTime: "à partir de {time}",
   oneSolution: "1 solution",
   nSolutions: "{n} solutions",
   direct: "Direct",
@@ -630,7 +630,7 @@ const de: Dictionary = {
   destVico: "Meer und Hügel",
 
   edit: "Ändern",
-  resultsSubtitle: "{day} · ab {time}",
+  fromTime: "ab {time}",
   oneSolution: "1 Verbindung",
   nSolutions: "{n} Verbindungen",
   direct: "Direkt",

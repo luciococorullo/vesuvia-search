@@ -47,15 +47,15 @@ export const LINE_COLORS: Record<LineKey, string> = {
 };
 
 export const LINE_LABELS: Record<LineKey, string> = {
-  sorrento: 'Napoli–Sorrento',
-  sarno: 'Napoli–Sarno',
-  poggiomarino: 'Napoli–Poggiomarino',
-  baiano: 'Napoli–Baiano',
-  torre: 'Napoli–Torre del Greco',
-  pomigliano: 'Napoli–Pomigliano',
+  sorrento: 'Napoli - Sorrento',
+  sarno: 'Napoli - Sarno',
+  poggiomarino: 'Napoli - Poggiomarino',
+  baiano: 'Napoli - Baiano',
+  torre: 'Napoli - Torre del Greco',
+  pomigliano: 'Napoli - Pomigliano',
   cumana: 'Cumana',
   circumflegrea: 'Circumflegrea',
-  soccavo: 'Soccavo–Monte S. Angelo',
+  soccavo: 'Soccavo - Monte S. Angelo',
   other: 'Altre linee',
 };
 

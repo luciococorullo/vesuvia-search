@@ -90,13 +90,13 @@ export function formatDateShort(date: string, locale: string): string {
   }).format(new Date(Date.UTC(y, m - 1, d)));
 }
 
-/** Raw EAV line text ("NAPOLI-SORRENTO") → "Napoli–Sorrento". */
+/** Raw EAV line text ("NAPOLI-SORRENTO") → "Napoli - Sorrento". */
 export function prettifyLineName(raw: string): string {
   return raw
     .toLowerCase()
     .split(/\s*-\s*/)
     .map((part) => part.replace(/(^|[\s'.])(\p{L})/gu, (_, sep: string, ch: string) => sep + ch.toUpperCase()))
-    .join("–");
+    .join(" - ");
 }
 
 /** Merge overlapping/adjacent [start, end) ranges and sort them. */

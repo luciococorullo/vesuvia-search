@@ -30,7 +30,7 @@ export class ErrorBoundary extends React.Component<Props, State> {
     if (this.props.fallback) return this.props.fallback;
     return (
       <div role="alert" className="mx-auto max-w-sm px-6 py-24 text-center">
-        <p className="font-serif text-2xl font-semibold">Qualcosa è andato storto</p>
+        <p className="text-2xl font-semibold">Qualcosa è andato storto</p>
         <p className="mt-2 text-sm text-muted">Something went wrong. Ricarica la pagina.</p>
         <button
           type="button"
