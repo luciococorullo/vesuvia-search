@@ -32,6 +32,26 @@ async function render(logo, size, scale) {
     .toBuffer();
 }
 
+// Removes the cream background, un-mixing anti-aliased edges so the mark sits cleanly on any colour
+async function transparentMark(logo, height) {
+  const { data, info } = await sharp(logo)
+    .resize({ height })
+    .ensureAlpha()
+    .raw()
+    .toBuffer({ resolveWithObject: true });
+  const bg = [BACKGROUND.r, BACKGROUND.g, BACKGROUND.b];
+  for (let i = 0; i < data.length; i += 4) {
+    const distance = Math.max(...bg.map((c, k) => c - data[i + k]));
+    const alpha = Math.min(1, Math.max(0, (distance - 12) / 160));
+    for (let k = 0; k < 3; k++) {
+      const value = alpha > 0 ? bg[k] + (data[i + k] - bg[k]) / alpha : 0;
+      data[i + k] = Math.max(0, Math.min(255, Math.round(value)));
+    }
+    data[i + 3] = Math.round(alpha * 255);
+  }
+  return sharp(data, { raw: info }).png().toBuffer();
+}
+
 // Packs PNG images into a .ico container (PNG-in-ICO, supported by every modern browser)
 function toIco(images) {
   const header = Buffer.alloc(6);
@@ -70,6 +90,7 @@ async function main() {
   for (const size of [192, 512]) {
     write(`public/icons/maskable-${size}x${size}.png`, await render(logo, size, 0.6));
   }
+  write('public/brand/vesuvia-mark.png', await transparentMark(logo, 256));
   write('public/icons/apple-touch-icon.png', await render(logo, 180, 0.72));
   write('public/mstile-150x150.png', await render(logo, 150, 0.7));
 

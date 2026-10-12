@@ -124,14 +124,6 @@
     pointer-events: none;
   }
 
-  .logo-dot {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: conic-gradient(#d9572b 0 25%, #f3b562 0 50%, #2e9e6b 0 75%, #fff 0);
-    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
-  }
-
   /* Metro-style stop diagram. Colour comes from --c on an ancestor. */
   .stop {
     display: grid;

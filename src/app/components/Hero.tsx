@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { LanguageSelector } from "@/components/LanguageSelector";
 
@@ -9,7 +10,13 @@ export function Logo({ tone = "light" }: { tone?: "light" | "dark" }) {
     <span
       className={`flex items-center gap-2 text-[15px] font-bold tracking-[-0.01em] ${tone === "light" ? "text-[#FFF8EE]" : "text-ink"}`}
     >
-      <i aria-hidden="true" className="logo-dot block" />
+      <Image
+        src="/brand/vesuvia-mark.png"
+        alt=""
+        width={35}
+        height={32}
+        priority
+      />
       {t("appName")}
     </span>
   );
