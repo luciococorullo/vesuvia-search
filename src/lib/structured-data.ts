@@ -1,88 +1,57 @@
+/**
+ * JSON-LD structured data (schema.org) injected in the root layout.
+ * Only describes what actually exists: a free web app that shows live
+ * EAV train departures and journeys.
+ */
+
+export const SITE_URL = "https://vesuvia-search.vercel.app";
+
 export const structuredData = {
     "@context": "https://schema.org",
     "@graph": [
         {
             "@type": "WebSite",
-            "@id": "https://vesuvia-search.vercel.app/#website",
-            "url": "https://vesuvia-search.vercel.app/",
-            "name": "VesuviaSearch",
-            "description": "Ricerca treni rete EAV Circumvesuviana Campania",
-            "inLanguage": "it-IT",
-            "potentialAction": {
-                "@type": "SearchAction",
-                "target": "https://vesuvia-search.vercel.app/?from={search_term_string}&to={search_term_string}",
-                "query-input": "required name=search_term_string"
-            }
+            "@id": `${SITE_URL}/#website`,
+            url: `${SITE_URL}/`,
+            name: "VesuviaSearch",
+            description:
+                "Orari in tempo reale dei treni della rete ferroviaria EAV in Campania",
+            inLanguage: ["it-IT", "en"],
+            publisher: { "@id": `${SITE_URL}/#organization` },
         },
         {
             "@type": "Organization",
-            "@id": "https://vesuvia-search.vercel.app/#organization",
-            "name": "VesuviaSearch",
-            "url": "https://vesuvia-search.vercel.app/",
-            "logo": {
+            "@id": `${SITE_URL}/#organization`,
+            name: "VesuviaSearch",
+            url: `${SITE_URL}/`,
+            logo: {
                 "@type": "ImageObject",
-                "url": "https://vesuvia-search.vercel.app/logo.png",
-                "width": 512,
-                "height": 512
+                url: `${SITE_URL}/icons/icon-512x512.svg`,
+                width: 512,
+                height: 512,
             },
-            "sameAs": [
-                "https://twitter.com/vesuviasearch"
-            ]
+            sameAs: ["https://github.com/luciococorullo/vesuvia-search"],
         },
         {
             "@type": "WebApplication",
-            "@id": "https://vesuvia-search.vercel.app/#webapp",
-            "name": "VesuviaSearch",
-            "description": "Applicazione web per la ricerca degli orari dei treni della Circumvesuviana",
-            "url": "https://vesuvia-search.vercel.app/",
-            "applicationCategory": "TravelApplication",
-            "operatingSystem": "Any",
-            "offers": {
+            "@id": `${SITE_URL}/#webapp`,
+            name: "VesuviaSearch",
+            description:
+                "Web app gratuita e non ufficiale per consultare partenze e soluzioni di viaggio dei treni EAV in tempo reale",
+            url: `${SITE_URL}/`,
+            applicationCategory: "TravelApplication",
+            operatingSystem: "Any",
+            isAccessibleForFree: true,
+            offers: {
                 "@type": "Offer",
-                "price": "0",
-                "priceCurrency": "EUR"
+                price: "0",
+                priceCurrency: "EUR",
             },
-            "about": {
-                "@type": "Service",
-                "name": "Ricerca Orari Treni EAV Circumvesuviana",
-                "description": "Servizio di ricerca orari e informazioni sui treni della rete EAV Circumvesuviana in Campania"
-            }
+            about: {
+                "@type": "Organization",
+                name: "EAV - Ente Autonomo Volturno",
+                url: "https://www.eavsrl.it/",
+            },
         },
-        {
-            "@type": "BreadcrumbList",
-            "@id": "https://vesuvia-search.vercel.app/#breadcrumb",
-            "itemListElement": [
-                {
-                    "@type": "ListItem",
-                    "position": 1,
-                    "name": "Home",
-                    "item": "https://vesuvia-search.vercel.app/"
-                }
-            ]
-        },
-        {
-            "@type": "Place",
-            "name": "Napoli",
-            "geo": {
-                "@type": "GeoCoordinates",
-                "latitude": 40.8518,
-                "longitude": 14.2681
-            }
-        },
-        {
-            "@type": "Place",
-            "name": "Sorrento",
-            "geo": {
-                "@type": "GeoCoordinates",
-                "latitude": 40.6264,
-                "longitude": 14.3755
-            }
-        },
-        {
-            "@type": "TransportationCompany",
-            "name": "EAV - Ente Autonomo Volturno",
-            "url": "https://www.eavsrl.it/",
-            "description": "Società di trasporto pubblico che gestisce la Circumvesuviana"
-        }
-    ]
-}
+    ],
+};

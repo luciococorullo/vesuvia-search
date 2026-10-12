@@ -1,970 +1,709 @@
 /**
- * @fileoverview Internationalization (i18n) configuration and translations
- * 
- * This file contains language definitions, translation objects, and types for
- * the multilingual support in VesuviaSearch. The application supports 6 languages
- * with dynamic language switching and browser detection.
- * 
- * Supported languages:
- * - Italian (it) - Primary language
- * - English (en) - Default fallback
- * - Spanish (es)
- * - Portuguese (pt)
- * - French (fr)
- * - German (de)
- * 
- * @author VesuviaSearch Team
- * @version 1.0.0
+ * Internationalisation: supported languages and UI strings.
+ *
+ * `it` is the source of truth: every other language must provide exactly the
+ * same keys (enforced by the `Dictionary` type). Placeholders use `{name}`
+ * and are filled by `t(key, { name: value })`.
  */
 
-/**
- * Supported languages configuration with display names and flag emojis
- */
 export const languages = {
-    it: { name: 'Italiano', flag: '🇮🇹' },
-    en: { name: 'English', flag: '🇬🇧' },
-    es: { name: 'Español', flag: '🇪🇸' },
-    pt: { name: 'Português', flag: '🇵🇹' },
-    fr: { name: 'Français', flag: '🇫🇷' },
-    de: { name: 'Deutsch', flag: '🇩🇪' }
+  it: { name: "Italiano", short: "IT", locale: "it-IT" },
+  en: { name: "English", short: "EN", locale: "en-GB" },
+  es: { name: "Español", short: "ES", locale: "es-ES" },
+  pt: { name: "Português", short: "PT", locale: "pt-PT" },
+  fr: { name: "Français", short: "FR", locale: "fr-FR" },
+  de: { name: "Deutsch", short: "DE", locale: "de-DE" },
 } as const;
 
-/**
- * Language code type derived from the languages object
- */
 export type Language = keyof typeof languages;
 
-/**
- * Comprehensive translations object containing all UI text in supported languages
- * 
- * Structure:
- * - Header/Navigation: App title, navigation elements
- * - Forms: Labels, placeholders, validation messages
- * - Search: Search functionality, filters, results
- * - Time/Date: Date picker, time selection
- * - Errors: Error messages and validation
- * - Train Data: Categories, directions, operating days
- */
-export const translations = {
-    it: {
-        // ========================================
-        // HEADER AND NAVIGATION
-        // ========================================
-        findTrains: 'Cerca Treni',
-        searchSchedules: 'Cerca orari dei treni e prenota il tuo viaggio',
-
-        // ========================================
-        // FORM LABELS AND INPUTS
-        // ========================================
-        from: 'Da',
-        to: 'A',
-        departureTime: 'Orario di Partenza',
-        departureStation: 'Stazione di partenza',
-        arrivalStation: 'Stazione di arrivo',
-
-        // ========================================
-        // QUICK TIME SELECTION BUTTONS
-        // ========================================
-        now: 'Ora',
-        oneHour: '+1 ora',
-        twoHours: '+2 ore',
-        tomorrow: 'Domani',
-
-        // ========================================
-        // SEARCH FUNCTIONALITY
-        // ========================================
-        searchTrains: 'Cerca Treni',
-        searchingTrains: 'Ricerca treni...',
-
-        // ========================================
-        // VALIDATION AND ERROR MESSAGES
-        // ========================================
-        departureRequired: 'La stazione di partenza è obbligatoria',
-        arrivalRequired: 'La stazione di arrivo è obbligatoria',
-        stationsDifferent: 'La stazione di arrivo deve essere diversa da quella di partenza',
-        timeRequired: 'L\'orario di partenza è obbligatorio',
-
-        // ========================================
-        // DATE AND TIME PICKER
-        // ========================================
-        selectDateTime: 'Seleziona data e ora',
-        date: 'Data',
-        time: 'Ora',
-        selectDate: 'Seleziona data',
-
-        // ========================================
-        // SEARCH RESULTS AND TRAIN INFORMATION
-        // ========================================
-        searchingTrainsInProgress: 'Ricerca treni in corso...',
-        noTrainsFound: 'Nessun treno trovato',
-        noTrainsFoundDescription: 'Prova a modificare i criteri di ricerca o verifica che le stazioni siano corrette.',
-        searchResults: 'Risultati ricerca',
-        train: 'treno',
-        trains: 'treni',
-        departure: 'Partenza',
-        arrival: 'Arrivo',
-        duration: 'Durata',
-        direction: 'Direzione',
-        intermediateStops: 'fermate intermedie',
-        showAllStops: 'Mostra tutte le fermate',
-        quickSelection: 'Selezione rapida',
-        apiError: 'Servizio temporaneamente non disponibile',
-        apiErrorDescription: 'Riprovare tra pochi istanti. Se il problema persiste, contattare il supporto.',
-        networkError: 'Errore di connessione',
-        networkErrorDescription: 'Controlla la tua connessione a Internet e riprova.',
-        invalidStationError: 'Stazione non valida',
-        invalidStationErrorDescription: 'Seleziona una stazione valida dall\'elenco.',
-        searchError: 'Errore di ricerca',
-        searchErrorDescription: 'Si è verificato un errore durante la ricerca. Riprova.',
-        line: 'Linea',
-
-        // ========================================
-        // TRAIN RESULTS AND STATUS
-        // ========================================
-        delayed: 'In ritardo',
-        onTime: 'In orario',
-        cancelled: 'Annullato',
-        delayedByMinutes: 'In ritardo di {{minutes}} min',
-        trainCode: 'Treno {{code}}',
-        connectionJourney: 'Viaggio con cambio',
-        directJourney: 'Viaggio diretto',
-        changeAt: 'Cambio a',
-        segment: 'Tratta',
-        transfer: 'Cambio',
-        transferTime: 'Tempo di cambio',
-        totalDuration: 'Durata totale',
-        showDetails: 'Mostra dettagli',
-        hideDetails: 'Nascondi dettagli',
-        journeyDetails: 'Dettagli del viaggio',
-
-        // ========================================
-        // PAGE CONTENT AND TITLES
-        // ========================================
-        findTrainsTitle: 'Trova i tuoi treni della Circumvesuviana',
-        findTrainsSubtitle: 'Ricerca semplice e veloce per la rete EAV in Campania',
-        loading: 'Caricamento...',
-        swapStations: 'Scambia stazioni',
-        filters: 'Filtri',
-        campaniaExpressOnly: 'Solo Campania Express',
-        campaniaExpressLabel: 'Campania Express',
-
-        // ========================================
-        // GENERAL UI ELEMENTS
-        // ========================================
-        error: 'Errore',
-        retry: 'Riprova',
-        noData: 'Nessun dato disponibile',
-
-        // ========================================
-        // TAB NAVIGATION
-        // ========================================
-        departureDepartureTab: 'Partenza - Arrivo',
-        departureOnlyTab: 'Partenza',
-
-        // ========================================
-        // DEPARTURE-SPECIFIC FORMS
-        // ========================================
-        departureStationLabel: 'Stazione di Partenza',
-        selectDepartureStation: 'Seleziona stazione di partenza',
-        departureTimeLabel: 'Orario di Partenza',
-        filtersLabel: 'Filtri',
-
-        // ========================================
-        // DEPARTURE SEARCH BUTTONS
-        // ========================================
-        searchingNextDepartures: 'Ricerca prossime partenze...',
-        searchNextDepartures: 'Cerca Prossime Partenze',
-
-        // ========================================
-        // DEPARTURES RESULTS
-        // ========================================
-        nextDeparturesFrom: 'Prossime partenze da',
-        nextArrivalsTo: 'Prossimi arrivi a',
-        searchingArrivals: 'Ricerca arrivi...',
-        noDeparturesFound: 'Nessuna partenza trovata',
-        noArrivalsFound: 'Nessun arrivo trovato',
-        noDeparturesFromStation: 'Nessuna partenza trovata da',
-        noArrivalsToStation: 'Nessun arrivo trovato a',
-        departuresFromStation: 'Partenze da stazione',
-        arrivalsToStation: 'Arrivi alla stazione',
-        departuresFound: 'partenze trovate',
-        arrivalsFound: 'arrivi trovati',
-        platform: 'Binario',
-
-        // ========================================
-        // TRAIN CATEGORIES
-        // ========================================
-        categoryRegionale: 'Regionale',
-        categoryIntercity: 'Diretto (D)',
-        categoryCampaniaExpress: 'Campania Express',
-
-        // ========================================
-        // DIRECTION LABELS
-        // ========================================
-        directionNapoli: 'Napoli',
-        directionSorrento: 'Sorrento',
-
-        // ========================================
-        // OPERATING DAYS
-        // ========================================
-        operatingDaysWeekdaysOnly: 'Solo feriali',
-        operatingDaysWeekendsOnly: 'Solo festivi',
-        operatingDaysDaily: 'Tutti i giorni',
-        operatingDaysWeekdaysAndSaturday: 'Feriali e sabato',
-
-        // Footer
-        footerDisclaimer: 'Questo progetto non ha alcuna affiliazione con EAV (Ente Autonomo Volturno).',
-        footerEducationalProject: 'Questo è un progetto open source educativo creato solo a scopo didattico.',
-        footerMadeWith: 'Realizzato con',
-        footerBy: 'da',
-        footerEducationalCopyright: 'Progetto Educativo',
-
-        // ========================================
-        // PWA INSTALLATION
-        // ========================================
-        installApp: 'Installa',
-        installing: 'Installazione...',
-        appInstalled: 'App installata con successo',
-        offlineMode: 'Modalità offline',
-        updateAvailable: 'Aggiornamento disponibile',
-        updateApp: 'Aggiorna App',
-        iosInstallTitle: 'Installa su iOS',
-        iosInstallInstructions: 'Per installare questa app sul tuo dispositivo iOS:\n\n1. Tocca il pulsante Condividi (quadrato con freccia)\n2. Scorri verso il basso e tocca "Aggiungi alla schermata Home"\n3. Tocca "Aggiungi" nell\'angolo in alto a destra',
-        addToHomeScreen: 'Aggiungi alla Home'
-    },
-
-    en: {
-        // Header/Navigation
-        findTrains: 'Find Trains',
-        searchSchedules: 'Search for train schedules and book your journey',
-
-        // Form labels
-        from: 'From',
-        to: 'To',
-        departureTime: 'Departure Time',
-        departureStation: 'Departure station',
-        arrivalStation: 'Arrival station',
-
-        // Quick time buttons
-        now: 'Now',
-        oneHour: '+1 hour',
-        twoHours: '+2 hours',
-        tomorrow: 'Tomorrow',
-        quickSelection: 'Quick Selection',
-
-        // Search button
-        searchTrains: 'Search Trains',
-        searchingTrains: 'Searching trains...',
-
-        // Error messages
-        departureRequired: 'Departure station is required',
-        arrivalRequired: 'Arrival station is required',
-        stationsDifferent: 'Arrival station must be different from departure',
-        timeRequired: 'Departure time is required',
-
-        // Date picker
-        selectDateTime: 'Select date and time',
-        date: 'Date',
-        time: 'Time',
-        selectDate: 'Select date',
-
-        // SEARCH RESULTS AND TRAIN INFORMATION
-        searchingTrainsInProgress: 'Searching trains...',
-        noTrainsFound: 'No trains found',
-        noTrainsFoundDescription: 'Try modifying your search criteria or verify that the stations are correct.',
-        searchResults: 'Search results',
-        train: 'train',
-        trains: 'trains',
-        departure: 'Departure',
-        arrival: 'Arrival',
-        duration: 'Duration',
-        direction: 'Direction',
-        intermediateStops: 'intermediate stops',
-        showAllStops: 'Show all stops',
-        apiError: 'Service temporarily unavailable',
-        apiErrorDescription: 'Please try again in a few moments. If the problem persists, contact support.',
-        networkError: 'Connection error',
-        networkErrorDescription: 'Check your internet connection and try again.',
-        invalidStationError: 'Invalid station',
-        invalidStationErrorDescription: 'Please select a valid station from the list.',
-        searchError: 'Search error',
-        searchErrorDescription: 'An error occurred during the search. Please try again.',
-        line: 'Line',
-
-        // ========================================
-        // TRAIN RESULTS AND STATUS
-        // ========================================
-        delayed: 'Delayed',
-        onTime: 'On time',
-        cancelled: 'Cancelled',
-        delayedByMinutes: 'Delayed by {{minutes}} min',
-        trainCode: 'Train {{code}}',
-        connectionJourney: 'Connection journey',
-        directJourney: 'Direct journey',
-        changeAt: 'Change at',
-        segment: 'Segment',
-        transfer: 'Transfer',
-        transferTime: 'Transfer time',
-        totalDuration: 'Total duration',
-        showDetails: 'Show details',
-        hideDetails: 'Hide details',
-        journeyDetails: 'Journey details',
-
-        // Page content
-        findTrainsTitle: 'Find your Circumvesuviana trains',
-        findTrainsSubtitle: 'Simple and fast search for the EAV Circumvesuviana network in Campania',
-        loading: 'Loading...',
-        swapStations: 'Swap stations',
-        filters: 'Filters',
-        campaniaExpressOnly: 'Campania Express only',
-        campaniaExpressLabel: 'Campania Express',
-
-        // Additional useful translations
-        error: 'Error',
-        retry: 'Retry',
-        noData: 'No data available',
-
-        // Tab labels
-        departureDepartureTab: 'Departure - Arrival',
-        departureOnlyTab: 'Departure',
-
-        // Form labels and placeholders (specific for departure tab)
-        departureStationLabel: 'Departure Station',
-        selectDepartureStation: 'Select departure station',
-        departureTimeLabel: 'Departure Time',
-        filtersLabel: 'Filters',
-
-        // Button labels for departure searches
-        searchingNextDepartures: 'Searching next departures...',
-        searchNextDepartures: 'Search Next Departures',
-
-        // Departures results
-        nextDeparturesFrom: 'Next departures from',
-        nextArrivalsTo: 'Next arrivals to',
-        searchingArrivals: 'Searching arrivals...',
-        noDeparturesFound: 'No departures found',
-        noArrivalsFound: 'No arrivals found',
-        noDeparturesFromStation: 'No departures found from',
-        noArrivalsToStation: 'No arrivals found to',
-        departuresFromStation: 'Departures from station',
-        arrivalsToStation: 'Arrivals to station',
-        departuresFound: 'departures found',
-        arrivalsFound: 'arrivals found',
-        platform: 'Platform',
-
-        // Train categories
-        categoryRegionale: 'Regional',
-        categoryIntercity: 'Direct (D)',
-        categoryCampaniaExpress: 'Campania Express',
-
-        // Direction labels
-        directionNapoli: 'Naples',
-        directionSorrento: 'Sorrento',
-
-        // Operating days
-        operatingDaysWeekdaysOnly: 'Weekdays only',
-        operatingDaysWeekendsOnly: 'Weekends only',
-        operatingDaysDaily: 'Daily',
-        operatingDaysWeekdaysAndSaturday: 'Weekdays and Saturday',
-
-        // Footer
-        footerDisclaimer: 'This project has no affiliation with EAV (Ente Autonomo Volturno).',
-        footerEducationalProject: 'This is an open source educational project created for learning purposes only.',
-        footerMadeWith: 'Made with',
-        footerBy: 'by',
-        footerEducationalCopyright: 'Educational Project',
-
-        // PWA Installation
-        installApp: 'Install',
-        installing: 'Installing...',
-        appInstalled: 'App installed successfully',
-        offlineMode: 'Offline mode',
-        updateAvailable: 'Update available',
-        updateApp: 'Update App',
-        iosInstallTitle: 'Install on iOS',
-        iosInstallInstructions: 'To install this app on your iOS device:\n\n1. Tap the Share button (square with arrow)\n2. Scroll down and tap "Add to Home Screen"\n3. Tap "Add" in the top right corner',
-        addToHomeScreen: 'Add to Home Screen'
-    },
-
-    es: {
-        // Header/Navigation
-        findTrains: 'Buscar Trenes',
-        searchSchedules: 'Busca horarios de trenes y reserva tu viaje',
-
-        // Form labels
-        from: 'Desde',
-        to: 'Hasta',
-        departureTime: 'Hora de Salida',
-        departureStation: 'Estación de salida',
-        arrivalStation: 'Estación de llegada',
-
-        // Quick time buttons
-        now: 'Ahora',
-        oneHour: '+1 hora',
-        twoHours: '+2 horas',
-        tomorrow: 'Mañana',
-        quickSelection: 'Selección Rápida',
-
-        // Search button
-        searchTrains: 'Buscar Trenes',
-        searchingTrains: 'Buscando trenes...',
-
-        // Error messages
-        departureRequired: 'La estación de salida es obligatoria',
-        arrivalRequired: 'La estación de llegada es obligatoria',
-        stationsDifferent: 'La estación de llegada debe ser diferente a la de salida',
-        timeRequired: 'La hora de salida es obligatoria',
-
-        // Date picker
-        selectDateTime: 'Seleccionar fecha y hora',
-        date: 'Fecha',
-        time: 'Hora',
-        selectDate: 'Seleccionar fecha',
-
-        // Train results
-        searchingTrainsInProgress: 'Buscando trenes...',
-        noTrainsFound: 'No se encontraron trenes',
-        noTrainsFoundDescription: 'Intenta modificar los criterios de búsqueda o verifica que las estaciones sean correctas.',
-        apiError: 'Servicio temporalmente no disponible',
-        apiErrorDescription: 'Inténtalo de nuevo en unos momentos. Si el problema persiste, contacta con el soporte.',
-        networkError: 'Error de conexión',
-        networkErrorDescription: 'Verifica tu conexión a Internet y vuelve a intentarlo.',
-        invalidStationError: 'Estación no válida',
-        invalidStationErrorDescription: 'Por favor, selecciona una estación válida de la lista.',
-        searchError: 'Error de búsqueda',
-        searchErrorDescription: 'Ocurrió un error durante la búsqueda. Por favor, inténtalo de nuevo.',
-        line: 'Linea',
-
-        // SEARCH RESULTS AND TRAIN INFORMATION
-        searchResults: 'Resultados de búsqueda',
-        train: 'tren',
-        trains: 'trenes',
-        departure: 'Salida',
-        arrival: 'Llegada',
-        duration: 'Duración',
-        direction: 'Dirección',
-        intermediateStops: 'paradas intermedias',
-        showAllStops: 'Mostrar todas las paradas',
-
-        // ========================================
-        // TRAIN RESULTS AND STATUS
-        // ========================================
-        delayed: 'Retrasado',
-        onTime: 'A tiempo',
-        cancelled: 'Cancelado',
-        delayedByMinutes: 'Retrasado por {{minutes}} min',
-        trainCode: 'Tren {{code}}',
-
-        // Page content
-        findTrainsTitle: 'Encuentra tus trenes de la Circumvesuviana',
-        findTrainsSubtitle: 'Búsqueda simple y rápida para la red EAV Circumvesuviana en Campania',
-        loading: 'Cargando...',
-        swapStations: 'Intercambiar estaciones',
-        filters: 'Filtros',
-        campaniaExpressOnly: 'Solo Campania Express',
-        campaniaExpressLabel: 'Campania Express',
-
-        // Additional useful translations
-        error: 'Error',
-        retry: 'Reintentar',
-        noData: 'No hay datos disponibles',
-
-        // Tab labels
-        departureDepartureTab: 'Salida - Llegada',
-        departureOnlyTab: 'Salida',
-
-        // Form labels and placeholders (specific for departure tab)
-        departureStationLabel: 'Estación de Salida',
-        selectDepartureStation: 'Seleccionar estación de salida',
-        departureTimeLabel: 'Hora de Salida',
-        filtersLabel: 'Filtros',
-
-        // Button labels for departure searches
-        searchingNextDepartures: 'Buscando próximas salidas...',
-        searchNextDepartures: 'Buscar Próximas Salidas',
-
-        // Departures results
-        nextDeparturesFrom: 'Próximas partidas de',
-        nextArrivalsTo: 'Próximas llegadas a',
-        searchingArrivals: 'Buscando llegadas...',
-        noDeparturesFound: 'No se encontraron salidas',
-        noArrivalsFound: 'No se encontraron llegadas',
-        noDeparturesFromStation: 'No se encontraron salidas desde',
-        noArrivalsToStation: 'No se encontraron llegadas a',
-        departuresFromStation: 'Salidas desde estación',
-        arrivalsToStation: 'Llegadas a estación',
-        departuresFound: 'salidas encontradas',
-        arrivalsFound: 'llegadas encontradas',
-        platform: 'Andén',
-
-        // Train categories
-        categoryRegionale: 'Regional',
-        categoryIntercity: 'Directo (D)',
-        categoryCampaniaExpress: 'Campania Express',
-
-        // Direction labels
-        directionNapoli: 'Nápoles',
-        directionSorrento: 'Sorrento',
-
-        // Operating days
-        operatingDaysWeekdaysOnly: 'Solo laborables',
-        operatingDaysWeekendsOnly: 'Solo fines de semana',
-        operatingDaysDaily: 'Diario',
-        operatingDaysWeekdaysAndSaturday: 'Laborables e sábado',
-
-        // Footer
-        footerDisclaimer: 'Este projeto não tem afiliación com EAV (Ente Autonomo Volturno).',
-        footerEducationalProject: 'Este é um projeto educativo de código aberto criado solo com fins de aprendizagem.',
-        footerMadeWith: 'Feito com',
-        footerBy: 'por',
-        footerEducationalCopyright: 'Projeto Educativo',
-
-        // PWA Installation
-        installApp: 'Instalar',
-        installing: 'Instalando...',
-        appInstalled: 'App instalada con éxito',
-        offlineMode: 'Modo sin conexión',
-        updateAvailable: 'Actualización disponible',
-        updateApp: 'Actualizar App',
-        iosInstallTitle: 'Instalar en iOS',
-        iosInstallInstructions: 'Para instalar esta aplicación en tu dispositivo iOS:\n\n1. Toca el botón Compartir (cuadrado con flecha)\n2. Desplázate hacia abajo y toca "Añadir a pantalla de inicio"\n3. Toca "Añadir" en la esquina superior derecha',
-        addToHomeScreen: 'Añadir a Inicio'
-    },
-
-    pt: {
-        // Header/Navigation
-        findTrains: 'Encontrar Comboios',
-        searchSchedules: 'Pesquise horários de comboios e reserve sua viagem',
-
-        // Form labels
-        from: 'De',
-        to: 'Para',
-        departureTime: 'Horário de Partida',
-        departureStation: 'Estação de partida',
-        arrivalStation: 'Estação de chegada',
-
-        // Quick time buttons
-        now: 'Agora',
-        oneHour: '+1 hora',
-        twoHours: '+2 horas',
-        tomorrow: 'Amanhã',
-        quickSelection: 'Seleção Rápida',
-
-        // Search button
-        searchTrains: 'Pesquisar Comboios',
-        searchingTrains: 'Pesquisando comboios...',
-
-        // Error messages
-        departureRequired: 'A estação de partida é obrigatória',
-        arrivalRequired: 'A estação de chegada é obrigatória',
-        stationsDifferent: 'A estação de chegada deve ser diferente da partida',
-        timeRequired: 'O horário de partida é obrigatório',
-
-        // Date picker
-        selectDateTime: 'Selecionar data e hora',
-        date: 'Data',
-        time: 'Hora',
-        selectDate: 'Selecionar data',
-
-        // Train results
-        searchingTrainsInProgress: 'Pesquisando comboios...',
-        noTrainsFound: 'Nenhum comboio encontrado',
-        noTrainsFoundDescription: 'Tente modificar os critérios de pesquisa ou verifique se as estações estão corretas.',
-        apiError: 'Serviço temporariamente indisponível',
-        apiErrorDescription: 'Tente novamente em alguns momentos. Se o problema persistir, entre em contato com o suporte.',
-        networkError: 'Erro de conexão',
-        networkErrorDescription: 'Verifique sua conexão com a Internet e tente novamente.',
-        invalidStationError: 'Estação inválida',
-        invalidStationErrorDescription: 'Selecione uma estação válida na lista.',
-        searchError: 'Erro de pesquisa',
-        searchErrorDescription: 'Ocorreu um erro durante a pesquisa. Tente novamente.',
-        line: 'Linha',
-
-        // SEARCH RESULTS AND TRAIN INFORMATION
-        searchResults: 'Resultados da pesquisa',
-        train: 'comboio',
-        trains: 'comboios',
-        departure: 'Partida',
-        arrival: 'Chegada',
-        duration: 'Duração',
-        direction: 'Direção',
-        intermediateStops: 'paradas intermédias',
-        showAllStops: 'Mostrar todas as paradas',
-
-        // ========================================
-        // TRAIN RESULTS AND STATUS
-        // ========================================
-        delayed: 'Atrasado',
-        onTime: 'No horário',
-        cancelled: 'Cancelado',
-        delayedByMinutes: 'Atrasado por {{minutes}} min',
-        trainCode: 'Comboio {{code}}',
-
-        // Page content
-        findTrainsTitle: 'Encontre seus comboios da Circumvesuviana',
-        findTrainsSubtitle: 'Pesquisa simples e rápida para a rede EAV Circumvesuviana na Campânia',
-        loading: 'Carregando...',
-        swapStations: 'Trocar estações',
-        filters: 'Filtros',
-        campaniaExpressOnly: 'Apenas Campania Express',
-        campaniaExpressLabel: 'Campania Express',
-
-        // Additional useful translations
-        error: 'Erro',
-        retry: 'Tentar novamente',
-        noData: 'Não há dados disponíveis',
-
-        // Tab labels
-        departureDepartureTab: 'Partida - Chegada',
-        departureOnlyTab: 'Partida',
-
-        // Form labels and placeholders (specific for departure tab)
-        departureStationLabel: 'Estação de Partida',
-        selectDepartureStation: 'Selecionar estação de partida',
-        departureTimeLabel: 'Horário de Partida',
-        filtersLabel: 'Filtros',
-
-        // Button labels for departure searches
-        searchingNextDepartures: 'Procurando próximas partidas...',
-        searchNextDepartures: 'Buscar Próximas Partidas',
-
-        // Departures results
-        nextDeparturesFrom: 'Próximas partidas de',
-        nextArrivalsTo: 'Próximas chegadas a',
-        searchingArrivals: 'Procurando chegadas...',
-        noDeparturesFound: 'Nenhuma partida encontrada',
-        noArrivalsFound: 'Nenhuma chegada encontrada',
-        noDeparturesFromStation: 'Nenhuma partida encontrada de',
-        noArrivalsToStation: 'Nenhuma chegada encontrada para',
-        departuresFromStation: 'Partidas da estação',
-        arrivalsToStation: 'Chegadas à estação',
-        departuresFound: 'partidas encontradas',
-        arrivalsFound: 'chegadas encontradas',
-        platform: 'Plataforma',
-
-        // Train categories
-        categoryRegionale: 'Regional',
-        categoryIntercity: 'Direto (D)',
-        categoryCampaniaExpress: 'Campania Express',
-
-        // Direction labels
-        directionNapoli: 'Nápoles',
-        directionSorrento: 'Sorrento',
-
-        // Operating days
-        operatingDaysWeekdaysOnly: 'Apenas dias úteis',
-        operatingDaysWeekendsOnly: 'Apenas fins de semana',
-        operatingDaysDaily: 'Diário',
-        operatingDaysWeekdaysAndSaturday: 'Dias úteis e sábado',
-
-        // Footer
-        footerDisclaimer: 'Este projeto não tem afiliação com EAV (Ente Autonomo Volturno).',
-        footerEducationalProject: 'Este é um projeto educacional de código aberto criado apenas para fins de aprendizagem.',
-        footerMadeWith: 'Feito com',
-        footerBy: 'por',
-        footerEducationalCopyright: 'Projeto Educacional',
-
-        // PWA Installation
-        installApp: 'Instalar',
-        installing: 'Instalando...',
-        appInstalled: 'App instalado com sucesso',
-        offlineMode: 'Modo offline',
-        updateAvailable: 'Atualização disponível',
-        updateApp: 'Atualizar App',
-        iosInstallTitle: 'Instalar no iOS',
-        iosInstallInstructions: 'Para instalar esta aplicação no seu dispositivo iOS:\n\n1. Toque no botão Partilhar (quadrado com seta)\n2. Deslize para baixo e toque em "Adicionar ao ecrã inicial"\n3. Toque em "Adicionar" no canto superior direito',
-        addToHomeScreen: 'Adicionar ao Início'
-    },
-
-    fr: {
-        // Header/Navigation
-        findTrains: 'Trouver des Trains',
-        searchSchedules: 'Recherchez les horaires de trains et réservez votre voyage',
-
-        // Form labels
-        from: 'De',
-        to: 'À',
-        departureTime: 'Heure de Départ',
-        departureStation: 'Gare de départ',
-        arrivalStation: 'Gare d\'arrivée',
-
-        // Quick time buttons
-        now: 'Maintenant',
-        oneHour: '+1 heure',
-        twoHours: '+2 heures',
-        tomorrow: 'Demain',
-        quickSelection: 'Sélection Rapide',
-
-        // Search button
-        searchTrains: 'Rechercher des Trains',
-        searchingTrains: 'Recherche de trains...',
-
-        // Error messages
-        departureRequired: 'La gare de départ est obligatoire',
-        arrivalRequired: 'La gare d\'arrivée est obligatoire',
-        stationsDifferent: 'La gare d\'arrivée doit être différente de celle de départ',
-        timeRequired: 'L\'heure de départ est obligatoire',
-
-        // Date picker
-        selectDateTime: 'Sélectionner date et heure',
-        date: 'Date',
-        time: 'Heure',
-        selectDate: 'Sélectionner une date',
-
-        // Train results
-        searchingTrainsInProgress: 'Recherche de trains...',
-        noTrainsFound: 'Aucun train trouvé',
-        noTrainsFoundDescription: 'Essayez de modifier les critères de recherche ou vérifiez que les gares sont correctes.',
-        apiError: 'Service temporairement indisponible',
-        apiErrorDescription: 'Veuillez réessayer dans quelques instants. Si le problème persiste, contactez le support.',
-        networkError: 'Erreur de connexion',
-        networkErrorDescription: 'Vérifiez votre connexion Internet et réessayez.',
-        invalidStationError: 'Gare invalide',
-        invalidStationErrorDescription: 'Veuillez sélectionner une gare valide dans la liste.',
-        searchError: 'Erreur de recherche',
-        searchErrorDescription: 'Une erreur est survenue lors de la recherche. Veuillez réessayer.',
-        line: 'Ligne',
-
-        // SEARCH RESULTS AND TRAIN INFORMATION
-        searchResults: 'Résultats de recherche',
-        train: 'train',
-        trains: 'trains',
-        departure: 'Départ',
-        arrival: 'Arrivée',
-        duration: 'Durée',
-        direction: 'Direction',
-        intermediateStops: 'arrêts intermédiaires',
-        showAllStops: 'Afficher tous les arrêts',
-
-        // ========================================
-        // TRAIN RESULTS AND STATUS
-        // ========================================
-        delayed: 'Retardé',
-        onTime: 'À l\'heure',
-        cancelled: 'Annulé',
-        delayedByMinutes: 'Retardé de {{minutes}} min',
-        trainCode: 'Train {{code}}',
-
-        // Page content
-        findTrainsTitle: 'Trouvez vos trains de la Circumvesuviana',
-        findTrainsSubtitle: 'Recherche simple et rapide pour le réseau EAV Circumvesuviana en Campanie',
-        loading: 'Chargement...',
-        swapStations: 'Échanger les gares',
-        filters: 'Filtres',
-        campaniaExpressOnly: 'Campania Express seulement',
-        campaniaExpressLabel: 'Campania Express',
-
-        // Additional useful translations
-        error: 'Erreur',
-        retry: 'Réessayer',
-        noData: 'Aucune donnée disponible',
-
-        // Tab labels
-        departureDepartureTab: 'Départ - Arrivée',
-        departureOnlyTab: 'Départ',
-
-        // Form labels and placeholders (specific for departure tab)
-        departureStationLabel: 'Gare de Départ',
-        selectDepartureStation: 'Sélectionner la gare de départ',
-        departureTimeLabel: 'Heure de Départ',
-        filtersLabel: 'Filtres',
-
-        // Button labels for departure searches
-        searchingNextDepartures: 'Recherche prochains départs...',
-        searchNextDepartures: 'Rechercher Prochains Départs',
-
-        // Departures results
-        nextDeparturesFrom: 'Prochaines départs de',
-        nextArrivalsTo: 'Prochaines arrivées à',
-        searchingArrivals: 'Recherche arrivées...',
-        noDeparturesFound: 'Aucun départ trouvé',
-        noArrivalsFound: 'Aucune arrivée trouvée',
-        noDeparturesFromStation: 'Aucun départ trouvé depuis',
-        noArrivalsToStation: 'Aucune arrivée trouvée vers',
-        departuresFromStation: 'Départs de la gare',
-        arrivalsToStation: 'Arrivées à la gare',
-        departuresFound: 'départs trouvés',
-        arrivalsFound: 'arrivées trouvées',
-        platform: 'Voie',
-
-        // Train categories
-        categoryRegionale: 'Régional',
-        categoryIntercity: 'Direct (D)',
-        categoryCampaniaExpress: 'Campania Express',
-
-        // Direction labels
-        directionNapoli: 'Naples',
-        directionSorrento: 'Sorrente',
-
-        // Operating days
-        operatingDaysWeekdaysOnly: 'Jours ouvrables seulement',
-        operatingDaysWeekendsOnly: 'Week-ends seulement',
-        operatingDaysDaily: 'Quotidien',
-        operatingDaysWeekdaysAndSaturday: 'Jours ouvrables et samedi',
-
-        // Footer
-        footerDisclaimer: 'Ce projet n\'a aucune affiliation avec EAV (Ente Autonomo Volturno).',
-        footerEducationalProject: 'Il s\'agit d\'un projet éducatif open source créé uniquement à des fins d\'apprentissage.',
-        footerMadeWith: 'Fait avec',
-        footerBy: 'par',
-        footerEducationalCopyright: 'Projet Éducatif',
-
-        // PWA Installation
-        installApp: 'Installer',
-        installing: 'Installation...',
-        appInstalled: 'App installée avec succès',
-        offlineMode: 'Mode hors ligne',
-        updateAvailable: 'Mise à jour disponible',
-        updateApp: 'Mettre à jour l\'App',
-        iosInstallTitle: 'Installer sur iOS',
-        iosInstallInstructions: 'Pour installer cette application sur votre appareil iOS:\n\n1. Appuyez sur le bouton Partager (carré avec flèche)\n2. Faites défiler vers le bas et appuyez sur "Ajouter à l\'écran d\'accueil"\n3. Appuyez sur "Ajouter" dans le coin supérieur droit',
-        addToHomeScreen: 'Ajouter à l\'Accueil'
-    },
-
-    de: {
-        // Header/Navigation
-        findTrains: 'Züge Finden',
-        searchSchedules: 'Suchen Sie Zugfahrpläne und buchen Sie Ihre Reise',
-
-        // Form labels
-        from: 'Von',
-        to: 'Nach',
-        departureTime: 'Abfahrtszeit',
-        departureStation: 'Abfahrtsbahnhof',
-        arrivalStation: 'Ankunftsbahnhof',
-
-        // Quick time buttons
-        now: 'Jetzt',
-        oneHour: '+1 Stunde',
-        twoHours: '+2 Stunden',
-        tomorrow: 'Morgen',
-        quickSelection: 'Schnellauswahl',
-
-        // Search button
-        searchTrains: 'Züge Suchen',
-        searchingTrains: 'Suche Züge...',
-
-        // Error messages
-        departureRequired: 'Der Abfahrtsbahnhof ist erforderlich',
-        arrivalRequired: 'Der Ankunftsbahnhof ist erforderlich',
-        stationsDifferent: 'Der Ankunftsbahnhof muss sich vom Abfahrtsbahnhof unterscheiden',
-        timeRequired: 'Die Abfahrtszeit ist erforderlich',
-
-        // Date picker
-        selectDateTime: 'Datum und Uhrzeit auswählen',
-        date: 'Datum',
-        time: 'Zeit',
-        selectDate: 'Datum auswählen',
-
-        // Train results
-        searchingTrainsInProgress: 'Suche Züge...',
-        noTrainsFound: 'Keine Züge gefunden',
-        noTrainsFoundDescription: 'Versuchen Sie, die Suchkriterien zu ändern oder überprüfen Sie, ob die Bahnhöfe korrekt sind.',
-        apiError: 'Dienst vorübergehend nicht verfügbar',
-        apiErrorDescription: 'Bitte versuchen Sie es in wenigen Augenblicken erneut. Wenn das Problem weiterhin besteht, wenden Sie sich an den Support.',
-        networkError: 'Verbindungsfehler',
-        networkErrorDescription: 'Überprüfen Sie Ihre Internetverbindung und versuchen Sie es erneut.',
-        invalidStationError: 'Ungültiger Bahnhof',
-        invalidStationErrorDescription: 'Bitte wählen Sie einen gültigen Bahnhof aus der Liste aus.',
-        searchError: 'Suchfehler',
-        searchErrorDescription: 'Bei der Suche ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.',
-        line: 'Linie',
-
-        // SEARCH RESULTS AND TRAIN INFORMATION
-        searchResults: 'Suchergebnisse',
-        train: 'zug',
-        trains: 'züge',
-        departure: 'Abfahrt',
-        arrival: 'Ankunft',
-        duration: 'Dauer',
-        direction: 'Richtung',
-        intermediateStops: 'zwischenstopps',
-        showAllStops: 'Alle Haltestellen anzeigen',
-
-        // ========================================
-        // TRAIN RESULTS AND STATUS
-        // ========================================
-        delayed: 'Verspätet',
-        onTime: 'Pünktlich',
-        cancelled: 'Storniert',
-        delayedByMinutes: 'Verspätet um {{minutes}} Min',
-        trainCode: 'Zug {{code}}',
-
-        // Page content
-        findTrainsTitle: 'Finden Sie Ihre Circumvesuviana-Züge',
-        findTrainsSubtitle: 'Einfache und schnelle Suche für das EAV Circumvesuviana-Netz in Kampanien',
-        loading: 'Lädt...',
-        swapStations: 'Bahnhöfe tauschen',
-        filters: 'Filter',
-        campaniaExpressOnly: 'Nur Campania Express',
-        campaniaExpressLabel: 'Campania Express',
-
-        // Additional useful translations
-        error: 'Fehler',
-        retry: 'Wiederholen',
-        noData: 'Keine Daten verfügbar',
-
-        // Tab labels
-        departureDepartureTab: 'Abfahrt - Ankunft',
-        departureOnlyTab: 'Abfahrt',
-
-        // Form labels and placeholders (specific for departure tab)
-        departureStationLabel: 'Abfahrtsbahnhof',
-        selectDepartureStation: 'Abfahrtsbahnhof auswählen',
-        departureTimeLabel: 'Abfahrtszeit',
-        filtersLabel: 'Filter',
-
-        // Button labels for departure searches
-        searchingNextDepartures: 'Suche nächste Abfahrten...',
-        searchNextDepartures: 'Nächste Abfahrten Suchen',
-
-        // Departures results
-        nextDeparturesFrom: 'Nächste Abfahrten von',
-        nextArrivalsTo: 'Nächste Ankünfte nach',
-        searchingArrivals: 'Suche Ankünfte...',
-        noDeparturesFound: 'Keine Abfahrten gefunden',
-        noArrivalsFound: 'Keine Ankünfte gefunden',
-        noDeparturesFromStation: 'Keine Abfahrten gefunden von',
-        noArrivalsToStation: 'Keine Ankünfte gefunden nach',
-        departuresFromStation: 'Abfahrten vom Bahnhof',
-        arrivalsToStation: 'Ankünfte am Bahnhof',
-        departuresFound: 'Abfahrten gefunden',
-        arrivalsFound: 'Ankünfte gefunden',
-        platform: 'Gleis',
-
-        // Train categories
-        categoryRegionale: 'Regional',
-        categoryIntercity: 'Direkt (D)',
-        categoryCampaniaExpress: 'Campania Express',
-
-        // Direction labels
-        directionNapoli: 'Neapel',
-        directionSorrento: 'Sorrento',
-
-        // Operating days
-        operatingDaysWeekdaysOnly: 'Nur Werktage',
-        operatingDaysWeekendsOnly: 'Nur Wochenenden',
-        operatingDaysDaily: 'Täglich',
-        operatingDaysWeekdaysAndSaturday: 'Werktage und Samstag',
-
-        // Footer
-        footerDisclaimer: 'Dieses Projekt hat keine Verbindung zu EAV (Ente Autonomo Volturno).',
-        footerEducationalProject: 'Dies ist ein Open-Source-Bildungsprojekt, das nur zu Lernzwecken erstellt wurde.',
-        footerMadeWith: 'Gemacht mit',
-        footerBy: 'von',
-        footerEducationalCopyright: 'Bildungsprojekt',
-
-        // PWA Installation
-        installApp: 'Installieren',
-        installing: 'Installiere...',
-        appInstalled: 'App erfolgreich installiert',
-        offlineMode: 'Offline-Modus',
-        updateAvailable: 'Update verfügbar',
-        updateApp: 'App Aktualisieren',
-        iosInstallTitle: 'Auf iOS installieren',
-        iosInstallInstructions: 'Um diese App auf Ihrem iOS-Gerät zu installieren:\n\n1. Tippen Sie auf die Teilen-Schaltfläche (Quadrat mit Pfeil)\n2. Scrollen Sie nach unten und tippen Sie auf "Zum Home-Bildschirm"\n3. Tippen Sie auf "Hinzufügen" in der oberen rechten Ecke',
-        addToHomeScreen: 'Zum Home hinzufügen'
-    }
-} as const;
-
-export type TranslationKey = keyof typeof translations['en'];
+export const DEFAULT_LANGUAGE: Language = "it";
+export const FALLBACK_LANGUAGE: Language = "en";
+
+const it = {
+  // App shell
+  appName: "Vesuvia",
+  mainNav: "Navigazione principale",
+  tabTrip: "Viaggio",
+  tabBoard: "Partenze",
+  tabFavorites: "Preferiti",
+  language: "Lingua",
+
+  // Hero
+  heroTitleA: "Dove andiamo",
+  heroTitleB: "oggi?",
+  heroSubtitle: "Orari in tempo reale di Circumvesuviana, Cumana e Circumflegrea.",
+
+  // Search card
+  from: "Partenza",
+  to: "Arrivo",
+  chooseStation: "Scegli stazione",
+  swap: "Inverti partenza e arrivo",
+  when: "Quando",
+  now: "Adesso",
+  today: "Oggi",
+  tomorrow: "Domani",
+  pickDate: "Scegli data e ora",
+  date: "Data",
+  time: "Ora",
+  searchTrains: "Cerca treni",
+  sameStation: "Partenza e arrivo coincidono.",
+  selectBoth: "Scegli partenza e arrivo.",
+
+  // Station picker
+  searchStationPlaceholder: "Cerca una stazione…",
+  close: "Chiudi",
+  noStationsFound: "Nessuna stazione per “{q}”.",
+  favoriteStations: "Stazioni preferite",
+  allStations: "Tutte le stazioni",
+  otherNetwork: "altra rete",
+  noLiveBoard: "senza tabellone live",
+  stationsLoading: "Carico le stazioni…",
+  stationsError: "Impossibile caricare le stazioni.",
+  retry: "Riprova",
+
+  // Home sections
+  popularDestinations: "Mete più cercate",
+  recent: "Recenti",
+  clear: "Cancella",
+  destSorrento: "Costiera sorrentina",
+  destPompei: "Scavi archeologici",
+  destErcolano: "La città sepolta",
+  destPozzuoli: "Campi Flegrei",
+  destVico: "Mare e colline",
+
+  // Results
+  edit: "Modifica",
+  resultsSubtitle: "{day} · dalle {time}",
+  oneSolution: "1 soluzione",
+  nSolutions: "{n} soluzioni",
+  direct: "Diretto",
+  oneChange: "1 cambio",
+  nChanges: "{n} cambi",
+  onTime: "In orario",
+  lateMin: "+{n} min",
+  cancelled: "Soppresso",
+  changeAt: "Cambio a {station}",
+  waitMin: "{n} min di attesa",
+  nStops: "+ {n} fermate",
+  stopsLater: "Fermate intermedie disponibili poco prima della partenza.",
+  stopsLoading: "Carico le fermate…",
+  showDetails: "Mostra dettagli",
+  hideDetails: "Nascondi dettagli",
+  noTrainsTitle: "Nessun treno trovato",
+  noTrainsBody: "Prova un altro orario o un altro giorno.",
+  laterTrains: "Treni successivi",
+  errorTitle: "Qualcosa è andato storto",
+  errorBody: "Non riusciamo a raggiungere EAV in questo momento. Riprova tra poco.",
+  addFavorite: "Aggiungi ai preferiti",
+  removeFavorite: "Rimuovi dai preferiti",
+  train: "Treno {n}",
+  crossTitle: "Viaggio su due reti",
+  crossBody: "{from} e {to} sono su due reti EAV diverse: il viaggio si fa in tre parti.",
+  crossStep1: "Treno fino a {station}",
+  crossTransfer: "Trasferimento",
+  crossStep2: "Treno da {station}",
+  crossHint: "Scegli un treno che parta almeno {n} min dopo il tuo arrivo a {station}.",
+  aboutMin: "circa {n} min",
+
+  // Board
+  station: "Stazione",
+  departures: "Partenze",
+  arrivals: "Arrivi",
+  updatedAt: "Aggiornato alle {time}",
+  live: "live",
+  platformShort: "BIN {p}",
+  platform: "Binario {p}",
+  ok: "OK",
+  boardPickStation: "Scegli una stazione per vedere il tabellone in tempo reale.",
+  boardNoBoard: "Questa stazione non ha un tabellone in tempo reale.",
+  boardEmpty: "Nessun treno nelle prossime ore.",
+  via: "via {stops}",
+  refresh: "Aggiorna",
+
+  // Favourites
+  favRoutes: "Tratte",
+  favStations: "Stazioni",
+  favEmptyTitle: "Ancora nessun preferito",
+  favEmptyBody: "Tocca la stella su una tratta o su una stazione per ritrovarla qui.",
+  remove: "Rimuovi",
+  liveBoard: "Tabellone live",
+  startHere: "Parti da qui",
+
+  // Footer & offline
+  footerData: "Dati in tempo reale da EAV · progetto non ufficiale",
+  footerSource: "Codice su GitHub",
+  footerMadeBy: "Fatto da",
+  offlineTitle: "Sei offline",
+  offlineBody: "Controlla la connessione: gli orari arrivano in tempo reale da EAV.",
+  goBack: "Torna indietro",
+};
+
+export type TranslationKey = keyof typeof it;
+export type Dictionary = Record<TranslationKey, string>;
+
+const en: Dictionary = {
+  appName: "Vesuvia",
+  mainNav: "Main navigation",
+  tabTrip: "Trip",
+  tabBoard: "Departures",
+  tabFavorites: "Favourites",
+  language: "Language",
+
+  heroTitleA: "Where are we",
+  heroTitleB: "going today?",
+  heroSubtitle: "Live timetables for Circumvesuviana, Cumana and Circumflegrea.",
+
+  from: "From",
+  to: "To",
+  chooseStation: "Choose station",
+  swap: "Swap departure and arrival",
+  when: "When",
+  now: "Now",
+  today: "Today",
+  tomorrow: "Tomorrow",
+  pickDate: "Pick date and time",
+  date: "Date",
+  time: "Time",
+  searchTrains: "Search trains",
+  sameStation: "Departure and arrival are the same.",
+  selectBoth: "Choose departure and arrival.",
+
+  searchStationPlaceholder: "Search a station…",
+  close: "Close",
+  noStationsFound: "No stations for “{q}”.",
+  favoriteStations: "Favourite stations",
+  allStations: "All stations",
+  otherNetwork: "other network",
+  noLiveBoard: "no live board",
+  stationsLoading: "Loading stations…",
+  stationsError: "Couldn't load stations.",
+  retry: "Retry",
+
+  popularDestinations: "Popular destinations",
+  recent: "Recent",
+  clear: "Clear",
+  destSorrento: "Sorrento coast",
+  destPompei: "Archaeological site",
+  destErcolano: "The buried city",
+  destPozzuoli: "Phlegraean Fields",
+  destVico: "Sea and hills",
+
+  edit: "Edit",
+  resultsSubtitle: "{day} · from {time}",
+  oneSolution: "1 option",
+  nSolutions: "{n} options",
+  direct: "Direct",
+  oneChange: "1 change",
+  nChanges: "{n} changes",
+  onTime: "On time",
+  lateMin: "+{n} min",
+  cancelled: "Cancelled",
+  changeAt: "Change at {station}",
+  waitMin: "{n} min wait",
+  nStops: "+ {n} stops",
+  stopsLater: "Intermediate stops become available shortly before departure.",
+  stopsLoading: "Loading stops…",
+  showDetails: "Show details",
+  hideDetails: "Hide details",
+  noTrainsTitle: "No trains found",
+  noTrainsBody: "Try another time or another day.",
+  laterTrains: "Later trains",
+  errorTitle: "Something went wrong",
+  errorBody: "We can't reach EAV right now. Please try again shortly.",
+  addFavorite: "Add to favourites",
+  removeFavorite: "Remove from favourites",
+  train: "Train {n}",
+  crossTitle: "Trip across two networks",
+  crossBody: "{from} and {to} are on different EAV networks: the trip has three parts.",
+  crossStep1: "Train to {station}",
+  crossTransfer: "Transfer",
+  crossStep2: "Train from {station}",
+  crossHint: "Pick a train leaving at least {n} min after you reach {station}.",
+  aboutMin: "about {n} min",
+
+  station: "Station",
+  departures: "Departures",
+  arrivals: "Arrivals",
+  updatedAt: "Updated at {time}",
+  live: "live",
+  platformShort: "PL {p}",
+  platform: "Platform {p}",
+  ok: "OK",
+  boardPickStation: "Choose a station to see its live board.",
+  boardNoBoard: "This station has no live departures board.",
+  boardEmpty: "No trains in the next few hours.",
+  via: "via {stops}",
+  refresh: "Refresh",
+
+  favRoutes: "Routes",
+  favStations: "Stations",
+  favEmptyTitle: "No favourites yet",
+  favEmptyBody: "Tap the star on a route or a station to find it here.",
+  remove: "Remove",
+  liveBoard: "Live board",
+  startHere: "Start here",
+
+  footerData: "Live data from EAV · unofficial project",
+  footerSource: "Source on GitHub",
+  footerMadeBy: "Made by",
+  offlineTitle: "You're offline",
+  offlineBody: "Check your connection: timetables come live from EAV.",
+  goBack: "Go back",
+};
+
+const es: Dictionary = {
+  appName: "Vesuvia",
+  mainNav: "Navegación principal",
+  tabTrip: "Viaje",
+  tabBoard: "Salidas",
+  tabFavorites: "Favoritos",
+  language: "Idioma",
+
+  heroTitleA: "¿Adónde vamos",
+  heroTitleB: "hoy?",
+  heroSubtitle: "Horarios en tiempo real de Circumvesuviana, Cumana y Circumflegrea.",
+
+  from: "Salida",
+  to: "Llegada",
+  chooseStation: "Elige estación",
+  swap: "Invertir salida y llegada",
+  when: "Cuándo",
+  now: "Ahora",
+  today: "Hoy",
+  tomorrow: "Mañana",
+  pickDate: "Elegir fecha y hora",
+  date: "Fecha",
+  time: "Hora",
+  searchTrains: "Buscar trenes",
+  sameStation: "La salida y la llegada coinciden.",
+  selectBoth: "Elige salida y llegada.",
+
+  searchStationPlaceholder: "Busca una estación…",
+  close: "Cerrar",
+  noStationsFound: "Ninguna estación para “{q}”.",
+  favoriteStations: "Estaciones favoritas",
+  allStations: "Todas las estaciones",
+  otherNetwork: "otra red",
+  noLiveBoard: "sin panel en vivo",
+  stationsLoading: "Cargando estaciones…",
+  stationsError: "No se pudieron cargar las estaciones.",
+  retry: "Reintentar",
+
+  popularDestinations: "Destinos más buscados",
+  recent: "Recientes",
+  clear: "Borrar",
+  destSorrento: "Costa de Sorrento",
+  destPompei: "Yacimiento arqueológico",
+  destErcolano: "La ciudad sepultada",
+  destPozzuoli: "Campos Flégreos",
+  destVico: "Mar y colinas",
+
+  edit: "Modificar",
+  resultsSubtitle: "{day} · desde las {time}",
+  oneSolution: "1 opción",
+  nSolutions: "{n} opciones",
+  direct: "Directo",
+  oneChange: "1 transbordo",
+  nChanges: "{n} transbordos",
+  onTime: "Puntual",
+  lateMin: "+{n} min",
+  cancelled: "Cancelado",
+  changeAt: "Transbordo en {station}",
+  waitMin: "{n} min de espera",
+  nStops: "+ {n} paradas",
+  stopsLater: "Las paradas intermedias están disponibles poco antes de la salida.",
+  stopsLoading: "Cargando paradas…",
+  showDetails: "Mostrar detalles",
+  hideDetails: "Ocultar detalles",
+  noTrainsTitle: "No se encontraron trenes",
+  noTrainsBody: "Prueba otra hora u otro día.",
+  laterTrains: "Trenes posteriores",
+  errorTitle: "Algo salió mal",
+  errorBody: "No podemos contactar con EAV ahora. Inténtalo de nuevo en breve.",
+  addFavorite: "Añadir a favoritos",
+  removeFavorite: "Quitar de favoritos",
+  train: "Tren {n}",
+  crossTitle: "Viaje por dos redes",
+  crossBody: "{from} y {to} están en redes EAV distintas: el viaje tiene tres partes.",
+  crossStep1: "Tren hasta {station}",
+  crossTransfer: "Traslado",
+  crossStep2: "Tren desde {station}",
+  crossHint: "Elige un tren que salga al menos {n} min después de llegar a {station}.",
+  aboutMin: "unos {n} min",
+
+  station: "Estación",
+  departures: "Salidas",
+  arrivals: "Llegadas",
+  updatedAt: "Actualizado a las {time}",
+  live: "en vivo",
+  platformShort: "VÍA {p}",
+  platform: "Vía {p}",
+  ok: "OK",
+  boardPickStation: "Elige una estación para ver su panel en tiempo real.",
+  boardNoBoard: "Esta estación no tiene panel en tiempo real.",
+  boardEmpty: "No hay trenes en las próximas horas.",
+  via: "por {stops}",
+  refresh: "Actualizar",
+
+  favRoutes: "Trayectos",
+  favStations: "Estaciones",
+  favEmptyTitle: "Aún no hay favoritos",
+  favEmptyBody: "Toca la estrella en un trayecto o una estación para encontrarlo aquí.",
+  remove: "Quitar",
+  liveBoard: "Panel en vivo",
+  startHere: "Salir desde aquí",
+
+  footerData: "Datos en tiempo real de EAV · proyecto no oficial",
+  footerSource: "Código en GitHub",
+  footerMadeBy: "Hecho por",
+  offlineTitle: "Estás sin conexión",
+  offlineBody: "Revisa tu conexión: los horarios llegan en tiempo real desde EAV.",
+  goBack: "Volver",
+};
+
+const pt: Dictionary = {
+  appName: "Vesuvia",
+  mainNav: "Navegação principal",
+  tabTrip: "Viagem",
+  tabBoard: "Partidas",
+  tabFavorites: "Favoritos",
+  language: "Idioma",
+
+  heroTitleA: "Para onde vamos",
+  heroTitleB: "hoje?",
+  heroSubtitle: "Horários em tempo real da Circumvesuviana, Cumana e Circumflegrea.",
+
+  from: "Partida",
+  to: "Chegada",
+  chooseStation: "Escolher estação",
+  swap: "Trocar partida e chegada",
+  when: "Quando",
+  now: "Agora",
+  today: "Hoje",
+  tomorrow: "Amanhã",
+  pickDate: "Escolher data e hora",
+  date: "Data",
+  time: "Hora",
+  searchTrains: "Procurar comboios",
+  sameStation: "A partida e a chegada são iguais.",
+  selectBoth: "Escolha partida e chegada.",
+
+  searchStationPlaceholder: "Procurar estação…",
+  close: "Fechar",
+  noStationsFound: "Nenhuma estação para “{q}”.",
+  favoriteStations: "Estações favoritas",
+  allStations: "Todas as estações",
+  otherNetwork: "outra rede",
+  noLiveBoard: "sem painel ao vivo",
+  stationsLoading: "A carregar estações…",
+  stationsError: "Não foi possível carregar as estações.",
+  retry: "Tentar novamente",
+
+  popularDestinations: "Destinos mais procurados",
+  recent: "Recentes",
+  clear: "Limpar",
+  destSorrento: "Costa de Sorrento",
+  destPompei: "Sítio arqueológico",
+  destErcolano: "A cidade soterrada",
+  destPozzuoli: "Campos Flégreos",
+  destVico: "Mar e colinas",
+
+  edit: "Editar",
+  resultsSubtitle: "{day} · a partir das {time}",
+  oneSolution: "1 opção",
+  nSolutions: "{n} opções",
+  direct: "Direto",
+  oneChange: "1 mudança",
+  nChanges: "{n} mudanças",
+  onTime: "A horas",
+  lateMin: "+{n} min",
+  cancelled: "Cancelado",
+  changeAt: "Mudança em {station}",
+  waitMin: "{n} min de espera",
+  nStops: "+ {n} paragens",
+  stopsLater: "As paragens intermédias ficam disponíveis pouco antes da partida.",
+  stopsLoading: "A carregar paragens…",
+  showDetails: "Mostrar detalhes",
+  hideDetails: "Ocultar detalhes",
+  noTrainsTitle: "Nenhum comboio encontrado",
+  noTrainsBody: "Experimente outra hora ou outro dia.",
+  laterTrains: "Comboios seguintes",
+  errorTitle: "Algo correu mal",
+  errorBody: "Não conseguimos contactar a EAV agora. Tente novamente daqui a pouco.",
+  addFavorite: "Adicionar aos favoritos",
+  removeFavorite: "Remover dos favoritos",
+  train: "Comboio {n}",
+  crossTitle: "Viagem em duas redes",
+  crossBody: "{from} e {to} estão em redes EAV diferentes: a viagem tem três partes.",
+  crossStep1: "Comboio até {station}",
+  crossTransfer: "Transferência",
+  crossStep2: "Comboio desde {station}",
+  crossHint: "Escolha um comboio que parta pelo menos {n} min depois de chegar a {station}.",
+  aboutMin: "cerca de {n} min",
+
+  station: "Estação",
+  departures: "Partidas",
+  arrivals: "Chegadas",
+  updatedAt: "Atualizado às {time}",
+  live: "ao vivo",
+  platformShort: "LINHA {p}",
+  platform: "Linha {p}",
+  ok: "OK",
+  boardPickStation: "Escolha uma estação para ver o painel em tempo real.",
+  boardNoBoard: "Esta estação não tem painel em tempo real.",
+  boardEmpty: "Sem comboios nas próximas horas.",
+  via: "via {stops}",
+  refresh: "Atualizar",
+
+  favRoutes: "Trajetos",
+  favStations: "Estações",
+  favEmptyTitle: "Ainda sem favoritos",
+  favEmptyBody: "Toque na estrela de um trajeto ou estação para o encontrar aqui.",
+  remove: "Remover",
+  liveBoard: "Painel ao vivo",
+  startHere: "Partir daqui",
+
+  footerData: "Dados em tempo real da EAV · projeto não oficial",
+  footerSource: "Código no GitHub",
+  footerMadeBy: "Feito por",
+  offlineTitle: "Está offline",
+  offlineBody: "Verifique a ligação: os horários chegam em tempo real da EAV.",
+  goBack: "Voltar",
+};
+
+const fr: Dictionary = {
+  appName: "Vesuvia",
+  mainNav: "Navigation principale",
+  tabTrip: "Trajet",
+  tabBoard: "Départs",
+  tabFavorites: "Favoris",
+  language: "Langue",
+
+  heroTitleA: "Où allons-nous",
+  heroTitleB: "aujourd’hui ?",
+  heroSubtitle: "Horaires en temps réel de la Circumvesuviana, Cumana et Circumflegrea.",
+
+  from: "Départ",
+  to: "Arrivée",
+  chooseStation: "Choisir une gare",
+  swap: "Inverser départ et arrivée",
+  when: "Quand",
+  now: "Maintenant",
+  today: "Aujourd’hui",
+  tomorrow: "Demain",
+  pickDate: "Choisir date et heure",
+  date: "Date",
+  time: "Heure",
+  searchTrains: "Rechercher des trains",
+  sameStation: "Le départ et l’arrivée sont identiques.",
+  selectBoth: "Choisissez le départ et l’arrivée.",
+
+  searchStationPlaceholder: "Rechercher une gare…",
+  close: "Fermer",
+  noStationsFound: "Aucune gare pour « {q} ».",
+  favoriteStations: "Gares favorites",
+  allStations: "Toutes les gares",
+  otherNetwork: "autre réseau",
+  noLiveBoard: "pas de tableau en direct",
+  stationsLoading: "Chargement des gares…",
+  stationsError: "Impossible de charger les gares.",
+  retry: "Réessayer",
+
+  popularDestinations: "Destinations populaires",
+  recent: "Récents",
+  clear: "Effacer",
+  destSorrento: "Côte de Sorrente",
+  destPompei: "Site archéologique",
+  destErcolano: "La ville ensevelie",
+  destPozzuoli: "Champs Phlégréens",
+  destVico: "Mer et collines",
+
+  edit: "Modifier",
+  resultsSubtitle: "{day} · à partir de {time}",
+  oneSolution: "1 solution",
+  nSolutions: "{n} solutions",
+  direct: "Direct",
+  oneChange: "1 correspondance",
+  nChanges: "{n} correspondances",
+  onTime: "À l’heure",
+  lateMin: "+{n} min",
+  cancelled: "Supprimé",
+  changeAt: "Correspondance à {station}",
+  waitMin: "{n} min d’attente",
+  nStops: "+ {n} arrêts",
+  stopsLater: "Les arrêts intermédiaires sont disponibles peu avant le départ.",
+  stopsLoading: "Chargement des arrêts…",
+  showDetails: "Afficher les détails",
+  hideDetails: "Masquer les détails",
+  noTrainsTitle: "Aucun train trouvé",
+  noTrainsBody: "Essayez une autre heure ou un autre jour.",
+  laterTrains: "Trains suivants",
+  errorTitle: "Une erreur est survenue",
+  errorBody: "Impossible de joindre EAV pour le moment. Réessayez dans un instant.",
+  addFavorite: "Ajouter aux favoris",
+  removeFavorite: "Retirer des favoris",
+  train: "Train {n}",
+  crossTitle: "Trajet sur deux réseaux",
+  crossBody: "{from} et {to} sont sur deux réseaux EAV différents : le trajet se fait en trois étapes.",
+  crossStep1: "Train jusqu’à {station}",
+  crossTransfer: "Correspondance",
+  crossStep2: "Train depuis {station}",
+  crossHint: "Choisissez un train partant au moins {n} min après votre arrivée à {station}.",
+  aboutMin: "environ {n} min",
+
+  station: "Gare",
+  departures: "Départs",
+  arrivals: "Arrivées",
+  updatedAt: "Mis à jour à {time}",
+  live: "en direct",
+  platformShort: "VOIE {p}",
+  platform: "Voie {p}",
+  ok: "OK",
+  boardPickStation: "Choisissez une gare pour voir son tableau en temps réel.",
+  boardNoBoard: "Cette gare n’a pas de tableau en temps réel.",
+  boardEmpty: "Aucun train dans les prochaines heures.",
+  via: "via {stops}",
+  refresh: "Actualiser",
+
+  favRoutes: "Trajets",
+  favStations: "Gares",
+  favEmptyTitle: "Pas encore de favoris",
+  favEmptyBody: "Touchez l’étoile d’un trajet ou d’une gare pour le retrouver ici.",
+  remove: "Retirer",
+  liveBoard: "Tableau en direct",
+  startHere: "Partir d’ici",
+
+  footerData: "Données en temps réel d’EAV · projet non officiel",
+  footerSource: "Code sur GitHub",
+  footerMadeBy: "Réalisé par",
+  offlineTitle: "Vous êtes hors ligne",
+  offlineBody: "Vérifiez votre connexion : les horaires arrivent en temps réel d’EAV.",
+  goBack: "Retour",
+};
+
+const de: Dictionary = {
+  appName: "Vesuvia",
+  mainNav: "Hauptnavigation",
+  tabTrip: "Reise",
+  tabBoard: "Abfahrten",
+  tabFavorites: "Favoriten",
+  language: "Sprache",
+
+  heroTitleA: "Wohin geht es",
+  heroTitleB: "heute?",
+  heroSubtitle: "Echtzeit-Fahrpläne von Circumvesuviana, Cumana und Circumflegrea.",
+
+  from: "Abfahrt",
+  to: "Ankunft",
+  chooseStation: "Bahnhof wählen",
+  swap: "Abfahrt und Ankunft tauschen",
+  when: "Wann",
+  now: "Jetzt",
+  today: "Heute",
+  tomorrow: "Morgen",
+  pickDate: "Datum und Uhrzeit wählen",
+  date: "Datum",
+  time: "Uhrzeit",
+  searchTrains: "Züge suchen",
+  sameStation: "Abfahrt und Ankunft sind identisch.",
+  selectBoth: "Abfahrt und Ankunft wählen.",
+
+  searchStationPlaceholder: "Bahnhof suchen…",
+  close: "Schließen",
+  noStationsFound: "Kein Bahnhof für „{q}“.",
+  favoriteStations: "Lieblingsbahnhöfe",
+  allStations: "Alle Bahnhöfe",
+  otherNetwork: "anderes Netz",
+  noLiveBoard: "keine Live-Tafel",
+  stationsLoading: "Bahnhöfe werden geladen…",
+  stationsError: "Bahnhöfe konnten nicht geladen werden.",
+  retry: "Erneut versuchen",
+
+  popularDestinations: "Beliebte Ziele",
+  recent: "Zuletzt",
+  clear: "Löschen",
+  destSorrento: "Küste von Sorrent",
+  destPompei: "Ausgrabungsstätte",
+  destErcolano: "Die verschüttete Stadt",
+  destPozzuoli: "Phlegräische Felder",
+  destVico: "Meer und Hügel",
+
+  edit: "Ändern",
+  resultsSubtitle: "{day} · ab {time}",
+  oneSolution: "1 Verbindung",
+  nSolutions: "{n} Verbindungen",
+  direct: "Direkt",
+  oneChange: "1 Umstieg",
+  nChanges: "{n} Umstiege",
+  onTime: "Pünktlich",
+  lateMin: "+{n} Min.",
+  cancelled: "Fällt aus",
+  changeAt: "Umstieg in {station}",
+  waitMin: "{n} Min. Wartezeit",
+  nStops: "+ {n} Halte",
+  stopsLater: "Zwischenhalte sind kurz vor der Abfahrt verfügbar.",
+  stopsLoading: "Halte werden geladen…",
+  showDetails: "Details anzeigen",
+  hideDetails: "Details ausblenden",
+  noTrainsTitle: "Keine Züge gefunden",
+  noTrainsBody: "Versuche eine andere Uhrzeit oder einen anderen Tag.",
+  laterTrains: "Spätere Züge",
+  errorTitle: "Etwas ist schiefgelaufen",
+  errorBody: "EAV ist gerade nicht erreichbar. Bitte versuche es gleich noch einmal.",
+  addFavorite: "Zu Favoriten hinzufügen",
+  removeFavorite: "Aus Favoriten entfernen",
+  train: "Zug {n}",
+  crossTitle: "Reise über zwei Netze",
+  crossBody: "{from} und {to} liegen in verschiedenen EAV-Netzen: die Reise hat drei Teile.",
+  crossStep1: "Zug bis {station}",
+  crossTransfer: "Umstieg",
+  crossStep2: "Zug ab {station}",
+  crossHint: "Wähle einen Zug, der mindestens {n} Min. nach deiner Ankunft in {station} fährt.",
+  aboutMin: "ca. {n} Min.",
+
+  station: "Bahnhof",
+  departures: "Abfahrten",
+  arrivals: "Ankünfte",
+  updatedAt: "Aktualisiert um {time}",
+  live: "live",
+  platformShort: "GL {p}",
+  platform: "Gleis {p}",
+  ok: "OK",
+  boardPickStation: "Wähle einen Bahnhof, um die Live-Tafel zu sehen.",
+  boardNoBoard: "Dieser Bahnhof hat keine Echtzeit-Tafel.",
+  boardEmpty: "Keine Züge in den nächsten Stunden.",
+  via: "über {stops}",
+  refresh: "Aktualisieren",
+
+  favRoutes: "Strecken",
+  favStations: "Bahnhöfe",
+  favEmptyTitle: "Noch keine Favoriten",
+  favEmptyBody: "Tippe auf den Stern bei einer Strecke oder einem Bahnhof, um sie hier zu finden.",
+  remove: "Entfernen",
+  liveBoard: "Live-Tafel",
+  startHere: "Hier starten",
+
+  footerData: "Echtzeitdaten von EAV · inoffizielles Projekt",
+  footerSource: "Code auf GitHub",
+  footerMadeBy: "Gemacht von",
+  offlineTitle: "Du bist offline",
+  offlineBody: "Prüfe deine Verbindung: die Fahrpläne kommen live von EAV.",
+  goBack: "Zurück",
+};
+
+export const translations: Record<Language, Dictionary> = { it, en, es, pt, fr, de };
+
+export type TranslationVars = Record<string, string | number>;
+
+export function translate(lang: Language, key: TranslationKey, vars?: TranslationVars): string {
+  const template = translations[lang]?.[key] ?? translations[FALLBACK_LANGUAGE][key] ?? key;
+  if (!vars) return template;
+  return template.replace(/\{(\w+)\}/g, (m, name: string) =>
+    name in vars ? String(vars[name]) : m,
+  );
+}
+
+export function isLanguage(v: unknown): v is Language {
+  return typeof v === "string" && v in languages;
+}

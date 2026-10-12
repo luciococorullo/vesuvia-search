@@ -1,26 +1,13 @@
-import { MetadataRoute } from 'next'
+import type { MetadataRoute } from "next";
+import { SITE_URL } from "@/lib/structured-data";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-    const baseUrl = 'https://vesuvia-search.vercel.app'
-
     return [
         {
-            url: baseUrl,
+            url: SITE_URL,
             lastModified: new Date(),
-            changeFrequency: 'daily',
+            changeFrequency: "daily",
             priority: 1,
         },
-        {
-            url: `${baseUrl}/search`,
-            lastModified: new Date(),
-            changeFrequency: 'hourly',
-            priority: 0.9,
-        },
-        {
-            url: `${baseUrl}/stations`,
-            lastModified: new Date(),
-            changeFrequency: 'weekly',
-            priority: 0.8,
-        },
-    ]
+    ];
 }

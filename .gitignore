@@ -2,6 +2,7 @@
 
 # Dependencies
 /node_modules
+node_modules/
 /.pnp
 .pnp.*
 .yarn/*
@@ -15,17 +16,12 @@ jspm_packages/
 
 # Testing
 /coverage
-*.test.js
-*.test.ts
-test-*.js
-test-*.ts
-__tests__/
-*.spec.js
-*.spec.ts
+coverage/
 .nyc_output/
 
 # Next.js
 /.next/
+.next/
 /out/
 next-env.d.ts
 
@@ -38,15 +34,12 @@ next-env.d.ts
 .env.*
 !.env.example
 
-# Database
+# Local databases (none are used anymore)
+*.db
 *.db-journal
+*.sqlite
 *.sqlite-wal
 *.sqlite-shm
-
-# Prisma
-/prisma/migrations/
-node_modules/.prisma/
-prisma/generated/
 
 # Data files and backups
 *.json.bak
@@ -116,3 +109,4 @@ temp/
 
 # Output of 'npm pack'
 *.tgz
+.next-*/

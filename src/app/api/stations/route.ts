@@ -1,46 +1,21 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
-import { CreateStationSchema } from '@/lib/types';
+/**
+ * GET /api/stations → StationsResponse
+ * All EAV stations (161 today) merged from the planner and orariotreni.
+ */
+import { NextResponse } from 'next/server';
+import { cdnCache, handleRouteError } from '@/lib/eav/http';
+import { getStations } from '@/lib/eav/stations';
+import type { StationsResponse } from '@/lib/eav/types';
+
+export const dynamic = 'force-dynamic';
 
 export async function GET() {
-    try {
-        const stations = await prisma.station.findMany({
-            orderBy: { name: 'asc' }
-        });
-
-        return NextResponse.json(stations);
-    } catch (error) {
-        console.error('Error fetching stations:', error);
-        return NextResponse.json(
-            { error: 'Errore nel recupero delle stazioni' },
-            { status: 500 }
-        );
-    }
-}
-
-export async function POST(request: NextRequest) {
-    try {
-        const body = await request.json();
-        const validatedData = CreateStationSchema.parse(body);
-
-        const station = await prisma.station.create({
-            data: validatedData
-        });
-
-        return NextResponse.json(station, { status: 201 });
-    } catch (error) {
-        console.error('Error creating station:', error);
-
-        if (error instanceof Error && 'code' in error && error.code === 'P2002') {
-            return NextResponse.json(
-                { error: 'Una stazione con questo codice esiste già' },
-                { status: 409 }
-            );
-        }
-
-        return NextResponse.json(
-            { error: 'Errore nella creazione della stazione' },
-            { status: 500 }
-        );
-    }
+  try {
+    const data = await getStations();
+    // Stale fallback data: let the CDN retry soon instead of pinning it for a day.
+    const headers = data.stale ? cdnCache(60, 300) : cdnCache(86_400, 604_800);
+    return NextResponse.json<StationsResponse>(data, { headers });
+  } catch (err) {
+    return handleRouteError('stations', err);
+  }
 }

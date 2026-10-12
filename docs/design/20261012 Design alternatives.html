@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vesuvia Search — tre direzioni di design</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,700;9..144,800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Inter, system-ui, sans-serif; background: #ECECEA; color: #1a1a1a; padding: 48px 32px 80px; }
+  header.doc { max-width: 1320px; margin: 0 auto 40px; }
+  header.doc h1 { font-size: 34px; letter-spacing: -0.02em; }
+  header.doc p { color: #555; margin-top: 8px; max-width: 760px; line-height: 1.5; }
+  .grid { max-width: 1320px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+  .option > h2 { font-size: 22px; letter-spacing: -0.01em; display: flex; gap: 10px; align-items: baseline; }
+  .option > h2 span { font-size: 13px; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: .08em; }
+  .option > .tagline { color: #555; font-size: 14px; margin: 6px 0 18px; line-height: 1.45; min-height: 42px; }
+  .phone { width: 390px; max-width: 100%; height: 800px; border-radius: 44px; overflow: hidden; margin: 0 auto; box-shadow: 0 30px 60px -20px rgba(0,0,0,.35), 0 0 0 10px #111, 0 0 0 11px #333; position: relative; }
+  .notes { margin-top: 26px; font-size: 13.5px; line-height: 1.55; color: #333; }
+  .notes h4 { font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: #888; margin: 14px 0 6px; }
+  .notes ul { padding-left: 18px; }
+  .swatches { display: flex; gap: 6px; margin-top: 4px; }
+  .swatches i { width: 28px; height: 28px; border-radius: 6px; display: block; box-shadow: inset 0 0 0 1px rgba(0,0,0,.08); }
+
+  /* ========== A — TABELLONE ========== */
+  .a { background: #0B1220; color: #E8EDF5; font-family: Inter, sans-serif; height: 100%; padding: 54px 20px 20px; }
+  .a .brand { font-family: 'JetBrains Mono', monospace; font-weight: 700; color: #FFD23F; font-size: 15px; letter-spacing: .12em; display:flex; justify-content: space-between; }
+  .a .brand small { color: #6B7A93; font-weight: 400; letter-spacing: .04em; }
+  .a .clock { font-family: 'JetBrains Mono', monospace; font-size: 52px; font-weight: 700; color: #FFD23F; margin: 18px 0 2px; letter-spacing: -0.02em; }
+  .a .station { font-size: 13px; color: #8A99B3; text-transform: uppercase; letter-spacing: .14em; }
+  .a .seg { display: flex; background: #141E33; border-radius: 10px; padding: 4px; margin: 18px 0 14px; }
+  .a .seg b { flex: 1; text-align: center; padding: 9px; font-size: 13px; border-radius: 7px; color: #8A99B3; font-weight: 600; }
+  .a .seg b.on { background: #FFD23F; color: #0B1220; }
+  .a .route { background: #141E33; border-radius: 14px; padding: 4px 14px; }
+  .a .route div { display: flex; justify-content: space-between; padding: 12px 0; font-size: 15px; font-weight: 600; }
+  .a .route div + div { border-top: 1px dashed #26324d; }
+  .a .route span { color: #6B7A93; font-size: 11px; font-family: 'JetBrains Mono'; letter-spacing: .1em; }
+  .a .board { margin-top: 18px; font-family: 'JetBrains Mono', monospace; }
+  .a .board .head { display: grid; grid-template-columns: 52px 1fr 34px 40px; font-size: 10px; color: #6B7A93; letter-spacing: .1em; padding: 0 4px 8px; border-bottom: 1px solid #26324d; }
+  .a .row { display: grid; grid-template-columns: 52px 1fr 34px 40px; align-items: center; padding: 12px 4px; border-bottom: 1px solid #172138; font-size: 14px; }
+  .a .row .t { color: #FFD23F; font-weight: 700; font-size: 16px; }
+  .a .row .d { font-weight: 600; text-transform: uppercase; font-size: 13px; }
+  .a .row .d small { display: block; color: #6B7A93; font-weight: 400; font-size: 10.5px; margin-top: 3px; text-transform: none; }
+  .a .row .p { text-align: center; background: #1E2A44; border-radius: 4px; padding: 2px 0; font-size: 12px; }
+  .a .row .r { text-align: right; font-size: 12px; font-weight: 700; }
+  .a .late { color: #FF6B5B; } .a .ok { color: #3DDC97; }
+  .a .chip { display:inline-block; background:#3DDC9722; color:#3DDC97; border-radius:3px; padding:0 4px; font-size:9.5px; margin-left:4px; vertical-align: 1px;}
+
+  /* ========== B — LINEA ========== */
+  .b { background: #FFFFFF; color: #111; height: 100%; padding: 54px 0 0; font-family: Inter, sans-serif; }
+  .b .top { padding: 0 20px; display: flex; justify-content: space-between; align-items: center; }
+  .b .logo { font-weight: 800; font-size: 19px; letter-spacing: -0.03em; display: flex; align-items: center; gap: 8px; }
+  .b .logo i { width: 22px; height: 22px; border-radius: 50%; background: conic-gradient(#E4002B 0 25%, #0072CE 0 50%, #00A651 0 75%, #F7A800 0); display:block; }
+  .b .lang { font-size: 12px; font-weight: 600; color: #666; border: 1px solid #e3e3e3; border-radius: 99px; padding: 4px 10px; }
+  .b .search { margin: 18px 20px 0; border: 1px solid #E6E6E6; border-radius: 18px; padding: 6px 16px; position: relative; }
+  .b .search .f { padding: 12px 0 12px 22px; position: relative; }
+  .b .search .f + .f { border-top: 1px solid #F0F0F0; }
+  .b .search .f label { font-size: 11px; color: #888; display: block; font-weight: 500; }
+  .b .search .f strong { font-size: 16px; font-weight: 600; }
+  .b .search .f::before { content: ''; position: absolute; left: 0; top: 26px; width: 9px; height: 9px; border-radius: 50%; border: 2.5px solid #111; }
+  .b .search .f.to::before { background: #111; }
+  .b .search .swap { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); width: 34px; height: 34px; border-radius: 50%; border: 1px solid #E6E6E6; background: #fff; display: grid; place-items: center; font-size: 15px; }
+  .b .when { display: flex; gap: 8px; margin: 12px 20px; }
+  .b .when span { font-size: 13px; font-weight: 600; padding: 8px 12px; border-radius: 99px; background: #F4F4F4; }
+  .b .when span.on { background: #111; color: #fff; }
+  .b .sec { padding: 8px 20px 0; font-size: 12px; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: .06em; }
+  .b .card { margin: 10px 20px; border-radius: 16px; border: 1px solid #EEE; padding: 14px 16px; }
+  .b .card.open { box-shadow: 0 10px 30px -12px rgba(0,0,0,.18); border-color: #E2E2E2; }
+  .b .card .l1 { display: flex; justify-content: space-between; align-items: baseline; }
+  .b .card .tm { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; }
+  .b .card .tm em { font-style: normal; color: #bbb; font-weight: 400; margin: 0 6px; }
+  .b .card .dur { font-size: 13px; color: #666; font-weight: 500; }
+  .b .card .l2 { display: flex; gap: 8px; align-items: center; margin-top: 8px; font-size: 12.5px; color: #555; }
+  .b .pill { font-size: 11px; font-weight: 700; color: #fff; padding: 3px 8px; border-radius: 6px; }
+  .b .late { color: #D93025; font-weight: 600; }
+  .b .ontime { color: #188038; font-weight: 600; }
+  .b .stops { margin: 14px 0 2px 6px; border-left: 4px solid #E4002B; padding-left: 16px; }
+  .b .stops div { position: relative; font-size: 13px; padding: 5px 0; display: flex; justify-content: space-between; color: #333; }
+  .b .stops div::before { content:''; position:absolute; left: -23px; top: 9px; width: 10px; height: 10px; background: #fff; border: 3px solid #E4002B; border-radius: 50%; }
+  .b .stops div.major { font-weight: 700; }
+  .b .stops div.more { color: #999; font-size: 12px; }
+  .b .stops div.more::before { width: 4px; height: 4px; left: -20px; top: 11px; border-width: 2px; }
+  .b .tabbar { position: absolute; bottom: 0; left: 0; right: 0; display: flex; justify-content: space-around; border-top: 1px solid #eee; background: #fff; padding: 10px 0 26px; font-size: 11px; font-weight: 600; color: #999; }
+  .b .tabbar b { color: #111; }
+
+  /* ========== C — GOLFO ========== */
+  .c { background: #FBF5EC; color: #2B1E16; height: 100%; font-family: 'DM Sans', sans-serif; }
+  .c .hero { background: linear-gradient(170deg, #1F5F8B 0%, #2E86AB 55%, #F3B562 140%); color: #FFF8EE; padding: 56px 22px 70px; position: relative; overflow: hidden; }
+  .c .hero::after { content: ''; position: absolute; right: -40px; bottom: -6px; width: 260px; height: 90px; background: #3A2A22; clip-path: polygon(0 100%, 38% 20%, 46% 32%, 52% 14%, 60% 30%, 100% 100%); opacity: .55; }
+  .c .hero small { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; opacity: .85; font-weight: 700; }
+  .c .hero h3 { font-family: Fraunces, serif; font-size: 36px; line-height: 1.02; margin-top: 10px; font-weight: 700; letter-spacing: -0.02em; }
+  .c .hero h3 i { color: #FFD98A; }
+  .c .form { background: #FFFDF9; margin: -48px 16px 0; border-radius: 22px; padding: 16px; position: relative; z-index: 2; box-shadow: 0 18px 40px -18px rgba(70,40,10,.35); }
+  .c .form .f { background: #F6EEE2; border-radius: 12px; padding: 10px 14px; margin-bottom: 8px; }
+  .c .form .f label { font-size: 11px; color: #9A7B62; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
+  .c .form .f div { font-size: 16px; font-weight: 700; margin-top: 2px; }
+  .c .form .row2 { display: flex; gap: 8px; }
+  .c .form .row2 .f { flex: 1; }
+  .c .form button { width: 100%; border: 0; background: #D9572B; color: #fff; font: 700 15px 'DM Sans'; padding: 14px; border-radius: 12px; margin-top: 2px; }
+  .c h5 { font-family: Fraunces, serif; font-size: 20px; margin: 22px 20px 10px; font-weight: 700; }
+  .c .dest { display: flex; gap: 10px; padding: 0 20px; overflow: hidden; }
+  .c .dest div { min-width: 132px; height: 150px; border-radius: 18px; padding: 12px; color: #fff; display: flex; flex-direction: column; justify-content: flex-end; font-weight: 700; font-size: 15px; }
+  .c .dest div small { font-weight: 500; font-size: 11.5px; opacity: .9; }
+  .c .d1 { background: linear-gradient(180deg, transparent 30%, rgba(0,0,0,.45)), linear-gradient(135deg, #C9733F, #8E3B1F); }
+  .c .d2 { background: linear-gradient(180deg, transparent 30%, rgba(0,0,0,.45)), linear-gradient(135deg, #F0C04A, #D98E1E); }
+  .c .d3 { background: linear-gradient(180deg, transparent 30%, rgba(0,0,0,.45)), linear-gradient(135deg, #3E8FB0, #1D4E6B); }
+  .c .next { margin: 4px 20px; background: #FFFDF9; border-radius: 16px; padding: 12px 14px; display: flex; align-items: center; gap: 12px; border: 1px solid #EFE3D2; }
+  .c .next .t { font-family: Fraunces, serif; font-size: 22px; font-weight: 700; }
+  .c .next .m { flex: 1; font-size: 13px; color: #6B5444; }
+  .c .next .m b { color: #2B1E16; display: block; font-size: 14px; }
+  .c .badge { font-size: 11px; font-weight: 700; padding: 4px 8px; border-radius: 99px; }
+</style>
+</head>
+<body>
+<header class="doc">
+  <h1>Vesuvia Search: tre direzioni</h1>
+  <p>Stessa app, stesso flusso (cerca tratta → risultati, tabellone partenze), tre personalità visive diverse. Alcuni dati vengono dalle API EAV del 12/10/2026: il treno 1171 Garibaldi → Sorrento (17:08 → 18:17), il 4161 per Poggiomarino (bin. 3) e il 1148 con +13 di ritardo. Gli altri treni e gli orari delle fermate intermedie sono illustrativi.</p>
+</header>
+
+<div class="grid">
+
+  <!-- A -->
+  <section class="option">
+    <h2>A · Tabellone <span>dark, utility</span></h2>
+    <p class="tagline">Si ispira ai monitor gialli delle stazioni EAV. Il tabellone partenze diventa l'eroe dell'app: si apre e in un colpo d'occhio vedi i treni in partenza.</p>
+    <div class="phone"><div class="a">
+      <div class="brand">VESUVIA·SEARCH <small>IT ▾</small></div>
+      <div class="clock">16:02</div>
+      <div class="station">Napoli P. Garibaldi · Partenze</div>
+      <div class="seg"><b class="on">Partenze</b><b>Arrivi</b><b>Tratta</b></div>
+      <div class="route">
+        <div><span>DA</span> Napoli P. Garibaldi</div>
+        <div><span>A&nbsp;</span> Tutte le destinazioni ▾</div>
+      </div>
+      <div class="board">
+        <div class="head"><span>ORA</span><span>DESTINAZIONE</span><span>BIN</span><span style="text-align:right">RIT</span></div>
+        <div class="row"><span class="t">16:00</span><span class="d">Napoli P. Nolana<small>1148 · DD</small></span><span class="p">4</span><span class="r late">+13</span></div>
+        <div class="row"><span class="t">16:04</span><span class="d">Poggiomarino<small>4161 · via Pompei Santuario</small></span><span class="p">3</span><span class="r ok">OK</span></div>
+        <div class="row"><span class="t">16:08</span><span class="d">Sorrento<span class="chip">EXPR</span><small>1173 · Pompei Scavi, Vico Eq.</small></span><span class="p">2</span><span class="r ok">OK</span></div>
+        <div class="row"><span class="t">16:11</span><span class="d">Baiano<small>2147 · via Nola</small></span><span class="p">1</span><span class="r late">+4</span></div>
+        <div class="row"><span class="t">16:17</span><span class="d">Sarno<small>3159 · via Ottaviano</small></span><span class="p">3</span><span class="r ok">OK</span></div>
+        <div class="row"><span class="t">16:21</span><span class="d">Torre Annunziata<small>5161 · via S. Giorgio</small></span><span class="p">2</span><span class="r ok">OK</span></div>
+      </div>
+    </div></div>
+    <div class="notes">
+      <h4>Palette</h4>
+      <div class="swatches"><i style="background:#0B1220"></i><i style="background:#141E33"></i><i style="background:#FFD23F"></i><i style="background:#3DDC97"></i><i style="background:#FF6B5B"></i></div>
+      <h4>Tipografia</h4>JetBrains Mono per orari e numeri, Inter per il testo.
+      <h4>Pro</h4><ul><li>Identità fortissima, da showcase: si riconosce subito.</li><li>Molto leggibile al sole e di notte, con contrasto altissimo.</li><li>Valorizza i dati live (ritardi, binari) che l'API ora fornisce.</li></ul>
+      <h4>Contro</h4><ul><li>Solo dark: va disegnata anche una variante chiara, se serve.</li><li>Meno adatta a chi cerca "come arrivo a Pompei" senza conoscere la rete.</li></ul>
+    </div>
+  </section>
+
+  <!-- B -->
+  <section class="option">
+    <h2>B · Linea <span>light, transit-map</span></h2>
+    <p class="tagline">Pulizia svizzera alla Citymapper o Apple Maps. Ogni linea EAV ha il suo colore e il percorso si legge come uno schema di metropolitana.</p>
+    <div class="phone"><div class="b">
+      <div class="top"><div class="logo"><i></i>Vesuvia</div><div class="lang">IT</div></div>
+      <div class="search">
+        <div class="f"><label>Partenza</label><strong>Napoli P. Garibaldi</strong></div>
+        <div class="f to"><label>Arrivo</label><strong>Sorrento</strong></div>
+        <div class="swap">⇅</div>
+      </div>
+      <div class="when"><span class="on">Ora</span><span>Oggi 17:00</span><span>Domani</span><span>📅</span></div>
+      <div class="sec">Prossimi treni</div>
+      <div class="card open">
+        <div class="l1"><div class="tm">17:08<em>→</em>18:17</div><div class="dur">1 h 09</div></div>
+        <div class="l2"><span class="pill" style="background:#E4002B">Napoli–Sorrento</span>1171 · DD<span class="ontime">· In orario</span></div>
+        <div class="stops">
+          <div class="major"><span>Napoli P. Garibaldi</span><span>17:08</span></div>
+          <div class="more"><span>12 fermate</span><span></span></div>
+          <div><span>Pompei Scavi</span><span>17:42</span></div>
+          <div><span>Castellammare di Stabia</span><span>17:52</span></div>
+          <div class="more"><span>9 fermate</span><span></span></div>
+          <div class="major"><span>Sorrento</span><span>18:17</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="l1"><div class="tm">17:38<em>→</em>18:47</div><div class="dur">1 h 09</div></div>
+        <div class="l2"><span class="pill" style="background:#E4002B">Napoli–Sorrento</span>1175 · DD<span class="late">· +6 min</span></div>
+      </div>
+      <div class="tabbar"><b>● Tratta</b><span>Partenze</span><span>Preferiti</span></div>
+    </div></div>
+    <div class="notes">
+      <h4>Palette (colori linea EAV)</h4>
+      <div class="swatches"><i style="background:#111"></i><i style="background:#E4002B"></i><i style="background:#0072CE"></i><i style="background:#00A651"></i><i style="background:#F7A800"></i><i style="background:#8E44AD"></i></div>
+      <h4>Tipografia</h4>Solo Inter, con gerarchia data da peso e dimensione.
+      <h4>Pro</h4><ul><li>È la più "prodotto": chiara, accessibile, scala bene su desktop.</li><li>Le 9 linee arrivano già dall'API (<code>linea</code>), quindi i colori sono data-driven.</li><li>Light e dark mode vengono quasi gratis.</li></ul>
+      <h4>Contro</h4><ul><li>Rischia di sembrare "l'ennesima app di trasporti".</li><li>Per farla funzionare serve curare bene i colori di linea e lo schema delle fermate.</li></ul>
+    </div>
+  </section>
+
+  <!-- C -->
+  <section class="option">
+    <h2>C · Golfo <span>editoriale, turistica</span></h2>
+    <p class="tagline">Calda e mediterranea, pensata per chi visita Pompei, Ercolano e Sorrento. Racconta il territorio prima ancora dell'orario.</p>
+    <div class="phone"><div class="c">
+      <div class="hero">
+        <small>Circumvesuviana · Flegree · Suburbane</small>
+        <h3>Dal Vesuvio<br>al mare, <i>in treno.</i></h3>
+      </div>
+      <div class="form">
+        <div class="f"><label>Da</label><div>Napoli P. Garibaldi</div></div>
+        <div class="f"><label>A</label><div>Sorrento</div></div>
+        <div class="row2"><div class="f"><label>Quando</label><div>Oggi</div></div><div class="f"><label>Ora</label><div>17:00</div></div></div>
+        <button>Cerca treni →</button>
+      </div>
+      <h5>Mete più cercate</h5>
+      <div class="dest">
+        <div class="d1">Pompei Scavi<small>35 min da Garibaldi</small></div>
+        <div class="d2">Sorrento<small>1 h 09</small></div>
+        <div class="d3">Ercolano Scavi<small>18 min</small></div>
+      </div>
+      <h5>Prossima partenza</h5>
+      <div class="next"><div class="t">17:08</div><div class="m"><b>→ Sorrento</b>1171 · bin. 2 · arrivo 18:17</div><span class="badge" style="background:#E3F4E8;color:#1E7B3C">In orario</span></div>
+    </div></div>
+    <div class="notes">
+      <h4>Palette</h4>
+      <div class="swatches"><i style="background:#FBF5EC"></i><i style="background:#1F5F8B"></i><i style="background:#D9572B"></i><i style="background:#F3B562"></i><i style="background:#2B1E16"></i></div>
+      <h4>Tipografia</h4>Fraunces (serif) per i titoli, DM Sans per l'interfaccia.
+      <h4>Pro</h4><ul><li>È la più emozionale e quella che rende meglio come showcase e landing.</li><li>Parla al pubblico reale (turisti, 6 lingue) e dà una buona base SEO.</li></ul>
+      <h4>Contro</h4><ul><li>Più contenuti da curare (immagini, testi delle mete).</li><li>L'uso quotidiano del pendolare è meno immediato.</li><li>Le "mete" sono l'unico dato editoriale che resta da curare a mano.</li></ul>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

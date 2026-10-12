@@ -1,11 +1,16 @@
-<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+<svg width="128" height="128" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#dc2626;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#b91c1c;stop-opacity:1" />
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1F5F8B"/>
+      <stop offset="62%" stop-color="#2E86AB"/>
+      <stop offset="100%" stop-color="#F3B562"/>
     </linearGradient>
   </defs>
-  <rect width="128" height="128" rx="25.6" fill="url(#grad1)"/>
-  <circle cx="64" cy="44.8" r="19.2" fill="white"/>
-  <text x="64" y="96" font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="white" text-anchor="middle">V</text>
+  <rect width="100" height="100" rx="22" fill="url(#sky)"/>
+  <circle cx="70" cy="32" r="9" fill="#F3B562"/>
+  <path d="M8 78 L34 50 Q40 44 46 46 L52 48 Q58 44 64 50 L92 78 Z" fill="#1F1A17" opacity="0.85"/>
+  <rect x="0" y="78" width="100" height="22" fill="#1F5F8B"/>
+  <path d="M14 88 H86" stroke="#FBF7F0" stroke-width="3" stroke-dasharray="1 7" stroke-linecap="round"/>
+  <circle cx="14" cy="88" r="4.5" fill="#D9572B" stroke="#FBF7F0" stroke-width="2"/>
+  <circle cx="86" cy="88" r="4.5" fill="#FBF7F0"/>
 </svg>

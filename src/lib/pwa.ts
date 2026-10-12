@@ -1,217 +1,187 @@
 /**
- * @fileoverview PWA installation and management utilities
- * 
- * This file provides utilities for Progressive Web App functionality including:
- * - Install prompt management
- * - Service worker registration
- * - Update notifications
- * - Offline status detection
+ * @fileoverview PWA utilities: install prompt, service worker registration
+ * and update flow, online status.
+ *
+ * Update flow: when a new service worker is installed and waiting, it is told
+ * to activate immediately (SKIP_WAITING). The SW itself also calls
+ * skipWaiting() on install and clients.claim() on activate, so new versions
+ * take over without requiring all tabs to be closed. No forced reload: pages
+ * are served network-first, so the next navigation picks up the new build.
  */
 
 export interface BeforeInstallPromptEvent extends Event {
     readonly platforms: string[];
     readonly userChoice: Promise<{
-        outcome: 'accepted' | 'dismissed';
+        outcome: "accepted" | "dismissed";
         platform: string;
     }>;
     prompt(): Promise<void>;
+}
+
+const SW_URL = "/sw.js";
+
+function activateWaiting(registration: ServiceWorkerRegistration) {
+    registration.waiting?.postMessage({ type: "SKIP_WAITING" });
 }
 
 export class PWAManager {
     private deferredPrompt: BeforeInstallPromptEvent | null = null;
     private isInstallable = false;
     private installPromptCallbacks: Array<(canInstall: boolean) => void> = [];
-    private isInitialized = false;
+    private registrationPromise: Promise<ServiceWorkerRegistration | null> | null = null;
 
     constructor() {
-        // Only initialize on client side
-        if (typeof window !== 'undefined') {
+        if (typeof window !== "undefined") {
             this.setupEventListeners();
-            this.isInitialized = true;
         }
     }
 
     private setupEventListeners() {
-        if (typeof window === 'undefined') return;
-
-        console.log('Setting up PWA event listeners');
-
-        // Listen for the beforeinstallprompt event
-        window.addEventListener('beforeinstallprompt', (e) => {
-            console.log('beforeinstallprompt event fired');
-            // Prevent the mini-infobar from appearing on mobile
+        window.addEventListener("beforeinstallprompt", (e) => {
+            // Prevent the mini-infobar; we show our own install button.
             e.preventDefault();
-            // Save the event so it can be triggered later
             this.deferredPrompt = e as BeforeInstallPromptEvent;
             this.isInstallable = true;
             this.notifyInstallPromptCallbacks(true);
         });
 
-        // Listen for the app being installed
-        window.addEventListener('appinstalled', () => {
-            console.log('PWA was installed');
+        window.addEventListener("appinstalled", () => {
             this.deferredPrompt = null;
             this.isInstallable = false;
             this.notifyInstallPromptCallbacks(false);
         });
+    }
 
-        // Check if app is already installed
-        if (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) {
-            console.log('PWA is running in standalone mode');
-            this.isInstallable = false;
-        } else {
-            // Also check for iOS Safari standalone mode
-            const isIOSStandalone = (window.navigator as unknown as { standalone?: boolean }).standalone === true;
-            if (isIOSStandalone) {
-                console.log('PWA is running in iOS standalone mode');
-                this.isInstallable = false;
-            }
-        }
-
-        // For debugging - log current state
-        setTimeout(() => {
-            console.log('PWA Manager state:', {
-                isInstallable: this.isInstallable,
-                hasDeferredPrompt: !!this.deferredPrompt,
-                isStandalone: window.matchMedia('(display-mode: standalone)').matches,
-                isIOSStandalone: (window.navigator as unknown as { standalone?: boolean }).standalone === true,
-                supportsBeforeInstallPrompt: 'onbeforeinstallprompt' in window,
-                userAgent: navigator.userAgent
-            });
-        }, 1000);
+    public isStandalone(): boolean {
+        if (typeof window === "undefined") return false;
+        const iosStandalone =
+            (window.navigator as unknown as { standalone?: boolean }).standalone === true;
+        return iosStandalone || window.matchMedia?.("(display-mode: standalone)").matches === true;
     }
 
     public async showInstallPrompt(): Promise<{ outcome: string; platform: string } | null> {
-        if (!this.isInitialized || !this.deferredPrompt) {
-            console.log('Cannot show install prompt:', {
-                isInitialized: this.isInitialized,
-                hasDeferredPrompt: !!this.deferredPrompt
-            });
-            return null;
-        }
+        if (!this.deferredPrompt) return null;
 
         try {
-            // Show the install prompt
             await this.deferredPrompt.prompt();
-
-            // Wait for the user to respond to the prompt
             const { outcome, platform } = await this.deferredPrompt.userChoice;
-
-            console.log('Install prompt result:', { outcome, platform });
-
-            // Clear the deferredPrompt so it can be garbage collected
             this.deferredPrompt = null;
             this.isInstallable = false;
             this.notifyInstallPromptCallbacks(false);
-
             return { outcome, platform };
         } catch (error) {
-            console.error('Error showing install prompt:', error);
+            console.error("Error showing install prompt:", error);
             return null;
         }
     }
 
     public getIsInstallable(): boolean {
-        return this.isInstallable;
+        return this.isInstallable && !this.isStandalone();
     }
 
     public onInstallPromptChange(callback: (canInstall: boolean) => void): () => void {
         this.installPromptCallbacks.push(callback);
-
-        // Return unsubscribe function
         return () => {
-            const index = this.installPromptCallbacks.indexOf(callback);
-            if (index > -1) {
-                this.installPromptCallbacks.splice(index, 1);
-            }
+            this.installPromptCallbacks = this.installPromptCallbacks.filter((cb) => cb !== callback);
         };
     }
 
     private notifyInstallPromptCallbacks(canInstall: boolean) {
-        this.installPromptCallbacks.forEach(callback => callback(canInstall));
+        this.installPromptCallbacks.forEach((callback) => callback(canInstall));
     }
 
-    public async registerServiceWorker(): Promise<ServiceWorkerRegistration | null> {
-        if (!this.isInitialized || !('serviceWorker' in navigator)) {
-            return null;
+    /** Registers the service worker once; subsequent calls return the same registration. */
+    public registerServiceWorker(): Promise<ServiceWorkerRegistration | null> {
+        if (typeof window === "undefined" || !("serviceWorker" in navigator)) {
+            return Promise.resolve(null);
         }
+        if (!this.registrationPromise) {
+            this.registrationPromise = this.doRegister();
+        }
+        return this.registrationPromise;
+    }
 
+    private async doRegister(): Promise<ServiceWorkerRegistration | null> {
         try {
-            const registration = await navigator.serviceWorker.register('/sw.js');
-            console.log('ServiceWorker registration successful');
+            const registration = await navigator.serviceWorker.register(SW_URL, {
+                scope: "/",
+                updateViaCache: "none",
+            });
 
-            // Listen for updates
-            registration.addEventListener('updatefound', () => {
+            // A new SW may already be waiting (e.g. installed in a previous visit).
+            activateWaiting(registration);
+
+            registration.addEventListener("updatefound", () => {
                 const newWorker = registration.installing;
-                if (newWorker) {
-                    newWorker.addEventListener('statechange', () => {
-                        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                            // New content is available, show update notification
-                            this.showUpdateNotification();
-                        }
-                    });
+                if (!newWorker) return;
+                newWorker.addEventListener("statechange", () => {
+                    if (newWorker.state === "installed" && navigator.serviceWorker.controller) {
+                        activateWaiting(registration);
+                    }
+                });
+            });
+
+            // Check for updates when the app comes back to the foreground
+            // (installed PWAs can stay open for days).
+            document.addEventListener("visibilitychange", () => {
+                if (document.visibilityState === "visible") {
+                    registration.update().catch(() => undefined);
                 }
             });
 
             return registration;
         } catch (error) {
-            console.log('ServiceWorker registration failed:', error);
+            console.warn("Service worker registration failed:", error);
             return null;
         }
     }
 
-    private showUpdateNotification() {
-        // You can customize this to show a toast notification or modal
-        if (confirm('Nuova versione disponibile! Vuoi aggiornare?')) {
-            window.location.reload();
-        }
-    }
-
     public async requestNotificationPermission(): Promise<NotificationPermission> {
-        if ('Notification' in window) {
-            return await Notification.requestPermission();
+        if (typeof window !== "undefined" && "Notification" in window) {
+            return Notification.requestPermission();
         }
-        return 'denied';
+        return "denied";
     }
 
     public isOnline(): boolean {
-        return navigator.onLine;
+        return typeof navigator === "undefined" ? true : navigator.onLine;
     }
 
     public onlineStatusChange(callback: (isOnline: boolean) => void): () => void {
         const handleOnline = () => callback(true);
         const handleOffline = () => callback(false);
-
-        window.addEventListener('online', handleOnline);
-        window.addEventListener('offline', handleOffline);
-
+        window.addEventListener("online", handleOnline);
+        window.addEventListener("offline", handleOffline);
         return () => {
-            window.removeEventListener('online', handleOnline);
-            window.removeEventListener('offline', handleOffline);
+            window.removeEventListener("online", handleOnline);
+            window.removeEventListener("offline", handleOffline);
         };
     }
 }
 
-// Singleton instance - only create on client side
-let pwaManagerInstance: PWAManager | null = null;
+type PWAManagerLike = Pick<
+    PWAManager,
+    | "getIsInstallable"
+    | "showInstallPrompt"
+    | "onInstallPromptChange"
+    | "registerServiceWorker"
+    | "requestNotificationPermission"
+    | "isOnline"
+    | "onlineStatusChange"
+    | "isStandalone"
+>;
 
-export const pwaManager = (() => {
-    if (typeof window === 'undefined') {
-        // Return a mock object during SSR
-        return {
-            getIsInstallable: () => false,
-            showInstallPrompt: () => Promise.resolve(null),
-            onInstallPromptChange: () => () => { },
-            registerServiceWorker: () => Promise.resolve(null),
-            requestNotificationPermission: () => Promise.resolve('denied' as NotificationPermission),
-            isOnline: () => true,
-            onlineStatusChange: () => () => { }
-        };
-    }
-
-    if (!pwaManagerInstance) {
-        pwaManagerInstance = new PWAManager();
-    }
-
-    return pwaManagerInstance;
-})();
+// Singleton: real manager on the client, inert stub during SSR.
+export const pwaManager: PWAManagerLike =
+    typeof window === "undefined"
+        ? {
+              getIsInstallable: () => false,
+              showInstallPrompt: () => Promise.resolve(null),
+              onInstallPromptChange: () => () => {},
+              registerServiceWorker: () => Promise.resolve(null),
+              requestNotificationPermission: () => Promise.resolve("denied" as NotificationPermission),
+              isOnline: () => true,
+              onlineStatusChange: () => () => {},
+              isStandalone: () => false,
+          }
+        : new PWAManager();

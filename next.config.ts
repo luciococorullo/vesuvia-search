@@ -1,44 +1,38 @@
 import type { NextConfig } from "next";
 
+const securityHeaders = [
+  { key: "X-Content-Type-Options", value: "nosniff" },
+  { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+  { key: "X-Frame-Options", value: "DENY" },
+  {
+    key: "Permissions-Policy",
+    value: "camera=(), microphone=(), geolocation=(self)",
+  },
+];
+
 const nextConfig: NextConfig = {
-  // Enable PWA features
-  experimental: {
-    webpackBuildWorker: true,
-  },
+  // Lets a production build run next to `next dev` without sharing .next
+  distDir: process.env.NEXT_DIST_DIR || '.next',
+  poweredByHeader: false,
 
-  // Configure Turbopack for better performance
-  turbopack: {
-    rules: {
-      '*.svg': {
-        loaders: ['@svgr/webpack'],
-        as: '*.js',
-      },
-    },
-  },
-
-  // Configure headers for PWA
   async headers() {
     return [
       {
-        source: '/manifest.json',
+        source: "/:path*",
+        headers: securityHeaders,
+      },
+      {
+        source: "/manifest.json",
         headers: [
-          {
-            key: 'Content-Type',
-            value: 'application/manifest+json',
-          },
+          { key: "Content-Type", value: "application/manifest+json" },
         ],
       },
       {
-        source: '/sw.js',
+        source: "/sw.js",
         headers: [
-          {
-            key: 'Content-Type',
-            value: 'text/javascript',
-          },
-          {
-            key: 'Service-Worker-Allowed',
-            value: '/',
-          },
+          { key: "Content-Type", value: "text/javascript; charset=utf-8" },
+          { key: "Cache-Control", value: "no-cache, no-store, must-revalidate" },
+          { key: "Service-Worker-Allowed", value: "/" },
         ],
       },
     ];

@@ -1,0 +1,92 @@
+{
+  "CorsePercorso": [
+    {
+      "ExtensionData": {},
+      "Descrizione_destinazione": "Sorrento",
+      "Descrizione_origine": "Napoli P. Garibaldi",
+      "Destinazione_corsa": "Sorrento",
+      "Origine_corsa": "Napoli Porta Nolana",
+      "arrivo": "/Date(1791821820000)/",
+      "destinazione": 62,
+      "origine": 3,
+      "partenza": "/Date(1791817680000)/",
+      "percorsi": [
+        {
+          "ExtensionData": {},
+          "DLinea": "NAPOLI - SORRENTO",
+          "Descrizione_destinazione": "Sorrento",
+          "Descrizione_origine": "Napoli P. Garibaldi",
+          "Destinazione_corsa": "Sorrento",
+          "Linea": "1",
+          "Origine_corsa": "Napoli Porta Nolana",
+          "arrivo": "/Date(-2208926580000)/",
+          "arrivoDestinazione": "/Date(-2208988080000)/",
+          "bitmask": "opttp2026-2030-2",
+          "codice": 1171,
+          "destinazione": 62,
+          "origine": 3,
+          "partenza": "/Date(-2208930900000)/",
+          "partenzaOrigine": "/Date(-2208992220000)/",
+          "progressivo": null,
+          "ritardo": 0,
+          "soppressa": false,
+          "tipologia": "DD"
+        }
+      ]
+    },
+    {
+      "ExtensionData": {},
+      "Descrizione_destinazione": "Sorrento",
+      "Descrizione_origine": "Napoli P. Garibaldi",
+      "Destinazione_corsa": "Sorrento",
+      "Origine_corsa": "Napoli Porta Nolana",
+      "arrivo": "/Date(1791823980000)/",
+      "destinazione": 62,
+      "origine": 3,
+      "partenza": "/Date(1791819660000)/",
+      "percorsi": [
+        {
+          "ExtensionData": {},
+          "DLinea": "NAPOLI - SORRENTO",
+          "Descrizione_destinazione": "Sorrento",
+          "Descrizione_origine": "Napoli P. Garibaldi",
+          "Destinazione_corsa": "Sorrento",
+          "Linea": "1",
+          "Origine_corsa": "Napoli Porta Nolana",
+          "arrivo": "/Date(-2208924420000)/",
+          "arrivoDestinazione": "/Date(-2208987900000)/",
+          "bitmask": "opttp2026-2030-2",
+          "codice": 11737,
+          "destinazione": 62,
+          "origine": 3,
+          "partenza": "/Date(-2208928920000)/",
+          "partenzaOrigine": "/Date(-2208992220000)/",
+          "progressivo": null,
+          "ritardo": 0,
+          "soppressa": false,
+          "tipologia": "DD"
+        }
+      ]
+    }
+  ],
+  "media_origine": [
+    -1,
+    -1,
+    -1,
+    -1
+  ],
+  "media_destinazione": [
+    -1,
+    -1,
+    -1,
+    -1
+  ],
+  "Liv_Min_origine": 0,
+  "Liv_Max_origine": 100,
+  "Liv_Min_destinazione": -1,
+  "Liv_Max_destinazione": 10000,
+  "Origine_disabilitata": false,
+  "Destinazione_disabilitata": false,
+  "Descr_Origine_disabilitata": null,
+  "Descr_Destinazione_disabilitata": null
+}
