@@ -5,12 +5,43 @@ All notable changes to VesuviaSearch will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [3.0.0] - 2026-10-12
+
+Complete revamp: the app is now driven entirely by live EAV data.
 
 ### Added
 
-- Further performance optimizations
-- Additional language support
+- Stations, lines and boards fetched live from EAV (161 stations), cached 24 h with a last-good fallback
+- Live departures and arrivals boards for Circumvesuviana, Cumana and Circumflegrea (Moova and PIS backends)
+- Cross-network trips through interchange nodes (for example Garibaldi to Montesanto)
+- Step-by-step stops with times for trains leaving soon
+- Colloquial, abbreviation-aware station search with aliases and typo tolerance
+- Favourites and recent searches
+- New API routes: `/api/stations`, `/api/destinations`, `/api/journeys`, `/api/board`, `/api/train-stops`
+- Vitest suite with real EAV fixtures (75 tests)
+- Documentation: API, EAV notes, architecture, design explorations
+
+### Changed
+
+- "Linea x Golfo" visual redesign and new app icon
+- Journey times computed from run offsets, fixing the 17:05 vs 17:08 mismatch
+- Rewritten service worker with versioned caches and network-first pages
+- Upgraded to Next.js 16, Vitest 5, plain ESLint flat config; `npm audit` reports 0 vulnerabilities
+
+### Removed
+
+- Prisma, SQLite, seed data and the hand-maintained station list
+- Legacy routes (`/api/search`, `/api/departures`, `/api/trains`, `/api/eav-*`) and old scripts
+- Outdated documentation
+
+### Fixed
+
+- Departures board (the previous endpoint returned 404)
+- Wrong departure times caused by 1900-dated segment values
+
+## [Unreleased]
+
+Nothing yet.
 
 ## [2.0.0] - 2025-06-23
 
@@ -47,24 +78,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Train schedule search for Circumvesuviana Naples-Sorrento line
 - Multilingual support (Italian, English, Spanish, Portuguese, French, German)
 - Responsive web design for mobile and desktop
-- Station autocomplete with code and name matching
-- Campania Express filtering
+- Station autocomplete
 - Date and time selection for departures
 - Real-time train schedule information
-- SQLite database with Prisma ORM
-- Next.js 15 with App Router
+- Next.js with App Router
 - TypeScript for type safety
 - Tailwind CSS for styling
 - TanStack Query for data fetching
-- Vercel deployment configuration
 
 ### Features
 - **Search Functionality**
   - Point-to-point train search
   - Departure-only search from specific stations
   - Time-based filtering
-  - Campania Express filter option
-  - Station name and code matching
+    - Station name and code matching
 
 - **User Interface**
   - Modern, responsive design
@@ -75,24 +102,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Loading states and error handling
 
 - **Technical Features**
-  - SQLite database for development
-  - PostgreSQL support for production
-  - Prisma ORM with type-safe database queries
   - Zod schema validation
   - Server-side API routes
   - Client-side state management
   - Optimized performance with React Query
-
-### Database Schema
-- **Stations**: Railway stations with unique codes
-- **Trains**: Scheduled trains with routes and timing
-- **TrainStops**: Intermediate stops with arrival/departure times
-
-### API Endpoints
-- `GET /api/stations` - Retrieve all stations
-- `GET /api/search` - Search trains between stations
-- `GET /api/departures` - Get departures from a station
-- `GET /api/trains` - Get all trains
 
 ### Supported Languages
 - 🇮🇹 Italian (primary)
@@ -103,24 +116,3 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - 🇩🇪 German
 
 ---
-
-## Development Notes
-
-### Version 1.0.0 Release Notes
-This initial release provides a complete train schedule search solution for the Circumvesuviana railway network. The application focuses on usability, performance, and multilingual accessibility.
-
-### Key Technical Decisions
-- **Next.js 15**: Chosen for its App Router, server components, and excellent TypeScript support
-- **SQLite + Prisma**: Provides type-safe database operations with easy development setup
-- **TanStack Query**: Enables efficient server state management and caching
-- **Tailwind CSS**: Allows rapid UI development with consistent design system
-- **Zod**: Ensures runtime type safety for API requests and responses
-
-### Future Considerations
-- Real-time train tracking integration
-- Push notifications for delays
-- Journey planning with connections
-- Mobile app development
-- Integration with payment systems
-- Accessibility improvements (WCAG compliance)
-- Performance monitoring and analytics

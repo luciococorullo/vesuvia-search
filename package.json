@@ -1,11 +1,11 @@
 {
   "name": "vesuvia-search",
-  "version": "2.2.0",
-  "description": "A modern web application for searching train schedules across the entire EAV network in Campania, Italy",
+  "version": "3.0.0",
+  "description": "Live train times for the EAV network around Naples: Circumvesuviana, Cumana and Circumflegrea. Journey planner, live boards, installable PWA.",
   "private": false,
   "author": {
-    "name": "VesuviaSearch Team",
-    "url": "https://github.com/luciococorullo/vesuvia-search"
+    "name": "Lucio Cocorullo",
+    "url": "https://creja.it"
   },
   "license": "MIT",
   "homepage": "https://vesuvia-search.vercel.app",
@@ -18,12 +18,16 @@
   },
   "keywords": [
     "circumvesuviana",
+    "cumana",
+    "circumflegrea",
+    "eav",
     "train",
-    "schedule",
+    "timetable",
     "naples",
     "sorrento",
+    "campania",
     "italy",
-    "transportation",
+    "pwa",
     "nextjs",
     "typescript"
   ],

@@ -1,249 +1,120 @@
-# VesuviaSearch 🚂
+<div align="center">
 
-**VesuviaSearch** is a modern web application that simplifies train schedule searches for the entire EAV railway network in Campania, Italy. Built with Next.js 15 and TypeScript, it provides a fast, responsive, and multilingual experience with real-time train information and enhanced offline capabilities.
+# Vesuvia
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Next.js](https://img.shields.io/badge/Next.js-15-black)](https://nextjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)](https://www.typescriptlang.org/)
-[![Prisma](https://img.shields.io/badge/Prisma-6-white)](https://www.prisma.io/)
+**Live train times for the whole EAV network around Naples: Circumvesuviana, Cumana and Circumflegrea.**
 
-## 🌟 Features
+[Live demo](https://vesuvia-search.vercel.app) · [API reference](docs/API.md) · [Architecture](docs/ARCHITECTURE.md) · [EAV notes](docs/EAV.md)
 
-- 🔍 **Complete Network Coverage**: Train schedule lookup across the entire EAV railway network in Campania
-- 🚨 **Real-time Information**: Live train data, delays, and cancellation notifications via official EAV API
-- 🌐 **Multilingual**: Support for Italian, English, Spanish, Portuguese, French, and German
-- 📱 **Glass Morphism UI**: Beautiful, modern interface with seamless glass effects
-- 📲 **Enhanced PWA**: Improved offline support with background syncing and notifications
-- 🚂 **Smart Filtering**: Filter by Campania Express trains, departure times, and real-time status
-- ⏱️ **Live Departures**: Station departure boards with up-to-date timing information
-- 🎯 **Advanced Station Search**: Intelligent station search with code, name, and region matching
-- 📊 **Complete Journey Details**: Comprehensive route data with intermediate stops and platform information
-- 🔄 **Robust Offline Mode**: Enhanced caching system that works reliably without internet connection
-- ⚡ **Optimized Performance**: Service worker caching and data prefetching for instant loading
+![Next.js 16](https://img.shields.io/badge/Next.js-16-black) ![React 19](https://img.shields.io/badge/React-19-61dafb) ![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178c6) ![Tailwind v4](https://img.shields.io/badge/Tailwind-v4-38bdf8) ![Tests](https://img.shields.io/badge/tests-Vitest-6e9f18) ![License MIT](https://img.shields.io/badge/license-MIT-green)
 
-## 🛠️ Tech Stack
+</div>
 
-- **Frontend**: Next.js 15 with App Router, React 19, TypeScript 5
-- **API Integration**: Official EAV RESTful API for real-time data
-- **Styling**: Tailwind CSS with advanced animations and custom glass morphism effects
-- **Database**: SQLite with Prisma ORM for local data persistence
-- **State Management**: TanStack Query v5 for efficient server state management
-- **UI Components**: Radix UI primitives with custom styling and enhanced accessibility
-- **Icons**: Lucide React for consistent iconography
-- **PWA Features**: Workbox-powered service worker with advanced caching strategies
-- **Deployment**: Vercel Edge Functions for optimal global performance
+Vesuvia is an unofficial, mobile-first companion for the trains that serve Naples, Pompeii, Sorrento and the Phlegraean coast. EAV (the regional operator) publishes no public API, so the app talks to the same undocumented endpoints its own websites use, validates every payload, and turns them into a clean, fast, installable experience. There is no database and no hand-maintained timetable: stations, lines, journeys and live boards all come straight from EAV.
 
-## 🚀 Quick Start
+## Screenshots
 
-### Prerequisites
+<table>
+  <tr>
+    <td align="center"><img src="docs/screenshots/home.png" width="320" alt="Home with station search"><br><sub>Search with colloquial station names</sub></td>
+    <td align="center"><img src="docs/screenshots/results.png" width="320" alt="Journey results"><br><sub>Journeys with step-by-step stops</sub></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="docs/screenshots/cross-network.png" width="320" alt="Cross-network trip"><br><sub>Cross-network trip with interchange</sub></td>
+    <td align="center"><img src="docs/screenshots/board.png" width="320" alt="Live departures board"><br><sub>Live departures and arrivals board</sub></td>
+  </tr>
+</table>
 
-- Node.js 18+
-- npm, yarn, pnpm, or bun
+## Features
 
-### Installation
+- **Live data, no hand-maintained lists.** The 161 stations, their lines and live boards are read from EAV and refreshed daily, with a last-good fallback if EAV is down.
+- **Colloquial station search.** Type "Sant'Agnello", "Piazza Garibaldi", "Pompei" or even a typo; the app finds "S. Agnello", "Napoli P. Garibaldi" and the right Pompeii stops.
+- **Cross-network trip planning.** EAV's planner only routes inside one network. Vesuvia chains two searches through a known interchange (for example Garibaldi to Montesanto by Metro Line 2) so you can go from Sorrento to Pozzuoli in one query.
+- **Step-by-step stops** with times for trains leaving soon.
+- **Live departures and arrivals boards** for Circumvesuviana, Cumana and Circumflegrea, refreshed every 30 seconds.
+- **Favourites and recent searches**, stored on your device.
+- **6 languages:** Italian, English, Spanish, Portuguese, French, German.
+- **Installable PWA** with a custom service worker and an offline page.
 
-1. **Clone the repository**
+## How it works
 
-   ```bash
-   git clone https://github.com/yourusername/vesuvia-search.git
-   cd vesuvia-search
-   ```
-
-2. **Install dependencies**
-
-   ```bash
-   npm install
-   # or
-   yarn install
-   # or
-   pnpm install
-   ```
-
-3. **Set up environment variables**
-
-   ```bash
-   cp .env.example .env.local
-   ```
-
-   Edit `.env.local` with your configuration (see [Environment Configuration](#environment-configuration))
-
-4. **Set up the database**
-
-   ```bash
-   npm run db:setup
-   ```
-
-5. **Start the development server**
-
-   ```bash
-   npm run dev
-   ```
-
-6. **Open your browser**
-
-   Navigate to [http://localhost:3000](http://localhost:3000)
-
-## 📁 Project Structure
-
-```text
-vesuvia-search/
-├── src/
-│   ├── app/                    # Next.js 15 App Router
-│   │   ├── api/               # API routes
-│   │   ├── components/        # Page-specific components
-│   │   └── ...               # Pages and layouts
-│   ├── components/            # Reusable UI components
-│   │   └── ui/               # Base UI components (shadcn/ui)
-│   ├── contexts/             # React contexts
-│   ├── hooks/                # Custom React hooks
-│   └── lib/                  # Utilities and configurations
-├── prisma/                   # Database schema and seeds
-├── data/                     # CSV data files
-├── scripts/                  # Build and utility scripts
-└── public/                   # Static assets
+```mermaid
+flowchart LR
+  B[Browser<br/>React 19 + TanStack Query] -->|fetch| API[Next.js API routes<br/>zod validation]
+  API --> P[EAV planner<br/>planner.eavsrl.it]
+  API --> O[EAV orariotreni<br/>orariotreni.eavsrl.it]
+  API -.->|unstable_cache 24h<br/>+ last-good| C[(Stations cache)]
+  API -.->|s-maxage / SWR| CDN[Vercel CDN]
+  B <-->|SWR for /api/stations| SW[Service worker]
 ```
 
-## 📱 Progressive Web App (PWA)
+1. The browser loads the station list once (cached for a day) and searches it locally, so typing is instant.
+2. Journeys, boards and stops go through five thin Next.js route handlers that validate input with zod.
+3. Handlers call the EAV planner (stations, destinations, journeys) and orariotreni (line data, HTML boards), validate the upstream payloads, and normalise them into the types in `src/lib/eav/types.ts`.
+4. Responses carry CDN cache headers sized to how fast the data changes.
 
-VesuviaSearch is a fully-featured Progressive Web App that can be installed on your device for a native app-like experience.
+More detail in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
-### Installation
+## Interesting problems solved
 
-#### Mobile Devices
-1. Open VesuviaSearch in your mobile browser
-2. Look for the **"Install App"** button in the navigation
-3. Tap to install and add to your home screen
+- **Undocumented endpoints.** The planner redirects to an error page unless the request carries `X-Requested-With: XMLHttpRequest`. The client treats redirects as failures and validates every payload with zod.
+- **The 17:05 vs 17:08 mismatch.** Planner segments arrive dated 1900-01-01 and describe the whole train run, not the passenger's leg. Real times come from two per-segment offsets from the run's first departure; the run-level dates merely echo the server's "today". See [docs/EAV.md](docs/EAV.md).
+- **Scraping boards.** Live boards are HTML tables served by two different backends (Moova and PIS). They are parsed, entity-decoded and mapped to lines, including the "Ferma a:" stop lists.
+- **Network-scoped planner to meta-planner.** Since EAV never connects its networks, the app resolves an interchange pair, searches leg one, then searches leg two starting after the first arrival plus a transfer buffer.
+- **Abbreviation-aware fuzzy search.** EAV writes "S. Agnello", "P.zza", "C.so". Names are expanded into variants, matched in ranked tiers (exact, prefix, token prefix, substring, fuzzy) with a curated alias table and Damerau-Levenshtein typo tolerance.
 
-#### Desktop
-1. Visit VesuviaSearch in Chrome, Edge, or Safari
-2. Click the **"Install App"** button or look for the install icon in the address bar
-3. Follow the prompts to install
+## Getting started
 
-### PWA Features
-
-- 📲 **Installable**: Add to home screen on mobile and desktop
-- 🔄 **Offline Support**: Previously visited pages work without internet
-- ⚡ **Fast Performance**: Service worker caching for instant loading
-- 🔔 **Native Integration**: Behaves like a native app when installed
-- 🔄 **Auto Updates**: Automatic updates when new versions are available
-
-### Technical Implementation
-
-- **Web App Manifest**: `/public/manifest.json`
-- **Service Worker**: `/public/sw.js`
-- **Icons**: Multiple sizes in `/public/icons/`
-- **Offline Page**: Fallback for uncached pages
-
-For detailed PWA documentation, see [docs/PWA_GUIDE.md](docs/PWA_GUIDE.md).
-
-## 🗄️ Database
-
-This project uses SQLite with Prisma for data management:
-
-### Models
-
-- **Station**: Railway stations with codes and names
-- **Train**: Train schedules with direction, timing, and categories
-- **TrainStop**: Intermediate stops with arrival/departure times
-
-### Available Scripts
+Requires Node.js 20.9 or newer. No environment variables, no database.
 
 ```bash
-npm run db:generate     # Generate Prisma client
-npm run db:push        # Push schema to database
-npm run db:seed        # Seed database with initial data
-npm run db:reset       # Reset and reseed database
-npm run db:setup       # Initial database setup
-```
-
-## 🌍 Internationalization
-
-VesuviaSearch supports multiple languages with dynamic switching:
-
-- 🇮🇹 Italian (Italiano)
-- 🇬🇧 English
-- 🇪🇸 Spanish (Español)
-- 🇵🇹 Portuguese (Português)
-- 🇫🇷 French (Français)
-- 🇩🇪 German (Deutsch)
-
-Languages are automatically detected from browser settings and persisted in localStorage.
-
-## 🔧 Environment Configuration
-
-Create a `.env.local` file in the root directory:
-
-```env
-# Database
-DATABASE_DATABASE_URL="file:./dev.db"
-
-# Analytics (optional)
-VERCEL_ANALYTICS_ID="your-analytics-id"
-
-# Production database (for deployment)
-POSTGRES_URL="your-postgres-connection-string"
-```
-
-## 📝 API Reference
-
-### Endpoints
-
-- `GET /api/stations` - Retrieve all stations
-- `GET /api/search` - Search trains between stations
-- `GET /api/departures` - Get departures from a station
-- `GET /api/trains` - Get all trains
-
-### Example Usage
-
-```javascript
-// Search trains from Naples to Sorrento
-const response = await fetch('/api/search?from=napoli-porta-nolana&to=caserta&time=14:30');
-const data = await response.json();
-```
-
-## 🚀 Deployment
-
-### Vercel (Recommended)
-
-1. Connect your GitHub repository to Vercel
-2. Set environment variables in Vercel dashboard
-3. Deploy automatically on push to main branch
-
-### Manual Deployment
-
-```bash
+npm ci
+npm run dev       # http://localhost:3000
+npm test          # Vitest, uses recorded EAV fixtures
+npm run lint
 npm run build
-npm run start
 ```
 
-## 🤝 Contributing
+Other useful scripts: `npm run type-check`, `npm run format`, `npm run generate-icons`.
 
-We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
+## Project structure
 
-### Development Workflow
+```
+src/
+  app/
+    api/            board, destinations, journeys, stations, train-stops
+    components/     AppShell, SearchCard, StationPicker, ResultsView, JourneyCard, BoardView, ...
+    offline/        offline fallback page
+  hooks/            TanStack Query hooks, localStorage hooks, useNow
+  lib/
+    eav/            EAV client, planner, board scraper, stations, interchanges, dates, types
+    search/         station search (normalisation, aliases, tiered ranking)
+    i18n.ts         6 languages, typed dictionaries
+    storage.ts      SSR-safe localStorage (favourites, recents)
+public/sw.js        service worker
+docs/               API, EAV, ARCHITECTURE, design explorations
+```
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Make your changes
-4. Run tests and linting (`npm run lint`)
-5. Commit your changes (`git commit -m 'Add amazing feature'`)
-6. Push to your branch (`git push origin feature/amazing-feature`)
-7. Open a Pull Request
+## API reference
 
-## 📄 License
+| Route | Method | Params | Response |
+| --- | --- | --- | --- |
+| `/api/stations` | GET | none | `StationsResponse` |
+| `/api/destinations` | GET | `from` (station id) | `{ destinationIds: number[] }` |
+| `/api/journeys` | POST | JSON `{ fromId, toId, date, time }` | `JourneySearchResponse` |
+| `/api/board` | GET | `station`, `type` (`departures` or `arrivals`) | `BoardResponse` |
+| `/api/train-stops` | GET | `station`, `train` | `{ stops: BoardStop[] \| null }` |
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+Errors use `{ error, code }` with `BAD_REQUEST`, `NOT_FOUND`, `UPSTREAM` or `INTERNAL`. Full details in [docs/API.md](docs/API.md).
 
-## ⚠️ Disclaimer
+## Credits and disclaimer
 
-This is an independent project created to help Circumvesuviana travelers. It is not officially affiliated with EAV (Ente Autonomo Volturno) or any official railway operator.
+Vesuvia is an independent project and is not affiliated with, endorsed by or sponsored by EAV s.r.l. Timetable and real-time data are the property of EAV (Ente Autonomo Volturno) and are fetched from its public web endpoints. Data may be wrong or unavailable; always check official EAV information before travelling.
 
-## 🙏 Acknowledgments
+## License
 
-- Train schedule data provided by EAV Circumvesuviana
-- UI components based on [shadcn/ui](https://ui.shadcn.com/)
-- Icons by [Lucide](https://lucide.dev/)
+[MIT](LICENSE)
 
 ---
 
-Made with ❤️ for Circumvesuviana travelers
+Made by [Lucio Cocorullo](https://creja.it) · [Creja](https://creja.it) (creja.it)

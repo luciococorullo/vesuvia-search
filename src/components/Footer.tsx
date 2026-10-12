@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { ArrowUpRight, Github } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -12,20 +13,19 @@ export default function Footer() {
         href="https://creja.it"
         target="_blank"
         rel="noopener noreferrer"
-        className="group inline-flex items-center gap-3 rounded-full border border-line bg-card py-2 pl-2 pr-4 shadow-warm-sm transition hover:-translate-y-0.5 hover:border-sun"
+        className="group inline-flex items-center gap-3 rounded-full border border-line bg-card py-3 pl-5 pr-4 shadow-warm-sm transition hover:-translate-y-0.5 hover:border-sun"
       >
-        <span
-          aria-hidden="true"
-          className="grid h-9 w-9 place-items-center rounded-full bg-gradient-to-br from-sea via-sea2 to-sun font-serif text-base font-bold text-white"
-        >
-          C
+        <span className="text-[10px] font-medium uppercase tracking-[0.16em] text-muted">
+          {t("footerMadeBy")}
         </span>
-        <span className="flex flex-col items-start leading-tight">
-          <span className="text-[11px] uppercase tracking-[0.12em] text-muted">
-            {t("footerMadeBy")}
-          </span>
-          <span className="font-serif text-lg font-semibold text-ink">Creja</span>
-        </span>
+        <Image
+          src="/brand/creja-wordmark.svg"
+          alt="Creja"
+          unoptimized
+          width={66}
+          height={29}
+          className="h-7 w-auto transition group-hover:opacity-80"
+        />
         <ArrowUpRight
           aria-hidden="true"
           className="h-4 w-4 text-muted transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-accent"
