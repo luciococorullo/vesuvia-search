@@ -1,0 +1,130 @@
+{
+  "CorsePercorso": [
+    {
+      "ExtensionData": {},
+      "Descrizione_destinazione": "Ottaviano",
+      "Descrizione_origine": "Sorrento",
+      "Destinazione_corsa": "Sarno",
+      "Origine_corsa": "Napoli Porta Nolana",
+      "arrivo": "/Date(1791792030000)/",
+      "destinazione": 16,
+      "origine": 62,
+      "partenza": "/Date(1791785640000)/",
+      "percorsi": [
+        {
+          "ExtensionData": {},
+          "DLinea": "NAPOLI - SORRENTO",
+          "Descrizione_destinazione": "Napoli P. Garibaldi",
+          "Descrizione_origine": "Sorrento",
+          "Destinazione_corsa": "Napoli Porta Nolana",
+          "Linea": "1",
+          "Origine_corsa": "Sorrento",
+          "arrivo": "/Date(-2208958440000)/",
+          "arrivoDestinazione": "/Date(-2208988260000)/",
+          "bitmask": "opttp2026-2030-2",
+          "codice": 1082,
+          "destinazione": 3,
+          "origine": 62,
+          "partenza": "/Date(-2208962760000)/",
+          "partenzaOrigine": "/Date(-2208992400000)/",
+          "progressivo": null,
+          "ritardo": 0,
+          "soppressa": false,
+          "tipologia": "DD"
+        },
+        {
+          "ExtensionData": {},
+          "DLinea": "NAPOLI - OTTAVIANO - SARNO",
+          "Descrizione_destinazione": "Ottaviano",
+          "Descrizione_origine": "Napoli P. Garibaldi",
+          "Destinazione_corsa": "Sarno",
+          "Linea": "6",
+          "Origine_corsa": "Napoli Porta Nolana",
+          "arrivo": "/Date(-2208954330000)/",
+          "arrivoDestinazione": "/Date(-2208990090000)/",
+          "bitmask": "opttp2026-2030-2",
+          "codice": 6093,
+          "destinazione": 16,
+          "origine": 3,
+          "partenza": "/Date(-2208958680000)/",
+          "partenzaOrigine": "/Date(-2208992250000)/",
+          "progressivo": null,
+          "ritardo": 0,
+          "soppressa": false,
+          "tipologia": "A"
+        }
+      ]
+    },
+    {
+      "ExtensionData": {},
+      "Descrizione_destinazione": "Ottaviano",
+      "Descrizione_origine": "Sorrento",
+      "Destinazione_corsa": "Sarno",
+      "Origine_corsa": "Napoli Porta Nolana",
+      "arrivo": "/Date(1791798510000)/",
+      "destinazione": 16,
+      "origine": 62,
+      "partenza": "/Date(1791789960000)/",
+      "percorsi": [
+        {
+          "ExtensionData": {},
+          "DLinea": "NAPOLI - SORRENTO",
+          "Descrizione_destinazione": "Napoli P. Garibaldi",
+          "Descrizione_origine": "Sorrento",
+          "Destinazione_corsa": "Napoli Porta Nolana",
+          "Linea": "1",
+          "Origine_corsa": "Sorrento",
+          "arrivo": "/Date(-2208954120000)/",
+          "arrivoDestinazione": "/Date(-2208988260000)/",
+          "bitmask": "opttp2026-2030-2",
+          "codice": 1094,
+          "destinazione": 3,
+          "origine": 62,
+          "partenza": "/Date(-2208958440000)/",
+          "partenzaOrigine": "/Date(-2208992400000)/",
+          "progressivo": null,
+          "ritardo": 0,
+          "soppressa": false,
+          "tipologia": "DD"
+        },
+        {
+          "ExtensionData": {},
+          "DLinea": "NAPOLI - OTTAVIANO - SARNO",
+          "Descrizione_destinazione": "Ottaviano",
+          "Descrizione_origine": "Napoli P. Garibaldi",
+          "Destinazione_corsa": "Sarno",
+          "Linea": "6",
+          "Origine_corsa": "Napoli Porta Nolana",
+          "arrivo": "/Date(-2208947850000)/",
+          "arrivoDestinazione": "/Date(-2208990090000)/",
+          "bitmask": "opttp2026-2030-2",
+          "codice": 6111,
+          "destinazione": 16,
+          "origine": 3,
+          "partenza": "/Date(-2208952200000)/",
+          "partenzaOrigine": "/Date(-2208992250000)/",
+          "progressivo": null,
+          "ritardo": 0,
+          "soppressa": false,
+          "tipologia": "A"
+        }
+      ]
+    }
+  ],
+  "media_origine": [
+    -1,
+    -1
+  ],
+  "media_destinazione": [
+    -1,
+    -1
+  ],
+  "Liv_Min_origine": -1,
+  "Liv_Max_origine": 10000,
+  "Liv_Min_destinazione": -1,
+  "Liv_Max_destinazione": 10000,
+  "Origine_disabilitata": false,
+  "Destinazione_disabilitata": false,
+  "Descr_Origine_disabilitata": null,
+  "Descr_Destinazione_disabilitata": null
+}

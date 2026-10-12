@@ -1,67 +1,44 @@
 "use client";
 
-import React from "react";
-import { Button } from "@/components/ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { ChevronDown } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { languages, Language } from "@/lib/i18n";
-import { Check } from "lucide-react";
+import { isLanguage, languages } from "@/lib/i18n";
+import { cn } from "@/lib/utils";
 
-export function LanguageSelector() {
-  const { language, setLanguage, isLoaded } = useLanguage();
-  const [open, setOpen] = React.useState(false);
-
-  const handleLanguageChange = (lang: Language) => {
-    setLanguage(lang);
-    setOpen(false);
-  };
-
-  // Don't render anything until the language is loaded from localStorage
-  if (!isLoaded) {
-    return (
-      <Button variant="outline" className="flex items-center gap-2 h-10">
-        <div className="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center text-sm">
-          🇬🇧
-        </div>
-        <span className="hidden sm:inline">English</span>
-      </Button>
-    );
-  }
+/**
+ * Compact "IT ▾" pill backed by a native <select> (accessible, native picker on mobile).
+ * `tone="light"` for use on the hero gradient, `"dark"` on cream backgrounds.
+ */
+export function LanguageSelector({ tone = "light" }: { tone?: "light" | "dark" }) {
+  const { language, setLanguage, t } = useLanguage();
 
   return (
-    <div suppressHydrationWarning>
-      <Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger asChild>
-          <Button variant="outline" className="flex items-center gap-2 h-10">
-            <div className="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center text-sm">
-              {languages[language].flag}
-            </div>
-            <span className="hidden sm:inline">{languages[language].name}</span>
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className="w-56 p-2">
-          <div className="space-y-1">
-            {Object.entries(languages).map(([code, { name, flag }]) => (
-              <Button
-                key={code}
-                variant="ghost"
-                className={`w-full justify-start text-left h-10 ${
-                  language === code ? "bg-blue-50 text-blue-700" : ""
-                }`}
-                onClick={() => handleLanguageChange(code as Language)}
-              >
-                <div className="flex items-center gap-3 w-full">
-                  <div className="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center text-sm flex-shrink-0">
-                    {flag}
-                  </div>
-                  <span className="flex-1">{name}</span>
-                  {language === code && <Check className="h-4 w-4 flex-shrink-0" />}
-                </div>
-              </Button>
-            ))}
-          </div>
-        </PopoverContent>
-      </Popover>
-    </div>
+    <label
+      className={cn(
+        "relative inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[13px] font-semibold focus-within:outline focus-within:outline-2 focus-within:outline-offset-2",
+        tone === "light"
+          ? "bg-white/18 text-white focus-within:outline-white"
+          : "bg-sand text-ink focus-within:outline-sea2",
+      )}
+    >
+      <span className="sr-only">{t("language")}</span>
+      <span aria-hidden="true" suppressHydrationWarning>
+        {languages[language].short}
+      </span>
+      <ChevronDown aria-hidden="true" className="h-3.5 w-3.5 opacity-80" />
+      <select
+        value={language}
+        onChange={(e) => isLanguage(e.target.value) && setLanguage(e.target.value)}
+        className="absolute inset-0 cursor-pointer appearance-none opacity-0"
+      >
+        {Object.entries(languages).map(([code, { name }]) => (
+          <option key={code} value={code}>
+            {name}
+          </option>
+        ))}
+      </select>
+    </label>
   );
 }
+
+export default LanguageSelector;

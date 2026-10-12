@@ -1,111 +1,151 @@
-const CACHE_NAME = 'vesuvia-search-v1';
-const urlsToCache = [
-  '/',
-  '/manifest.json',
-  '/icons/icon-192x192.svg',
-  '/icons/icon-512x512.svg',
-  // Add other static assets as needed
+/* VesuviaSearch service worker
+ *
+ * Strategies:
+ * - navigations: network-first -> cached page -> /offline
+ * - static assets (/_next/static, /icons, fonts, manifest): stale-while-revalidate
+ * - /api/stations: stale-while-revalidate
+ * - every other /api/* (board, train-stops, journeys, ...): network only, never cached
+ * - only same-origin GET requests are handled; everything else goes to the network
+ *
+ * Bump VERSION to invalidate all caches on deploy-sensitive changes.
+ */
+
+const VERSION = "v4";
+const PREFIX = "vesuvia-";
+const STATIC_CACHE = `${PREFIX}static-${VERSION}`;
+const PAGES_CACHE = `${PREFIX}pages-${VERSION}`;
+const DATA_CACHE = `${PREFIX}data-${VERSION}`;
+const CURRENT_CACHES = [STATIC_CACHE, PAGES_CACHE, DATA_CACHE];
+
+const OFFLINE_URL = "/offline";
+const PRECACHE_URLS = [
+  OFFLINE_URL,
+  "/manifest.json",
+  "/icons/icon-192x192.png",
+  "/icons/icon-512x512.png",
 ];
 
-// Install event - cache resources
-self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then((cache) => {
-        console.log('Opened cache');
-        return cache.addAll(urlsToCache);
-      })
-  );
-});
+const SWR_API_PATHS = ["/api/stations"];
 
-// Fetch event - serve from cache when offline
-self.addEventListener('fetch', (event) => {
-  event.respondWith(
-    caches.match(event.request)
-      .then((response) => {
-        // Return cached version or fetch from network
-        if (response) {
-          return response;
-        }
-        return fetch(event.request);
-      }
-    )
-  );
-});
-
-// Activate event - clean up old caches
-self.addEventListener('activate', (event) => {
+self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames.map((cacheName) => {
-          if (cacheName !== CACHE_NAME) {
-            console.log('Deleting old cache:', cacheName);
-            return caches.delete(cacheName);
-          }
-        })
+    (async () => {
+      const cache = await caches.open(STATIC_CACHE);
+      // Precache individually so a single failure doesn't abort install.
+      await Promise.all(
+        PRECACHE_URLS.map((url) =>
+          cache.add(new Request(url, { cache: "reload" })).catch(() => undefined)
+        )
       );
-    })
+      await self.skipWaiting();
+    })()
   );
 });
 
-// Background sync for train data updates
-self.addEventListener('sync', (event) => {
-  if (event.tag === 'train-data-sync') {
-    event.waitUntil(syncTrainData());
+self.addEventListener("activate", (event) => {
+  event.waitUntil(
+    (async () => {
+      const keys = await caches.keys();
+      await Promise.all(
+        keys
+          .filter((key) => !CURRENT_CACHES.includes(key))
+          .map((key) => caches.delete(key))
+      );
+      if (self.registration.navigationPreload) {
+        await self.registration.navigationPreload.enable().catch(() => undefined);
+      }
+      await self.clients.claim();
+    })()
+  );
+});
+
+self.addEventListener("message", (event) => {
+  if (event.data && event.data.type === "SKIP_WAITING") {
+    self.skipWaiting();
   }
 });
 
-async function syncTrainData() {
-  try {
-    // Sync latest train data when connection is restored
-    const response = await fetch('/api/stations');
-    if (response.ok) {
-      const cache = await caches.open(CACHE_NAME);
-      cache.put('/api/stations', response.clone());
+function isStaticAsset(url, request) {
+  return (
+    url.pathname.startsWith("/_next/static/") ||
+    url.pathname.startsWith("/icons/") ||
+    url.pathname === "/manifest.json" ||
+    url.pathname === "/favicon.ico" ||
+    request.destination === "font" ||
+    /\.(?:woff2?|ttf|otf)$/.test(url.pathname)
+  );
+}
+
+self.addEventListener("fetch", (event) => {
+  const { request } = event;
+  if (request.method !== "GET") return;
+
+  const url = new URL(request.url);
+  if (url.origin !== self.location.origin) return;
+
+  if (request.mode === "navigate") {
+    event.respondWith(networkFirstNavigation(event));
+    return;
+  }
+
+  if (url.pathname.startsWith("/api/")) {
+    if (SWR_API_PATHS.includes(url.pathname)) {
+      event.respondWith(staleWhileRevalidate(event, DATA_CACHE));
     }
-  } catch (error) {
-    console.log('Background sync failed:', error);
+    // Any other API route: network only (let the browser handle it).
+    return;
+  }
+
+  if (isStaticAsset(url, request)) {
+    event.respondWith(staleWhileRevalidate(event, STATIC_CACHE));
+  }
+});
+
+async function networkFirstNavigation(event) {
+  const { request } = event;
+  // Key pages by path only so query strings don't bloat the cache.
+  const url = new URL(request.url);
+  const cacheKey = url.origin + url.pathname;
+  const cache = await caches.open(PAGES_CACHE);
+
+  try {
+    const preloaded = await event.preloadResponse;
+    const response = preloaded || (await fetch(request));
+    if (response && response.ok && response.type === "basic") {
+      event.waitUntil(cache.put(cacheKey, response.clone()));
+    }
+    return response;
+  } catch {
+    const cached = await cache.match(cacheKey);
+    if (cached) return cached;
+    const offline = await caches.match(OFFLINE_URL);
+    if (offline) return offline;
+    return new Response("Offline", {
+      status: 503,
+      headers: { "Content-Type": "text/plain; charset=utf-8" },
+    });
   }
 }
 
-// Push notification handler (for future use)
-self.addEventListener('push', (event) => {
-  const options = {
-    body: event.data ? event.data.text() : 'Nuovo aggiornamento disponibile',
-    icon: '/icons/icon-192x192.svg',
-    badge: '/icons/icon-96x96.svg',
-    vibrate: [200, 100, 200],
-    data: {
-      dateOfArrival: Date.now(),
-      primaryKey: 1
-    },
-    actions: [
-      {
-        action: 'explore',
-        title: 'Visualizza',
-        icon: '/icons/icon-96x96.svg'
-      },
-      {
-        action: 'close',
-        title: 'Chiudi',
-        icon: '/icons/icon-96x96.svg'
+async function staleWhileRevalidate(event, cacheName) {
+  const { request } = event;
+  const cache = await caches.open(cacheName);
+  const cached = await cache.match(request);
+
+  const network = fetch(request)
+    .then((response) => {
+      if (response && response.ok) {
+        event.waitUntil(cache.put(request, response.clone()).catch(() => undefined));
       }
-    ]
-  };
+      return response;
+    })
+    .catch(() => undefined);
 
-  event.waitUntil(
-    self.registration.showNotification('VesuviaSearch', options)
-  );
-});
-
-// Notification click handler
-self.addEventListener('notificationclick', (event) => {
-  event.notification.close();
-
-  if (event.action === 'explore') {
-    event.waitUntil(
-      clients.openWindow('/')
-    );
+  if (cached) {
+    event.waitUntil(network);
+    return cached;
   }
-});
+
+  const response = await network;
+  return response || Response.error();
+}

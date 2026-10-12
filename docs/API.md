@@ -1,393 +1,137 @@
-# API Documentation
+# API reference
 
-This document provides comprehensive information about the VesuviaSearch REST API endpoints.
+Five route handlers under `src/app/api/*/route.ts`, all `dynamic = 'force-dynamic'`. Types live in `src/lib/eav/types.ts`. User-facing error messages are in Italian.
 
-## Base URL
+## Errors
 
-```
-Development: http://localhost:3000/api
-Production: https://your-domain.com/api
-```
+Every error uses the same body, with `Cache-Control: no-store`:
 
-## Content Type
-
-All API endpoints accept and return JSON data unless otherwise specified.
-
-```
-Content-Type: application/json
-```
-
-## Endpoints
-
-### 1. Stations
-
-#### Get All Stations
-
-Retrieve a list of all railway stations in the Circumvesuviana network.
-
-**Endpoint:** `GET /api/stations`
-
-**Response:**
-```json
-{
-  "stations": [
-    {
-      "id": 1,
-      "name": "Napoli Centrale",
-      "code": "NAP"
-    },
-    {
-      "id": 2,
-      "name": "Sorrento",
-      "code": "SOR"
-    }
-  ]
+```ts
+interface ApiError {
+  error: string; // safe, human readable (Italian)
+  code: 'BAD_REQUEST' | 'NOT_FOUND' | 'UPSTREAM' | 'INTERNAL';
 }
 ```
 
-**Status Codes:**
-- `200` - Success
-- `500` - Internal Server Error
+| code | HTTP | Meaning |
+| --- | --- | --- |
+| `BAD_REQUEST` | 400 | Validation failed, or invalid JSON body |
+| `NOT_FOUND` | 404 | Unknown station, or no board for that station |
+| `UPSTREAM` | 502 | EAV timed out (8 s), answered non-2xx or redirected, or sent a payload that failed validation |
+| `INTERNAL` | 500 | Anything else. Details are only logged server-side |
 
----
+## GET /api/stations
 
-### 2. Train Search
+All stations, merged from the EAV planner and orariotreni (161 at the time of writing). No parameters.
 
-#### Search Trains Between Stations
-
-Search for trains between two stations with optional filters.
-
-**Endpoint:** `GET /api/search`
-
-**Query Parameters:**
-- `from` (required) - Source station name or code
-- `to` (required) - Destination station name or code
-- `date` (optional) - Travel date in YYYY-MM-DD format
-- `time` (optional) - Departure time in HH:MM format
-- `isCampaniaExpress` (optional) - Filter for Campania Express only (true/false)
-
-**Example Request:**
-```
-GET /api/search?from=napoli-porta-nolana&to=caserta&time=14:30&isCampaniaExpress=true
-```
-
-**Response:**
-```json
-{
-  "trains": [
-    {
-      "id": 123,
-      "trainNumber": "CE001",
-      "direction": "SORRENTO",
-      "departureTime": "14:30",
-      "operatingDays": "DAILY",
-      "isCampaniaExpress": true,
-      "category": "CAMPANIA_EXPRESS",
-      "startStationId": 1,
-      "endStationId": 2,
-      "startStation": {
-        "id": 1,
-        "name": "Napoli Centrale",
-        "code": "NAP"
-      },
-      "endStation": {
-        "id": 2,
-        "name": "Sorrento",
-        "code": "SOR"
-      },
-      "stops": [
-        {
-          "id": 456,
-          "trainId": 123,
-          "stationId": 3,
-          "arrivalTime": "14:45",
-          "departureTime": "14:47",
-          "stopOrder": 1,
-          "station": {
-            "id": 3,
-            "name": "Pompei",
-            "code": "POM"
-          }
-        }
-      ]
-    }
-  ],
-  "totalResults": 1,
-  "searchCriteria": {
-    "from": "napoli",
-    "to": "sorrento",
-    "time": "14:30",
-    "isCampaniaExpress": true
-  },
-  "fromStations": [
-    {
-      "id": 1,
-      "name": "Napoli Centrale",
-      "code": "NAP"
-    }
-  ],
-  "toStations": [
-    {
-      "id": 2,
-      "name": "Sorrento", 
-      "code": "SOR"
-    }
-  ]
+```ts
+interface StationsResponse {
+  stations: Station[];
+  updatedAt: string; // ISO
+  stale?: boolean;   // true when served from the last-good copy because EAV failed
+}
+interface Station {
+  id: number;                 // planner "Codice"
+  name: string;               // as EAV writes it, e.g. "S. Agnello"
+  network: 1 | 2 | 3 | 4;     // 1 Vesuviana, 2 Flegrea, 3 Suburbana, 4 Metrocampania NordEst
+  lines: LineKey[];
+  board?: { codLoc: string; touchpoint: string }; // present only if a live board exists
 }
 ```
 
-**Status Codes:**
-- `200` - Success
-- `400` - Bad Request (invalid parameters)
-- `422` - Validation Error
-- `500` - Internal Server Error
+Cache: `public, s-maxage=86400, stale-while-revalidate=604800`; when `stale` is true, `s-maxage=60, stale-while-revalidate=300`.
 
----
+## GET /api/destinations
 
-### 3. Departures
+Stations reachable from `from` according to the planner (same network only).
 
-#### Get Departures from Station
+| Param | Validation |
+| --- | --- |
+| `from` | required, coerced integer, positive; must be a known station id |
 
-Retrieve upcoming departures from a specific station.
+Response: `{ destinationIds: number[] }` (filtered to known stations). Errors: 400, 404, 502.
+Cache: `s-maxage=86400, stale-while-revalidate=604800`, plus a 24 h `unstable_cache` per `from`.
 
-**Endpoint:** `GET /api/departures`
+## POST /api/journeys
 
-**Query Parameters:**
-- `from` (required) - Station name or code
-- `time` (optional) - Start time in HH:MM format (defaults to current time)
-- `date` (optional) - Date in YYYY-MM-DD format (defaults to current date)
-- `isCampaniaExpress` (optional) - Filter for Campania Express only (true/false)
+JSON body:
 
-**Example Request:**
-```
-GET /api/departures?from=napoli&time=15:00
-```
-
-**Response:**
-```json
-{
-  "trains": [
-    {
-      "id": 124,
-      "trainNumber": "R002",
-      "direction": "SORRENTO",
-      "departureTime": "15:15",
-      "operatingDays": "DAILY",
-      "isCampaniaExpress": false,
-      "category": "REGIONALE",
-      "startStationId": 1,
-      "endStationId": 2,
-      "startStation": {
-        "id": 1,
-        "name": "Napoli Centrale",
-        "code": "NAP"
-      },
-      "endStation": {
-        "id": 2,
-        "name": "Sorrento",
-        "code": "SOR"
-      },
-      "stops": []
-    }
-  ],
-  "totalResults": 1,
-  "searchCriteria": {
-    "from": "napoli",
-    "time": "15:00"
-  }
+```ts
+interface JourneySearchRequest {
+  fromId: number; // integer > 0
+  toId: number;   // integer > 0, different from fromId
+  date: string;   // YYYY-MM-DD, must be a valid calendar date
+  time: string;   // HH:MM, 00:00-23:59
 }
 ```
 
-**Status Codes:**
-- `200` - Success
-- `400` - Bad Request (invalid parameters)
-- `422` - Validation Error
-- `500` - Internal Server Error
+Validation failures, invalid JSON and `fromId === toId` return 400; unknown ids return 404.
 
----
-
-### 4. All Trains
-
-#### Get All Trains
-
-Retrieve all train schedules in the system.
-
-**Endpoint:** `GET /api/trains`
-
-**Query Parameters:**
-- `direction` (optional) - Filter by direction (NAPOLI or SORRENTO)
-- `isCampaniaExpress` (optional) - Filter for Campania Express only (true/false)
-
-**Example Request:**
-```
-GET /api/trains?direction=SORRENTO&isCampaniaExpress=true
-```
-
-**Response:**
-```json
-{
-  "trains": [
-    {
-      "id": 123,
-      "trainNumber": "CE001",
-      "direction": "SORRENTO",
-      "departureTime": "14:30",
-      "operatingDays": "DAILY",
-      "isCampaniaExpress": true,
-      "category": "CAMPANIA_EXPRESS",
-      "startStationId": 1,
-      "endStationId": 2,
-      "startStation": {
-        "id": 1,
-        "name": "Napoli Centrale",
-        "code": "NAP"
-      },
-      "endStation": {
-        "id": 2,
-        "name": "Sorrento",
-        "code": "SOR"
-      }
-    }
-  ],
-  "totalResults": 1
+```ts
+interface JourneySearchResponse {
+  journeys: Journey[];          // same network; empty for cross-network results
+  crossNetwork?: CrossNetworkPlan;
+}
+interface Journey {
+  id: string; from: string; to: string;
+  departure: string; arrival: string; // ISO with Europe/Rome offset, real dates
+  durationMinutes: number; changes: number;
+  legs: Leg[]; delayMinutes: number; cancelled: boolean;
+}
+interface Leg {
+  trainNumber: string; lineName: string; line: LineKey; category?: string;
+  from: string; to: string; departure: string; arrival: string;
+  delayMinutes: number; cancelled: boolean;
+}
+interface CrossNetworkPlan {
+  first:    { fromId: number; toId: number; journeys: Journey[] };
+  transfer: { fromStation: string; toStation: string; description: string; minutes: number };
+  second:   { fromId: number; toId: number; journeys: Journey[] };
 }
 ```
 
-**Status Codes:**
-- `200` - Success
-- `500` - Internal Server Error
+If origin and destination are on different networks and no interchange is known, the response is `{ journeys: [] }`. Cache: `private, no-store`.
 
-## Data Models
+## GET /api/board
 
-### Station
-```typescript
-{
-  id: number;
-  name: string;
-  code: string;
-}
-```
+Live board for a station.
 
-### Train
-```typescript
-{
-  id: number;
-  trainNumber: string | null;
-  direction: "NAPOLI" | "SORRENTO";
-  departureTime: string; // HH:MM format
-  operatingDays: "WEEKDAYS_ONLY" | "WEEKENDS_ONLY" | "DAILY" | "WEEKDAYS_AND_SATURDAY";
-  isCampaniaExpress: boolean;
-  category: "REGIONALE" | "INTERCITY" | "CAMPANIA_EXPRESS";
-  startStationId: number;
-  endStationId: number;
-}
-```
+| Param | Validation |
+| --- | --- |
+| `station` | required, positive integer |
+| `type` | `departures` (default) or `arrivals` |
 
-### TrainStop
-```typescript
-{
-  id: number;
-  trainId: number;
+```ts
+interface BoardResponse {
   stationId: number;
-  arrivalTime: string | null; // HH:MM format
-  departureTime: string | null; // HH:MM format
-  stopOrder: number;
-  station: Station;
+  type: 'departures' | 'arrivals';
+  entries: BoardEntry[];
+  updatedAt: string;
 }
-```
-
-### TrainWithDetails
-```typescript
-Train & {
-  startStation: Station;
-  endStation: Station;
-  stops: (TrainStop & { station: Station })[];
+interface BoardEntry {
+  trainNumber: string; category: string;
+  endpoint: string;       // destination (departures) or origin (arrivals)
+  time: string;           // HH:MM scheduled
+  delayMinutes: number; platform?: string; cancelled: boolean;
+  stops: BoardStop[];     // from "Ferma a:" (departures)
+  line: LineKey;
 }
+interface BoardStop { station: string; time: string } // HH:MM
 ```
 
-## Error Responses
+404 if the station is unknown or has no board (for example Stabia Scavi). Cache: `s-maxage=30, stale-while-revalidate=30`.
 
-All error responses follow this format:
+## GET /api/train-stops
 
-```json
-{
-  "error": "Error message description",
-  "details": "Additional error details (optional)",
-  "code": "ERROR_CODE (optional)"
-}
-```
+Stops after `station` for a given train, read from that station's departures board.
 
-### Common Error Codes
+| Param | Validation |
+| --- | --- |
+| `station` | required, positive integer |
+| `train` | required, 1 to 8 digits (trimmed) |
 
-- `VALIDATION_ERROR` - Request validation failed
-- `STATION_NOT_FOUND` - Specified station(s) not found
-- `NO_TRAINS_FOUND` - No trains match the search criteria
-- `INTERNAL_ERROR` - Server-side error
+Response: `{ stops: BoardStop[] | null }`. `stops` is `null` when the train is not on the board (too far ahead, already departed), the station has no board, or the board lists no stops. Cache: `s-maxage=30, stale-while-revalidate=30`.
 
-## Rate Limiting
+## LineKey
 
-Currently, no rate limiting is implemented. In production, consider implementing rate limiting to prevent abuse.
-
-## Authentication
-
-The API currently does not require authentication. All endpoints are publicly accessible.
-
-## Examples
-
-### JavaScript/TypeScript
-
-```typescript
-// Search for trains
-const searchTrains = async (from: string, to: string, time?: string) => {
-  const params = new URLSearchParams({
-    from,
-    to,
-    ...(time && { time })
-  });
-  
-  const response = await fetch(`/api/search?${params}`);
-  const data = await response.json();
-  
-  if (!response.ok) {
-    throw new Error(data.error || 'Failed to search trains');
-  }
-  
-  return data;
-};
-
-// Get station departures
-const getDepartures = async (stationCode: string) => {
-  const response = await fetch(`/api/departures?from=${stationCode}`);
-  const data = await response.json();
-  
-  if (!response.ok) {
-    throw new Error(data.error || 'Failed to get departures');
-  }
-  
-  return data;
-};
-```
-
-### cURL
-
-```bash
-# Search trains
-curl -X GET "https://your-domain.com/api/search?from=napoli-porta-nolana&to=caserta&time=14:30" \
-  -H "Accept: application/json"
-
-# Get departures
-curl -X GET "https://your-domain.com/api/departures?from=napoli" \
-  -H "Accept: application/json"
-
-# Get all stations
-curl -X GET "https://your-domain.com/api/stations" \
-  -H "Accept: application/json"
-```
-
-## Notes
-
-- All times are in 24-hour format (HH:MM)
-- Dates are in ISO format (YYYY-MM-DD)
-- Station matching is case-insensitive and supports partial matches
-- The API returns trains sorted by departure time
-- Empty results are returned as valid responses with empty arrays
+`sorrento | baiano | poggiomarino | sarno | torre | pomigliano | cumana | circumflegrea | soccavo | other`

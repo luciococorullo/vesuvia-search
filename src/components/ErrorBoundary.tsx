@@ -1,10 +1,3 @@
-/**
- * @fileoverview Error Boundary Component
- *
- * Catches JavaScript errors anywhere in the child component tree,
- * logs those errors, and displays a fallback UI instead of the component tree that crashed.
- */
-
 "use client";
 
 import React from "react";
@@ -17,43 +10,37 @@ interface Props {
 
 interface State {
   hasError: boolean;
-  error?: Error;
 }
 
+/** Catches render errors in the subtree and shows a minimal, bilingual recovery screen. */
 export class ErrorBoundary extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
+  state: State = { hasError: false };
 
-    // Define a state variable to track whether is an error or not
-    this.state = { hasError: false };
-  }
-
-  static getDerivedStateFromError(error: Error): State {
-    // Update state so the next render will show the fallback UI
-    return { hasError: true, error };
+  static getDerivedStateFromError(): State {
+    return { hasError: true };
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    // You can use your own error logging service here
     console.error("ErrorBoundary caught an error:", error, errorInfo);
-
-    // Call the onError prop if provided
-    if (this.props.onError) {
-      this.props.onError(error, errorInfo);
-    }
+    this.props.onError?.(error, errorInfo);
   }
 
   render() {
-    // Check if the error is thrown
-    if (this.state.hasError) {
-      // You can render any custom fallback UI
-      return (
-        this.props.fallback || <div className="text-sm text-gray-500">Component failed to load</div>
-      );
-    }
-
-    // Return children components in case of no error
-    return this.props.children;
+    if (!this.state.hasError) return this.props.children;
+    if (this.props.fallback) return this.props.fallback;
+    return (
+      <div role="alert" className="mx-auto max-w-sm px-6 py-24 text-center">
+        <p className="font-serif text-2xl font-semibold">Qualcosa è andato storto</p>
+        <p className="mt-2 text-sm text-muted">Something went wrong. Ricarica la pagina.</p>
+        <button
+          type="button"
+          onClick={() => window.location.reload()}
+          className="mt-6 rounded-full bg-accent px-5 py-2.5 text-sm font-bold text-white"
+        >
+          Ricarica · Reload
+        </button>
+      </div>
+    );
   }
 }
 

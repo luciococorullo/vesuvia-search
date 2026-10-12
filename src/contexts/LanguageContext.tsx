@@ -1,119 +1,102 @@
-/**
- * @fileoverview Language Context for internationalization
- *
- * This context provides language state management and translation functions
- * throughout the VesuviaSearch application. It handles:
- * - Language persistence in localStorage
- * - Browser language detection
- * - Translation function with fallbacks
- * - Language switching functionality
- *
- * @author VesuviaSearch Team
- * @version 1.0.0
- */
-
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from "react";
-import { Language, translations, TranslationKey } from "@/lib/i18n";
-
 /**
- * Interface for the Language Context
+ * Language state + translation function.
+ *
+ * Resolution order on first load: saved choice (localStorage) → browser
+ * language if supported (so Italian browsers get Italian) → English.
+ * Server render uses Italian (the site's primary audience) and switches
+ * after hydration if needed.
  */
+
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  useSyncExternalStore,
+} from "react";
+import {
+  DEFAULT_LANGUAGE,
+  FALLBACK_LANGUAGE,
+  isLanguage,
+  languages,
+  translate,
+  type Language,
+  type TranslationKey,
+  type TranslationVars,
+} from "@/lib/i18n";
+
+const STORAGE_KEY = "language";
+
 interface LanguageContextType {
-  language: Language; // Current active language
-  setLanguage: (lang: Language) => void; // Function to change language
-  t: (key: TranslationKey) => string; // Translation function
-  isLoaded: boolean; // Loading state for hydration
+  language: Language;
+  /** BCP-47 locale for Intl formatting (e.g. "it-IT"). */
+  locale: string;
+  setLanguage: (lang: Language) => void;
+  t: (key: TranslationKey, vars?: TranslationVars) => string;
+  isLoaded: boolean;
 }
 
-/**
- * Language Context - provides language state to the app
- */
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
-/**
- * Language Provider Component
- *
- * Manages language state, persistence, and translation functionality.
- * Features:
- * - Automatic browser language detection
- * - localStorage persistence
- * - Fallback to English if translation missing
- * - Hydration-safe loading state
- *
- * @param children - Child components that need access to language context
- */
-export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [language, setLanguage] = useState<Language>("en");
-  const [isLoaded, setIsLoaded] = useState(false);
+const noopSubscribe = () => () => {};
 
-  /**
-   * Load saved language from localStorage on component mount
-   * Also detects browser language as fallback
-   */
-  useEffect(() => {
-    const savedLanguage = localStorage.getItem("language") as Language;
-
-    if (savedLanguage && translations[savedLanguage]) {
-      // Use saved language if valid
-      setLanguage(savedLanguage);
-    } else {
-      // Detect browser language and use if supported
-      const browserLang = navigator.language.split("-")[0] as Language;
-      if (translations[browserLang]) {
-        setLanguage(browserLang);
-      }
-      // Otherwise defaults to "en" from useState
-    }
-
-    setIsLoaded(true);
-  }, []);
-
-  /**
-   * Save language preference to localStorage when it changes
-   * (but not on initial load to avoid hydration issues)
-   */
-  useEffect(() => {
-    if (isLoaded) {
-      localStorage.setItem("language", language);
-    }
-  }, [language, isLoaded]);
-
-  /**
-   * Translation function with fallback support
-   *
-   * @param key - Translation key to look up
-   * @returns Translated string in current language, fallback to English, or key itself
-   */
-  const t = (key: TranslationKey): string => {
-    const currentLangTranslations = translations[language] as Record<string, string>;
-    const englishTranslations = translations["en"] as Record<string, string>;
-    return currentLangTranslations[key] || englishTranslations[key] || key;
-  };
-
-  return (
-    <LanguageContext.Provider value={{ language, setLanguage, t, isLoaded }}>
-      {children}
-    </LanguageContext.Provider>
-  );
+function detectLanguage(): Language {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (isLanguage(saved)) return saved;
+  } catch {
+    /* storage unavailable */
+  }
+  const candidates = navigator.languages?.length ? navigator.languages : [navigator.language];
+  for (const c of candidates) {
+    const code = c?.split("-")[0]?.toLowerCase();
+    if (isLanguage(code)) return code;
+  }
+  return FALLBACK_LANGUAGE;
 }
 
-/**
- * Custom hook to use the Language Context
- *
- * Provides type-safe access to language functionality.
- * Must be used within a LanguageProvider.
- *
- * @returns LanguageContextType object with language state and functions
- * @throws Error if used outside of LanguageProvider
- */
+export function LanguageProvider({ children }: { children: React.ReactNode }) {
+  // Server/hydration render uses DEFAULT_LANGUAGE; the client then reads the saved/browser language.
+  const detected = useSyncExternalStore(noopSubscribe, detectLanguage, () => null);
+  const [chosen, setChosen] = useState<Language | null>(null);
+  const language = chosen ?? detected ?? DEFAULT_LANGUAGE;
+  const isLoaded = detected !== null;
+
+  useEffect(() => {
+    document.documentElement.lang = language;
+  }, [language]);
+
+  const setLanguage = useCallback((lang: Language) => {
+    setChosen(lang);
+    try {
+      localStorage.setItem(STORAGE_KEY, lang);
+    } catch {
+      /* ignore */
+    }
+  }, []);
+
+  const value = useMemo<LanguageContextType>(
+    () => ({
+      language,
+      locale: languages[language].locale,
+      setLanguage,
+      t: (key, vars) => translate(language, key, vars),
+      isLoaded,
+    }),
+    [language, setLanguage, isLoaded],
+  );
+
+  return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>;
+}
+
 export function useLanguage() {
   const context = useContext(LanguageContext);
-
   if (context === undefined) {
     throw new Error("useLanguage must be used within a LanguageProvider");
   }
-
   return context;
 }

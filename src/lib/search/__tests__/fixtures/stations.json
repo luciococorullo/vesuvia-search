@@ -1,0 +1,968 @@
+[
+  {
+    "id": 98,
+    "name": "Acerra",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 85,
+    "name": "Alfa Lancia Varco 2",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 86,
+    "name": "Alfa Lancia Varco 4",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 94,
+    "name": "Argine Palasport",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 83,
+    "name": "Avella",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 84,
+    "name": "Baiano",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 6,
+    "name": "Barra",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 91,
+    "name": "Bartolo Longo",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 43,
+    "name": "Boscoreale",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 42,
+    "name": "Boscotrecase",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 64,
+    "name": "Botteghelle",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 72,
+    "name": "Brusciano",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 80,
+    "name": "Camposano",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 66,
+    "name": "Casalnuovo",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 19,
+    "name": "Casilli",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 70,
+    "name": "Casoria Arpino - Volla",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 71,
+    "name": "Castelcisterna",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 53,
+    "name": "Castellammare di Stabia",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 8,
+    "name": "Cercola",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 81,
+    "name": "Cicciano",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 79,
+    "name": "Cimitile",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 89,
+    "name": "De Ruggiero",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 32,
+    "name": "Ercolano Miglio d'Oro",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 31,
+    "name": "Ercolano Scavi",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 21,
+    "name": "Flocco",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 10,
+    "name": "Guindazzi",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 87,
+    "name": "La Pigna",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 38,
+    "name": "Leopardi",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 11,
+    "name": "Madonna dell'Arco",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 96,
+    "name": "Madonnelle",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 74,
+    "name": "Marigliano",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 59,
+    "name": "Meta",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 99,
+    "name": "Moregine",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 90,
+    "name": "Napoli Centro Direzionale",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 3,
+    "name": "Napoli P. Garibaldi",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 1,
+    "name": "Napoli Porta Nolana",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 78,
+    "name": "Nola",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 100,
+    "name": "Officina Ponticelli",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 16,
+    "name": "Ottaviano",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 88,
+    "name": "Parco Piemonte",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 60,
+    "name": "Piano",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 51,
+    "name": "Pioppaino",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 22,
+    "name": "Poggiomarino",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 63,
+    "name": "Poggioreale",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 9,
+    "name": "Pollena Trocchia ",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 69,
+    "name": "Pomigliano d'Arco",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 45,
+    "name": "Pompei Santuario",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 49,
+    "name": "Pompei Scavi Villa dei Misteri",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 7,
+    "name": "Ponticelli",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 29,
+    "name": "Portici Bellavista",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 30,
+    "name": "Portici Via Liberta'",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 55,
+    "name": "Pozzano",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 68,
+    "name": "Pratola Ponte",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 15,
+    "name": "Rione Trieste",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 82,
+    "name": "Roccarainola",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 61,
+    "name": "S. Agnello",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 12,
+    "name": "S. Anastasia",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 28,
+    "name": "S. Giorgio Cavalli di Bronzo",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 5,
+    "name": "S. Giovanni a Teduccio",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 18,
+    "name": "S. Giuseppe",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 17,
+    "name": "S. Leonardo",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 26,
+    "name": "S. Maria del Pozzo",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 47,
+    "name": "S. Pietro",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 24,
+    "name": "S. Valentino Torio",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 75,
+    "name": "S. Vitaliano",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 97,
+    "name": "Salice",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 27,
+    "name": "san giorgio a cremano",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 25,
+    "name": "Sarno",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 77,
+    "name": "Saviano",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 46,
+    "name": "Scafati",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 76,
+    "name": "Scisciano",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 56,
+    "name": "Scrajo",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 58,
+    "name": "Seiano",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 14,
+    "name": "Somma Vesuviana",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 62,
+    "name": "Sorrento",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 52,
+    "name": "Stabia Scavi",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 23,
+    "name": "Striano",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 67,
+    "name": "Talona",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 20,
+    "name": "Terzigno",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 41,
+    "name": "Torre Annunziata - Oplonti",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 33,
+    "name": "Torre del Greco",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 40,
+    "name": "Trecase",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 95,
+    "name": "Vesuvio De Meis (SA)",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 92,
+    "name": "Vesuvio De Meis (SGV)",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 48,
+    "name": "Via Cangiani",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 36,
+    "name": "Via dei Monaci",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 35,
+    "name": "Via del Monte",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 4,
+    "name": "Via Gianturco",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 520,
+    "name": "Via Nocera",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 34,
+    "name": "Via S. Antonio",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 73,
+    "name": "Via Vittorio Veneto",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 39,
+    "name": "Via Viuli",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 57,
+    "name": "Vico Equense",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 13,
+    "name": "Villa Augustea",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 37,
+    "name": "Villa delle Ginestre",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 44,
+    "name": "Villa Regina",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 93,
+    "name": "Villa Visconti",
+    "network": 1,
+    "lines": []
+  },
+  {
+    "id": 806,
+    "name": "Agnano",
+    "network": 2,
+    "lines": []
+  },
+  {
+    "id": 815,
+    "name": "Arco felice",
+    "network": 2,
+    "lines": []
+  },
+  {
+    "id": 808,
+    "name": "Bagnoli",
+    "network": 2,
+    "lines": []
+  },
+  {
+    "id": 817,
+    "name": "Baia",
+    "network": 2,
+    "lines": []
+  },
+  {
+    "id": 814,
+    "name": "Cantieri",
+    "network": 2,
+    "lines": []
+  },
+  {
+    "id": 812,
+    "name": "Cappuccini",
+    "network": 2,
+    "lines": []
+  },
+  {
+    "id": 802,
+    "name": "Corso V. Emanuele",
+    "network": 2,
+    "lines": []
+  },
+  {
+    "id": 810,
+    "name": "Dazio",
+    "network": 2,
+    "lines": []
+  },
+  {
+    "id": 805,
+    "name": "Edenlandia",
+    "network": 2,
+    "lines": []
+  },
+  {
+    "id": 803,
+    "name": "Fuorigrotta",
+    "network": 2,
+    "lines": []
+  },
+  {
+    "id": 818,
+    "name": "Fusaro",
+    "network": 2,
+    "lines": []
+  },
+  {
+    "id": 811,
+    "name": "Gerolomini",
+    "network": 2,
+    "lines": []
+  },
+  {
+    "id": 829,
+    "name": "Grotta del Sole",
+    "network": 2,
+    "lines": []
+  },
+  {
+    "id": 823,
+    "name": "La Trencia",
+    "network": 2,
+    "lines": []
+  },
+  {
+    "id": 830,
+    "name": "Licola",
+    "network": 2,
+    "lines": []
+  },
+  {
+    "id": 834,
+    "name": "Monte Sant'Angelo",
+    "network": 2,
+    "lines": []
+  },
+  {
+    "id": 801,
+    "name": "Montesanto",
+    "network": 2,
+    "lines": []
+  },
+  {
+    "id": 804,
+    "name": "Mostra",
+    "network": 2,
+    "lines": []
+  },
+  {
+    "id": 824,
+    "name": "Pianura",
+    "network": 2,
+    "lines": []
+  },
+  {
+    "id": 820,
+    "name": "Piave",
+    "network": 2,
+    "lines": []
+  },
+  {
+    "id": 825,
+    "name": "Pisani",
+    "network": 2,
+    "lines": []
+  },
+  {
+    "id": 107,
+    "name": "Pozzuoli",
+    "network": 2,
+    "lines": []
+  },
+  {
+    "id": 109,
+    "name": "Quarto",
+    "network": 2,
+    "lines": []
+  },
+  {
+    "id": 827,
+    "name": "Quarto Centro",
+    "network": 2,
+    "lines": []
+  },
+  {
+    "id": 828,
+    "name": "Quarto Officina",
+    "network": 2,
+    "lines": []
+  },
+  {
+    "id": 822,
+    "name": "Rione Traiano",
+    "network": 2,
+    "lines": []
+  },
+  {
+    "id": 821,
+    "name": "Soccavo",
+    "network": 2,
+    "lines": []
+  },
+  {
+    "id": 819,
+    "name": "Torregaveta",
+    "network": 2,
+    "lines": []
+  },
+  {
+    "id": 722,
+    "name": "Afragola Alta Velocità Rfi",
+    "network": 3,
+    "lines": []
+  },
+  {
+    "id": 721,
+    "name": "Afragola Centro Commerciale Rfi",
+    "network": 3,
+    "lines": []
+  },
+  {
+    "id": 301,
+    "name": "Alife",
+    "network": 3,
+    "lines": []
+  },
+  {
+    "id": 229,
+    "name": "Alvignano",
+    "network": 3,
+    "lines": []
+  },
+  {
+    "id": 702,
+    "name": "Anfiteatro",
+    "network": 3,
+    "lines": []
+  },
+  {
+    "id": 174,
+    "name": "Arpaia Airola S. Agata",
+    "network": 3,
+    "lines": []
+  },
+  {
+    "id": 113,
+    "name": "Aversa RFI",
+    "network": 3,
+    "lines": []
+  },
+  {
+    "id": 710,
+    "name": "Benevento Appia",
+    "network": 3,
+    "lines": []
+  },
+  {
+    "id": 709,
+    "name": "Benevento P.Corvo",
+    "network": 3,
+    "lines": []
+  },
+  {
+    "id": 708,
+    "name": "Benevento R. Liberta'",
+    "network": 3,
+    "lines": []
+  },
+  {
+    "id": 308,
+    "name": "Benevento RFI",
+    "network": 3,
+    "lines": []
+  },
+  {
+    "id": 238,
+    "name": "Caiazzo",
+    "network": 3,
+    "lines": []
+  },
+  {
+    "id": 715,
+    "name": "Cancello RFI",
+    "network": 3,
+    "lines": []
+  },
+  {
+    "id": 717,
+    "name": "Caserta RFI",
+    "network": 3,
+    "lines": []
+  },
+  {
+    "id": 245,
+    "name": "Cervinara",
+    "network": 3,
+    "lines": []
+  },
+  {
+    "id": 323,
+    "name": "Dragoni",
+    "network": 3,
+    "lines": []
+  },
+  {
+    "id": 716,
+    "name": "Maddaloni Inferiore RFI",
+    "network": 3,
+    "lines": []
+  },
+  {
+    "id": 701,
+    "name": "Napoli Centrale RFI",
+    "network": 3,
+    "lines": []
+  },
+  {
+    "id": 278,
+    "name": "Piana di Monte Verna",
+    "network": 3,
+    "lines": []
+  },
+  {
+    "id": 430,
+    "name": "Piedimonte Matese",
+    "network": 3,
+    "lines": []
+  },
+  {
+    "id": 720,
+    "name": "Pontelatone",
+    "network": 3,
+    "lines": []
+  },
+  {
+    "id": 289,
+    "name": "Rotondi Paolisi",
+    "network": 3,
+    "lines": []
+  },
+  {
+    "id": 703,
+    "name": "S. Angelo in Formis",
+    "network": 3,
+    "lines": []
+  },
+  {
+    "id": 706,
+    "name": "S. Marco",
+    "network": 3,
+    "lines": []
+  },
+  {
+    "id": 214,
+    "name": "S. Maria a Vico",
+    "network": 3,
+    "lines": []
+  },
+  {
+    "id": 718,
+    "name": "S. Maria Capua Vetere RFI",
+    "network": 3,
+    "lines": []
+  },
+  {
+    "id": 293,
+    "name": "S. Martino V.C. Montes. Pann",
+    "network": 3,
+    "lines": []
+  },
+  {
+    "id": 161,
+    "name": "San Felice a Cancello",
+    "network": 3,
+    "lines": []
+  },
+  {
+    "id": 704,
+    "name": "Triflisco",
+    "network": 3,
+    "lines": []
+  },
+  {
+    "id": 707,
+    "name": "Tufara V. Arpaise Ceppaloni",
+    "network": 3,
+    "lines": []
+  },
+  {
+    "id": 705,
+    "name": "Villa Ortensia",
+    "network": 3,
+    "lines": []
+  },
+  {
+    "id": 112,
+    "name": "Aversa",
+    "network": 4,
+    "lines": []
+  },
+  {
+    "id": 712,
+    "name": "Aversa Ippodromo",
+    "network": 4,
+    "lines": []
+  },
+  {
+    "id": 124,
+    "name": "Giugliano",
+    "network": 4,
+    "lines": []
+  },
+  {
+    "id": 106,
+    "name": "Mugnano",
+    "network": 4,
+    "lines": []
+  },
+  {
+    "id": 711,
+    "name": "Piscinola Scampia",
+    "network": 4,
+    "lines": []
+  }
+]

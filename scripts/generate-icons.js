@@ -1,44 +1,109 @@
 #!/usr/bin/env node
 
 /**
- * Simple icon generator for PWA
- * This creates basic placeholder icons until proper icons are designed
+ * Icon generator for PWA
+ * Builds every app icon (PWA, maskable, Apple, MS tile, favicon) from the
+ * master logo in public/brand/vesuvia-logo.png.
  */
 
 const fs = require('fs');
 const path = require('path');
+const sharp = require('sharp');
 
-// SVG template for the VesuviaSearch icon
-const createIconSVG = (size) => `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#dc2626;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#b91c1c;stop-opacity:1" />
-    </linearGradient>
-  </defs>
-  <rect width="${size}" height="${size}" rx="${size * 0.2}" fill="url(#grad1)"/>
-  <circle cx="${size * 0.5}" cy="${size * 0.35}" r="${size * 0.15}" fill="white"/>
-  <text x="${size * 0.5}" y="${size * 0.75}" font-family="Arial, sans-serif" font-size="${size * 0.25}" font-weight="bold" fill="white" text-anchor="middle">V</text>
-</svg>`;
+const root = path.join(__dirname, '..');
+const source = path.join(root, 'public', 'brand', 'vesuvia-logo.png');
+const iconsDir = path.join(root, 'public', 'icons');
+
+// Cream background of the master logo
+const BACKGROUND = { r: 254, g: 249, b: 240, alpha: 1 };
 
 // Icon sizes needed for PWA
 const iconSizes = [72, 96, 128, 144, 152, 192, 384, 512];
 
-const iconsDir = path.join(__dirname, '..', 'public', 'icons');
-
-// Create icons directory if it doesn't exist
-if (!fs.existsSync(iconsDir)) {
-  fs.mkdirSync(iconsDir, { recursive: true });
+// Renders the logo centred on a cream square, filling `scale` of its side
+async function render(logo, size, scale) {
+  const inner = Math.round(size * scale);
+  const mark = await sharp(logo)
+    .resize(inner, inner, { fit: 'contain', background: BACKGROUND })
+    .toBuffer();
+  return sharp({ create: { width: size, height: size, channels: 4, background: BACKGROUND } })
+    .composite([{ input: mark, gravity: 'center' }])
+    .png()
+    .toBuffer();
 }
 
-// Generate SVG icons
-iconSizes.forEach(size => {
-  const svgContent = createIconSVG(size);
-  const filename = `icon-${size}x${size}.svg`;
-  fs.writeFileSync(path.join(iconsDir, filename), svgContent);
-  console.log(`Generated ${filename}`);
-});
+// Removes the cream background, un-mixing anti-aliased edges so the mark sits cleanly on any colour
+async function transparentMark(logo, height) {
+  const { data, info } = await sharp(logo)
+    .resize({ height })
+    .ensureAlpha()
+    .raw()
+    .toBuffer({ resolveWithObject: true });
+  const bg = [BACKGROUND.r, BACKGROUND.g, BACKGROUND.b];
+  for (let i = 0; i < data.length; i += 4) {
+    const distance = Math.max(...bg.map((c, k) => c - data[i + k]));
+    const alpha = Math.min(1, Math.max(0, (distance - 12) / 160));
+    for (let k = 0; k < 3; k++) {
+      const value = alpha > 0 ? bg[k] + (data[i + k] - bg[k]) / alpha : 0;
+      data[i + k] = Math.max(0, Math.min(255, Math.round(value)));
+    }
+    data[i + 3] = Math.round(alpha * 255);
+  }
+  return sharp(data, { raw: info }).png().toBuffer();
+}
 
-console.log('Icon generation complete!');
-console.log('Note: These are placeholder SVG icons. For production, consider creating proper PNG icons using a tool like ImageMagick or an online converter.');
-console.log('To convert SVG to PNG, you can use: npx svgexport icon-512x512.svg icon-512x512.png 512:512');
+// Packs PNG images into a .ico container (PNG-in-ICO, supported by every modern browser)
+function toIco(images) {
+  const header = Buffer.alloc(6);
+  header.writeUInt16LE(0, 0);
+  header.writeUInt16LE(1, 2);
+  header.writeUInt16LE(images.length, 4);
+  let offset = 6 + 16 * images.length;
+  const entries = images.map(({ size, data }) => {
+    const entry = Buffer.alloc(16);
+    entry.writeUInt8(size >= 256 ? 0 : size, 0);
+    entry.writeUInt8(size >= 256 ? 0 : size, 1);
+    entry.writeUInt16LE(1, 4);
+    entry.writeUInt16LE(32, 6);
+    entry.writeUInt32LE(data.length, 8);
+    entry.writeUInt32LE(offset, 12);
+    offset += data.length;
+    return entry;
+  });
+  return Buffer.concat([header, ...entries, ...images.map((i) => i.data)]);
+}
+
+async function main() {
+  // Crop the cream margin so every size starts from the bare mark
+  const logo = await sharp(source).trim({ threshold: 20 }).toBuffer();
+
+  fs.mkdirSync(iconsDir, { recursive: true });
+  const write = (file, data) => {
+    fs.writeFileSync(path.join(root, file), data);
+    console.log(`Generated ${file}`);
+  };
+
+  for (const size of iconSizes) {
+    write(`public/icons/icon-${size}x${size}.png`, await render(logo, size, 0.78));
+  }
+  // Maskable icons keep the mark inside the 80% safe zone
+  for (const size of [192, 512]) {
+    write(`public/icons/maskable-${size}x${size}.png`, await render(logo, size, 0.6));
+  }
+  write('public/brand/vesuvia-mark.png', await transparentMark(logo, 256));
+  write('public/icons/apple-touch-icon.png', await render(logo, 180, 0.72));
+  write('public/mstile-150x150.png', await render(logo, 150, 0.7));
+
+  const favicons = [];
+  for (const size of [16, 32, 48]) {
+    favicons.push({ size, data: await render(logo, size, 0.92) });
+  }
+  write('src/app/favicon.ico', toIco(favicons));
+
+  console.log('Icon generation complete!');
+}
+
+main().catch((error) => {
+  console.error(error);
+  process.exit(1);
+});
