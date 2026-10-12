@@ -26,7 +26,7 @@ export function FavoritesView({ byId, onPickRoute, onOpenBoard, onStartFrom }: P
   return (
     <div className="animate-fade-in">
       <div className="px-5 pb-1 pt-[max(env(safe-area-inset-top),16px)]">
-        <h1 className="pt-3 font-serif text-[25px] font-semibold tracking-[-0.02em] md:text-[30px]">
+        <h1 className="pt-3 text-[25px] font-semibold tracking-[-0.02em] md:text-[30px]">
           {t("tabFavorites")}
         </h1>
       </div>

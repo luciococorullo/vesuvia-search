@@ -1,7 +1,9 @@
 "use client";
 
 import {
+  CalendarDays,
   ChevronLeft,
+  Clock,
   Footprints,
   RefreshCw,
   Star,
@@ -68,7 +70,7 @@ function StepHeading({
   children: React.ReactNode;
 }) {
   return (
-    <h2 className="mx-5 mb-1 mt-6 flex items-center gap-2.5 font-serif text-[19px] font-semibold tracking-[-0.01em]">
+    <h2 className="mx-5 mb-1 mt-6 flex items-center gap-2.5 text-[19px] font-semibold tracking-[-0.01em]">
       <span
         aria-hidden="true"
         className="grid h-6 w-6 place-items-center rounded-full bg-ink font-sans text-xs font-bold text-white"
@@ -103,7 +105,7 @@ function CrossNetworkView({
   return (
     <div>
       <div className="mx-4 rounded-[18px] border border-sea/20 bg-sea/[0.06] px-4 py-3.5 md:mx-5">
-        <p className="font-serif text-[17px] font-semibold text-sea">
+        <p className="text-[17px] font-semibold text-sea">
           {t("crossTitle")}
         </p>
         <p className="mt-1 text-[13px] text-ink-soft">
@@ -258,7 +260,7 @@ export function ResultsView({
           )}
         </div>
         {from && to ? (
-          <h1 className="mt-2.5 font-serif text-[25px] font-semibold leading-[1.12] tracking-[-0.02em] md:text-[30px]">
+          <h1 className="mt-2.5 text-[25px] font-semibold leading-[1.12] tracking-[-0.02em] md:text-[30px]">
             {from.name} <span className="font-medium text-muted">→</span>
             <br />
             {to.name}
@@ -269,15 +271,20 @@ export function ResultsView({
             <Skeleton className="h-7 w-36" />
           </div>
         )}
-        <p className="mt-1.5 text-[13px] text-muted tnum" aria-live="polite">
-          {t("resultsSubtitle", { day: dayLabel, time: request.time })}
-          {q.isSuccess && !cross && (
-            <>
-              {" "}
-              · {count === 1 ? t("oneSolution") : t("nSolutions", { n: count })}
-            </>
-          )}
-        </p>
+        <div className="mt-3 flex items-center gap-1.5 text-[13px] tnum">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-sand px-2.5 py-1 font-semibold text-ink-soft">
+            <CalendarDays aria-hidden="true" className="h-3.5 w-3.5 text-muted" />
+            {dayLabel}
+          </span>
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-sand px-2.5 py-1 font-semibold text-ink-soft">
+            <Clock aria-hidden="true" className="h-3.5 w-3.5 text-muted" />
+            {t("fromTime", { time: request.time })}
+          </span>
+          <span className="ml-auto font-medium text-muted" aria-live="polite">
+            {q.isSuccess && !cross &&
+              (count === 1 ? t("oneSolution") : t("nSolutions", { n: count }))}
+          </span>
+        </div>
       </div>
 
       {q.isLoading ? (

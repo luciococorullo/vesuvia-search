@@ -31,7 +31,7 @@ export function Hero() {
           <Logo />
           <LanguageSelector tone="light" />
         </div>
-        <h1 className="mt-6 font-serif text-[32px] font-semibold leading-[1.05] tracking-[-0.02em] md:mt-10 md:text-[44px]">
+        <h1 className="mt-6 text-[32px] font-semibold leading-[1.05] tracking-[-0.02em] md:mt-10 md:text-[44px]">
           {t("heroTitleA")}
           <br />
           <i className="text-[#FFD98A]">{t("heroTitleB")}</i>

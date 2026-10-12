@@ -111,6 +111,8 @@ Errors use `{ error, code }` with `BAD_REQUEST`, `NOT_FOUND`, `UPSTREAM` or `INT
 
 Vesuvia is an independent project and is not affiliated with, endorsed by or sponsored by EAV s.r.l. Timetable and real-time data are the property of EAV (Ente Autonomo Volturno) and are fetched from its public web endpoints. Data may be wrong or unavailable; always check official EAV information before travelling.
 
+Destination photos come from Wikimedia Commons: Sorrento by Kim Traynor (CC BY-SA 3.0), Pompei by Carsten Steger (CC BY-SA 4.0), Ercolano by Diego Delso (CC BY-SA 4.0), Pozzuoli by Ra Boe (CC BY-SA 3.0 DE), Vico Equense by Mario Apuzzo (CC BY-SA 4.0).
+
 ## License
 
 [MIT](LICENSE)

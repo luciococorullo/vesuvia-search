@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Fraunces, Inter } from "next/font/google";
+import { Inter } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { LanguageProvider } from "@/contexts/LanguageContext";
@@ -10,12 +10,6 @@ import PWAInit from "@/components/PWAInit";
 import ErrorBoundary from "@/components/ErrorBoundary";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
-const fraunces = Fraunces({
-  subsets: ["latin"],
-  variable: "--font-fraunces",
-  display: "swap",
-  axes: ["opsz"],
-});
 
 const TITLE = "Vesuvia Search — Orari treni EAV e Circumvesuviana";
 const DESCRIPTION =
@@ -69,7 +63,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="it" className={`${inter.variable} ${fraunces.variable}`}>
+    <html lang="it" className={inter.variable}>
       <body className="flex min-h-dvh flex-col bg-bg font-sans text-ink antialiased">
         <script
           type="application/ld+json"
