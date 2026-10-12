@@ -5,6 +5,22 @@ All notable changes to VesuviaSearch will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- "Add to Home Screen" flow: home banner (snoozable) and footer link; native prompt on Chromium, step-by-step sheet on iOS and other Android browsers
+- `/api/version`: an installed app reloads itself when a newer deployment is live
+
+### Fixed
+
+- Stabia Scavi now has its live board (EAV publishes no touchpoint for it, but the Moova board works with an empty one)
+- Installed PWAs no longer keep running an old build after a deploy
+
+### Changed
+
+- Quieter footer: Vesuvia mark, links on one row, Creja wordmark in the text colour
+
 ## [3.0.0] - 2026-10-12
 
 Complete revamp: the app is now driven entirely by live EAV data.

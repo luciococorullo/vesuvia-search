@@ -24,17 +24,21 @@ describe('mergeStations', () => {
     const garibaldi = byId(3);
     expect(garibaldi.name).toBe('Napoli P. Garibaldi');
     expect(garibaldi.lines).toEqual(['sorrento', 'sarno', 'poggiomarino', 'baiano', 'torre', 'pomigliano']);
-    expect(garibaldi.board).toEqual({ codLoc: 'TNPNTS00000000000040', touchpoint: 'TPOINT00000000000080' });
+    expect(garibaldi.board).toEqual({ backend: 'moova', codLoc: 'TNPNTS00000000000040', touchpoint: 'TPOINT00000000000080' });
   });
 
   it('gives Flegrea stations a PIS board (empty touchpoint)', () => {
     const montesanto = byId(801);
     expect(montesanto.lines).toEqual(['cumana', 'circumflegrea']);
-    expect(montesanto.board).toEqual({ codLoc: '801', touchpoint: '' });
+    expect(montesanto.board).toEqual({ backend: 'pis', codLoc: '801', touchpoint: '' });
+  });
+
+  it('gives Stabia Scavi a Moova board with an empty touchpoint', () => {
+    expect(byId(52).board).toEqual({ backend: 'moova', codLoc: 'TNPNTS00000000008280', touchpoint: '' });
   });
 
   it('omits boards when EAV has no usable identifiers', () => {
-    expect(byId(52).board).toBeUndefined(); // Stabia Scavi: isMoova but empty touchpoint
+    expect(byId(520).board).toBeUndefined(); // Via Nocera: isMoova but no idLocMoova
     expect(byId(701).board).toBeUndefined(); // Napoli Centrale RFI: not on orariotreni
     expect(byId(701).lines).toEqual([]);
   });

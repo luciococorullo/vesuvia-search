@@ -2,7 +2,8 @@
  * Live station boards from orariotreni.eavsrl.it/teleindicatori.
  *
  * Two backends, same HTML table format (rows `<tr class="testoGiallo">`):
- *  - ws_getData_moova.php (Vesuviana etc.): codLoc = idLocMoova + touchpoint;
+ *  - ws_getData_moova.php (Vesuviana etc.): codLoc = idLocMoova + touchpoint
+ *    (the touchpoint can be empty, e.g. Stabia Scavi);
  *  - ws_getData_pis.php (Flegrea): codLoc = station id, empty touchpoint.
  * The device name is "M01T<stationId>M" for both (as the EAV page sends it).
  *
@@ -125,8 +126,8 @@ export function attributeLine(
 
 export async function fetchBoardHtml(station: Station, type: 'departures' | 'arrivals'): Promise<string> {
   if (!station.board) throw new Error('Station has no board');
-  const { codLoc, touchpoint } = station.board;
-  const endpoint = touchpoint ? 'ws_getData_moova.php' : 'ws_getData_pis.php';
+  const { backend, codLoc, touchpoint } = station.board;
+  const endpoint = backend === 'moova' ? 'ws_getData_moova.php' : 'ws_getData_pis.php';
   return eavPostText(`${ORARIOTRENI_BASE}/teleindicatori/${endpoint}`, {
     device: `M01T${station.id}M`,
     tipoLista: type === 'arrivals' ? 'A' : 'P',

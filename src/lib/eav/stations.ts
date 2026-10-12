@@ -70,12 +70,13 @@ function sortLines(lines: Iterable<LineKey>): LineKey[] {
  * Pure merge of planner stations and data-localita entries.
  *
  * Board identifiers:
- *  - entry with isMoova "true" + idLocMoova + touchpoint → Moova board
- *    (ws_getData_moova.php), `{ codLoc: idLocMoova, touchpoint }`;
+ *  - entry with isMoova "true" + idLocMoova → Moova board (ws_getData_moova.php),
+ *    `{ codLoc: idLocMoova, touchpoint }`. The touchpoint may be missing
+ *    (52 Stabia Scavi has `[]`): EAV's own page then sends it empty and the
+ *    board still works;
  *  - entries with isMoova "false" (all Flegrea stations today) → the legacy PIS
- *    board (ws_getData_pis.php) keyed by station id: `{ codLoc: "<id>", touchpoint: "" }`.
- *    An empty touchpoint is how board.ts tells the two apart.
- *  - isMoova "true" but no usable touchpoint (e.g. 52 Stabia Scavi) → no board.
+ *    board (ws_getData_pis.php) keyed by station id: `{ codLoc: "<id>", touchpoint: "" }`;
+ *  - isMoova "true" without idLocMoova (e.g. 520 Via Nocera) → no board.
  */
 export function mergeStations(
   planner: PlannerStation[],
@@ -107,13 +108,17 @@ export function mergeStations(
     const lines = sortLines(entries.filter((e) => e.linea).map((e) => lineFromName(e.linea!)));
 
     let board: Station['board'];
-    const moova = entries.find(
-      (e) => isTrue(e.isMoova) && nonEmptyString(e.idLocMoova) && nonEmptyString(e.touchpoint),
-    );
+    const moovaEntries = entries.filter((e) => isTrue(e.isMoova) && nonEmptyString(e.idLocMoova));
+    // Prefer an entry that also carries a touchpoint.
+    const moova = moovaEntries.find((e) => nonEmptyString(e.touchpoint)) ?? moovaEntries[0];
     if (moova) {
-      board = { codLoc: moova.idLocMoova as string, touchpoint: moova.touchpoint as string };
+      board = {
+        backend: 'moova',
+        codLoc: moova.idLocMoova as string,
+        touchpoint: nonEmptyString(moova.touchpoint) ? moova.touchpoint : '',
+      };
     } else if (entries.length && entries.every((e) => !isTrue(e.isMoova))) {
-      board = { codLoc: String(p.Codice), touchpoint: '' };
+      board = { backend: 'pis', codLoc: String(p.Codice), touchpoint: '' };
     }
 
     const name = prettifyName(p.Descrizione);

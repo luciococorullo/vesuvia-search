@@ -10,7 +10,12 @@ const securityHeaders = [
   },
 ];
 
+// Identifies a deployment: the client compares its own value with
+// /api/version to notice that a newer build is live (see src/lib/pwa.ts).
+const buildId = process.env.VERCEL_GIT_COMMIT_SHA || process.env.VERCEL_DEPLOYMENT_ID || String(Date.now());
+
 const nextConfig: NextConfig = {
+  env: { NEXT_PUBLIC_BUILD_ID: buildId },
   // Lets a production build run next to `next dev` without sharing .next
   distDir: process.env.NEXT_DIST_DIR || '.next',
   poweredByHeader: false,

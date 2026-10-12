@@ -35,7 +35,7 @@ interface Station {
   name: string;               // as EAV writes it, e.g. "S. Agnello"
   network: 1 | 2 | 3 | 4;     // 1 Vesuviana, 2 Flegrea, 3 Suburbana, 4 Metrocampania NordEst
   lines: LineKey[];
-  board?: { codLoc: string; touchpoint: string }; // present only if a live board exists
+  board?: { backend: 'moova' | 'pis'; codLoc: string; touchpoint: string }; // present only if a live board exists
 }
 ```
 
@@ -119,7 +119,7 @@ interface BoardEntry {
 interface BoardStop { station: string; time: string } // HH:MM
 ```
 
-404 if the station is unknown or has no board (for example Stabia Scavi). Cache: `s-maxage=30, stale-while-revalidate=30`.
+404 if the station is unknown or has no board (for example Via Nocera). Cache: `s-maxage=30, stale-while-revalidate=30`.
 
 ## GET /api/train-stops
 

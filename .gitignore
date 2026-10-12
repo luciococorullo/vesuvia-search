@@ -110,3 +110,4 @@ temp/
 # Output of 'npm pack'
 *.tgz
 .next-*/
+.env*

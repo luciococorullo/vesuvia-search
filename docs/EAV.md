@@ -63,14 +63,14 @@ Form fields: `device` = `M01T<stationId>M`, `tipoLista` = `P` (departures) or `A
 
 | Backend | Used for | codLoc | touchpoint |
 | --- | --- | --- | --- |
-| `ws_getData_moova.php` | Vesuviana and others | `idLocMoova` | from data-localita |
+| `ws_getData_moova.php` | Vesuviana and others | `idLocMoova` | from data-localita (may be empty) |
 | `ws_getData_pis.php` | Flegrea (Cumana, Circumflegrea) | station id | empty |
 
 Both return an HTML table with rows `<tr class="testoGiallo">`; cells include `binario` (platform) and an info text with `Ferma a: STATION (HH:MM), ...`. The scraper decodes entities and extracts stops.
 
 ## Quirks
 
-- Stabia Scavi has no live board.
+- Stabia Scavi has `touchpoint: []` in data-localita; the Moova board still works with an empty touchpoint (EAV's own page sends it that way). Via Nocera has no `idLocMoova` and no board.
 - Baiano-line searches may return nothing.
 - On the Moova backend at Napoli P. Garibaldi, `tipoLista=A` and `P` returned the same rows (only the header changes). The app shows what EAV returns.
 - The old departures endpoint is gone (404); boards now use Moova/PIS.

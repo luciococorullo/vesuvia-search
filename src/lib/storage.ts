@@ -29,6 +29,7 @@ const KEYS = {
   recents: "vs:recents:v1",
   favorites: "vs:favorites:v1",
   boardStation: "vs:board-station:v1",
+  installDismissed: "vs:install-dismissed:v1",
 } as const;
 
 type Key = (typeof KEYS)[keyof typeof KEYS];
@@ -201,4 +202,17 @@ export function getLastBoardStation(): number | null {
 
 export function setLastBoardStation(id: number): void {
   write(KEYS.boardStation, id);
+}
+
+/* ---------- install banner ---------- */
+
+/** Timestamp of the last "Not now" on the install banner, or null. */
+export function getInstallDismissedAt(): number | null {
+  return read<number | null>(KEYS.installDismissed, null, (x): x is number | null =>
+    x === null || typeof x === "number",
+  );
+}
+
+export function setInstallDismissedAt(at: number): void {
+  write(KEYS.installDismissed, at);
 }

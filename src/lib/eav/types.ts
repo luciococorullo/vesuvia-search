@@ -34,8 +34,8 @@ export interface Station {
   network: NetworkId;
   /** Lines serving the station (from data-localita); may be empty. */
   lines: LineKey[];
-  /** Live departures board identifiers, present only if the station has a Moova board. */
-  board?: { codLoc: string; touchpoint: string };
+  /** Live board identifiers, present only if EAV publishes a board for the station. */
+  board?: { backend: 'moova' | 'pis'; codLoc: string; touchpoint: string };
 }
 
 export interface StationsResponse {

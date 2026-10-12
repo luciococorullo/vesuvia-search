@@ -137,6 +137,20 @@ const it = {
   offlineTitle: "Sei offline",
   offlineBody: "Controlla la connessione: gli orari arrivano in tempo reale da EAV.",
   goBack: "Torna indietro",
+
+  // Install
+  installTitle: "Aggiungi Vesuvia alla Home",
+  installBody: "Si apre come un’app, a schermo intero, con un tocco.",
+  installCta: "Aggiungi",
+  installLater: "Non ora",
+  installApp: "Installa l’app",
+  installIosStep1: "Tocca Condividi nella barra di Safari (su iOS 26: ··· e poi Condividi)",
+  installIosStep2: "Scorri e scegli “Aggiungi alla schermata Home”",
+  installIosStep3: "Tocca “Aggiungi”: Vesuvia comparirà tra le tue app",
+  installIosHint: "Non vedi l’opzione? Apri questa pagina in Safari.",
+  installAndroidStep1: "Apri il menu ⋮ del browser",
+  installAndroidStep2: "Scegli “Installa app” o “Aggiungi a schermata Home”",
+  installAndroidStep3: "Conferma: Vesuvia comparirà tra le tue app",
 };
 
 export type TranslationKey = keyof typeof it;
@@ -250,6 +264,20 @@ const en: Dictionary = {
   offlineTitle: "You're offline",
   offlineBody: "Check your connection: timetables come live from EAV.",
   goBack: "Go back",
+
+  // Install
+  installTitle: "Add Vesuvia to your Home Screen",
+  installBody: "Opens like an app, full screen, in one tap.",
+  installCta: "Add",
+  installLater: "Not now",
+  installApp: "Install the app",
+  installIosStep1: "Tap Share in Safari’s toolbar (on iOS 26: ··· then Share)",
+  installIosStep2: "Scroll down and choose “Add to Home Screen”",
+  installIosStep3: "Tap “Add”: Vesuvia will appear with your apps",
+  installIosHint: "Can’t see the option? Open this page in Safari.",
+  installAndroidStep1: "Open the browser menu ⋮",
+  installAndroidStep2: "Choose “Install app” or “Add to Home screen”",
+  installAndroidStep3: "Confirm: Vesuvia will appear with your apps",
 };
 
 const es: Dictionary = {
@@ -360,6 +388,20 @@ const es: Dictionary = {
   offlineTitle: "Estás sin conexión",
   offlineBody: "Revisa tu conexión: los horarios llegan en tiempo real desde EAV.",
   goBack: "Volver",
+
+  // Install
+  installTitle: "Añade Vesuvia a la pantalla de inicio",
+  installBody: "Se abre como una app, a pantalla completa, con un toque.",
+  installCta: "Añadir",
+  installLater: "Ahora no",
+  installApp: "Instalar la app",
+  installIosStep1: "Toca Compartir en la barra de Safari (en iOS 26: ··· y luego Compartir)",
+  installIosStep2: "Desliza y elige “Añadir a pantalla de inicio”",
+  installIosStep3: "Toca “Añadir”: Vesuvia aparecerá con tus apps",
+  installIosHint: "¿No ves la opción? Abre esta página en Safari.",
+  installAndroidStep1: "Abre el menú ⋮ del navegador",
+  installAndroidStep2: "Elige “Instalar app” o “Añadir a pantalla de inicio”",
+  installAndroidStep3: "Confirma: Vesuvia aparecerá con tus apps",
 };
 
 const pt: Dictionary = {
@@ -470,6 +512,20 @@ const pt: Dictionary = {
   offlineTitle: "Está offline",
   offlineBody: "Verifique a ligação: os horários chegam em tempo real da EAV.",
   goBack: "Voltar",
+
+  // Install
+  installTitle: "Adicione a Vesuvia ao ecrã principal",
+  installBody: "Abre como uma app, em ecrã inteiro, com um toque.",
+  installCta: "Adicionar",
+  installLater: "Agora não",
+  installApp: "Instalar a app",
+  installIosStep1: "Toque em Partilhar na barra do Safari (no iOS 26: ··· e depois Partilhar)",
+  installIosStep2: "Deslize e escolha “Adicionar ao ecrã principal”",
+  installIosStep3: "Toque em “Adicionar”: a Vesuvia aparecerá nas suas apps",
+  installIosHint: "Não vê a opção? Abra esta página no Safari.",
+  installAndroidStep1: "Abra o menu ⋮ do navegador",
+  installAndroidStep2: "Escolha “Instalar app” ou “Adicionar ao ecrã principal”",
+  installAndroidStep3: "Confirme: a Vesuvia aparecerá nas suas apps",
 };
 
 const fr: Dictionary = {
@@ -580,6 +636,20 @@ const fr: Dictionary = {
   offlineTitle: "Vous êtes hors ligne",
   offlineBody: "Vérifiez votre connexion : les horaires arrivent en temps réel d’EAV.",
   goBack: "Retour",
+
+  // Install
+  installTitle: "Ajoutez Vesuvia à l’écran d’accueil",
+  installBody: "S’ouvre comme une app, en plein écran, d’un seul geste.",
+  installCta: "Ajouter",
+  installLater: "Plus tard",
+  installApp: "Installer l’app",
+  installIosStep1: "Touchez Partager dans la barre de Safari (sur iOS 26 : ··· puis Partager)",
+  installIosStep2: "Faites défiler et choisissez « Sur l’écran d’accueil »",
+  installIosStep3: "Touchez « Ajouter » : Vesuvia apparaîtra avec vos apps",
+  installIosHint: "Vous ne voyez pas l’option ? Ouvrez cette page dans Safari.",
+  installAndroidStep1: "Ouvrez le menu ⋮ du navigateur",
+  installAndroidStep2: "Choisissez « Installer l’application » ou « Ajouter à l’écran d’accueil »",
+  installAndroidStep3: "Confirmez : Vesuvia apparaîtra avec vos apps",
 };
 
 const de: Dictionary = {
@@ -690,6 +760,20 @@ const de: Dictionary = {
   offlineTitle: "Du bist offline",
   offlineBody: "Prüfe deine Verbindung: die Fahrpläne kommen live von EAV.",
   goBack: "Zurück",
+
+  // Install
+  installTitle: "Vesuvia zum Home-Bildschirm hinzufügen",
+  installBody: "Öffnet sich wie eine App, im Vollbild, mit einem Tipp.",
+  installCta: "Hinzufügen",
+  installLater: "Später",
+  installApp: "App installieren",
+  installIosStep1: "Tippe in Safari auf Teilen (unter iOS 26: ··· und dann Teilen)",
+  installIosStep2: "Scrolle und wähle „Zum Home-Bildschirm“",
+  installIosStep3: "Tippe auf „Hinzufügen“: Vesuvia erscheint bei deinen Apps",
+  installIosHint: "Option nicht sichtbar? Öffne diese Seite in Safari.",
+  installAndroidStep1: "Öffne das Browsermenü ⋮",
+  installAndroidStep2: "Wähle „App installieren“ oder „Zum Startbildschirm hinzufügen“",
+  installAndroidStep3: "Bestätige: Vesuvia erscheint bei deinen Apps",
 };
 
 export const translations: Record<Language, Dictionary> = { it, en, es, pt, fr, de };

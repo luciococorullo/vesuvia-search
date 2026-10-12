@@ -5,8 +5,13 @@
  * Update flow: when a new service worker is installed and waiting, it is told
  * to activate immediately (SKIP_WAITING). The SW itself also calls
  * skipWaiting() on install and clients.claim() on activate, so new versions
- * take over without requiring all tabs to be closed. No forced reload: pages
- * are served network-first, so the next navigation picks up the new build.
+ * take over without requiring all tabs to be closed.
+ *
+ * An installed app (iOS especially) can stay in memory for days and, being a
+ * single page, never navigates: it would keep running the old bundle. So when
+ * the app comes back to the foreground it asks /api/version for the live
+ * build id and reloads if it differs from its own. sw.js rarely changes, so
+ * this is what actually delivers most deploys.
  */
 
 export interface BeforeInstallPromptEvent extends Event {
@@ -19,6 +24,35 @@ export interface BeforeInstallPromptEvent extends Event {
 }
 
 const SW_URL = "/sw.js";
+const VERSION_URL = "/api/version";
+/** Minimum time between two version checks. */
+const VERSION_CHECK_INTERVAL_MS = 60_000;
+
+let lastVersionCheck = 0;
+let reloading = false;
+
+function reloadOnce() {
+    if (reloading) return;
+    reloading = true;
+    window.location.reload();
+}
+
+/** Reloads the page if a newer deployment than the running bundle is live. */
+async function reloadIfNewBuild() {
+    const current = process.env.NEXT_PUBLIC_BUILD_ID;
+    if (!current || reloading || !navigator.onLine) return;
+    const now = Date.now();
+    if (now - lastVersionCheck < VERSION_CHECK_INTERVAL_MS) return;
+    lastVersionCheck = now;
+    try {
+        const res = await fetch(VERSION_URL, { cache: "no-store" });
+        if (!res.ok) return;
+        const { buildId } = (await res.json()) as { buildId?: string | null };
+        if (buildId && buildId !== current) reloadOnce();
+    } catch {
+        /* offline or server error: try again next time */
+    }
+}
 
 function activateWaiting(registration: ServiceWorkerRegistration) {
     registration.waiting?.postMessage({ type: "SKIP_WAITING" });
@@ -121,12 +155,23 @@ export class PWAManager {
                 });
             });
 
+            // A new SW took over an already controlled page: reload so the
+            // page and the SW run the same build.
+            const hadController = !!navigator.serviceWorker.controller;
+            navigator.serviceWorker.addEventListener("controllerchange", () => {
+                if (hadController) reloadOnce();
+            });
+
             // Check for updates when the app comes back to the foreground
             // (installed PWAs can stay open for days).
             document.addEventListener("visibilitychange", () => {
                 if (document.visibilityState === "visible") {
                     registration.update().catch(() => undefined);
+                    void reloadIfNewBuild();
                 }
+            });
+            window.addEventListener("pageshow", (e) => {
+                if (e.persisted) void reloadIfNewBuild();
             });
 
             return registration;

@@ -23,6 +23,7 @@ import {
   type RouteRef,
 } from "@/lib/storage";
 import { romeNow } from "@/lib/utils";
+import { InstallBanner } from "@/components/InstallApp";
 import { BoardView } from "./BoardView";
 import { FavoritesView } from "./FavoritesView";
 import { Hero } from "./Hero";
@@ -224,6 +225,7 @@ export function AppShell() {
             onSubmit={submit}
             error={formError}
           />
+          <InstallBanner />
           <PopularDestinations
             stations={stations}
             isLoading={isLoading}

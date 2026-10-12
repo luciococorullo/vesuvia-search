@@ -10,7 +10,7 @@
  * Bump VERSION to invalidate all caches on deploy-sensitive changes.
  */
 
-const VERSION = "v4";
+const VERSION = "v5";
 const PREFIX = "vesuvia-";
 const STATIC_CACHE = `${PREFIX}static-${VERSION}`;
 const PAGES_CACHE = `${PREFIX}pages-${VERSION}`;
