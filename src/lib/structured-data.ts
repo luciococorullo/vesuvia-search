@@ -26,7 +26,7 @@ export const structuredData = {
             url: `${SITE_URL}/`,
             logo: {
                 "@type": "ImageObject",
-                url: `${SITE_URL}/icons/icon-512x512.svg`,
+                url: `${SITE_URL}/icons/icon-512x512.png`,
                 width: 512,
                 height: 512,
             },

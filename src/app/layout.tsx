@@ -51,14 +51,17 @@ export const metadata: Metadata = {
   appleWebApp: { capable: true, title: "Vesuvia", statusBarStyle: "default" },
   formatDetection: { telephone: false, email: false, address: false },
   icons: {
-    icon: [{ url: "/icons/icon-72x72.svg", type: "image/svg+xml" }],
-    apple: [{ url: "/icons/icon-192x192.svg" }],
+    icon: [
+      { url: "/icons/icon-192x192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icons/icon-512x512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [{ url: "/icons/apple-touch-icon.png", sizes: "180x180" }],
   },
   category: "travel",
 };
 
 export const viewport: Viewport = {
-  themeColor: "#1F5F8B",
+  themeColor: "#2F3E51",
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",

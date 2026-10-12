@@ -10,7 +10,7 @@
  * Bump VERSION to invalidate all caches on deploy-sensitive changes.
  */
 
-const VERSION = "v3";
+const VERSION = "v4";
 const PREFIX = "vesuvia-";
 const STATIC_CACHE = `${PREFIX}static-${VERSION}`;
 const PAGES_CACHE = `${PREFIX}pages-${VERSION}`;
@@ -21,8 +21,8 @@ const OFFLINE_URL = "/offline";
 const PRECACHE_URLS = [
   OFFLINE_URL,
   "/manifest.json",
-  "/icons/icon-192x192.svg",
-  "/icons/icon-512x512.svg",
+  "/icons/icon-192x192.png",
+  "/icons/icon-512x512.png",
 ];
 
 const SWR_API_PATHS = ["/api/stations"];
