@@ -6,10 +6,15 @@ import {
   Clock,
   Footprints,
   RefreshCw,
+  ShieldCheck,
   Star,
   TrainFront,
+  Zap,
 } from "lucide-react";
+import { ARRIVE_BY, expectedArrivalMs } from "@/lib/eav/arriveBy";
+import { addMinutesToSearch } from "@/lib/eav/dates";
 import type {
+  ArriveByResult,
   CrossNetworkPlan,
   Journey,
   JourneySearchRequest,
@@ -20,7 +25,8 @@ import { useJourneys } from "@/hooks/useJourneys";
 import { useFavorites } from "@/hooks/useStorage";
 import { useNow } from "@/hooks/useNow";
 import { isFavoriteRoute, toggleFavoriteRoute } from "@/lib/storage";
-import { addDays, cn, formatDateShort, romeNow } from "@/lib/utils";
+import { addDays, cn, formatDateShort, formatTime, romeNow } from "@/lib/utils";
+import { Badge } from "@/components/ui/Badge";
 import { EmptyState, TextButton } from "@/components/ui/EmptyState";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { JourneyCard, JourneyCardSkeleton } from "./JourneyCard";
@@ -33,7 +39,6 @@ interface Props {
   to?: Station;
   resolveByName: ResolveByName;
   onEdit: () => void;
-  onLater: (date: string, time: string) => void;
 }
 
 function JourneyList({
@@ -41,11 +46,13 @@ function JourneyList({
   resolveByName,
   now,
   openFirst,
+  tagFor,
 }: {
   journeys: Journey[];
   resolveByName: ResolveByName;
   now: number | null;
   openFirst?: boolean;
+  tagFor?: (j: Journey) => React.ReactNode;
 }) {
   return (
     <div>
@@ -56,8 +63,125 @@ function JourneyList({
           resolveByName={resolveByName}
           now={now}
           defaultOpen={openFirst && i === 0}
+          tag={tagFor?.(j)}
         />
       ))}
+    </div>
+  );
+}
+
+const PICK_STYLE = {
+  safe: { icon: ShieldCheck, text: "text-ok", card: "border-ok/45 ring-1 ring-ok/15", badge: "bg-okbg text-ok" },
+  risky: { icon: Zap, text: "text-accent", card: "border-accent/45 ring-1 ring-accent/15", badge: "bg-accent/10 text-accent" },
+} as const;
+
+function PickBadge({ kind, children }: { kind: keyof typeof PICK_STYLE; children: React.ReactNode }) {
+  return <Badge className={PICK_STYLE[kind].badge}>{children}</Badge>;
+}
+
+function PickBlock({
+  kind,
+  label,
+  body,
+  journey,
+  resolveByName,
+  now,
+}: {
+  kind: keyof typeof PICK_STYLE;
+  label: string;
+  body: string;
+  journey: Journey;
+  resolveByName: ResolveByName;
+  now: number | null;
+}) {
+  const style = PICK_STYLE[kind];
+  const Icon = style.icon;
+  return (
+    <div className="mt-3">
+      <p className={cn("mx-5 flex items-center gap-1.5 text-[13px] font-bold", style.text)}>
+        <Icon aria-hidden="true" className="h-4 w-4" />
+        {label}
+      </p>
+      <p className="mx-5 mt-0.5 text-[12.5px] leading-snug text-ink-soft">{body}</p>
+      <JourneyCard journey={journey} resolveByName={resolveByName} now={now} className={cn("mt-2", style.card)} />
+    </div>
+  );
+}
+
+/** The two recommended trains for an arrive-by search. */
+function ArriveByPicks({
+  result,
+  journeys,
+  resolveByName,
+  now,
+}: {
+  result: ArriveByResult;
+  journeys: Journey[];
+  resolveByName: ResolveByName;
+  now: number | null;
+}) {
+  const { t } = useLanguage();
+  const target = formatTime(result.target);
+  const safe = journeys.find((j) => j.id === result.conservativeId);
+  const risky = journeys.find((j) => j.id === result.riskyId);
+  const n = result.bufferMinutes;
+
+  return (
+    <section aria-label={t("suggestionsTitle")} className="mb-2">
+      <h2 className="mx-5 mt-1 text-[19px] font-semibold tracking-[-0.01em]">{t("suggestionsTitle")}</h2>
+      {!risky ? (
+        <p role="status" className="mx-5 mt-1.5 text-[13px] text-ink-soft">
+          {t("noneInTime", { time: target })}
+        </p>
+      ) : safe && safe.id === risky.id ? (
+        <PickBlock
+          kind="safe"
+          label={t("onlyOption")}
+          body={t("onlyOptionBody", { time: target })}
+          journey={safe}
+          resolveByName={resolveByName}
+          now={now}
+        />
+      ) : (
+        <>
+          {safe ? (
+            <PickBlock
+              kind="safe"
+              label={t("conservative")}
+              body={t("conservativeBody", { n })}
+              journey={safe}
+              resolveByName={resolveByName}
+              now={now}
+            />
+          ) : (
+            <p className="mx-5 mt-1.5 text-[13px] text-ink-soft">{t("noBufferBody", { n })}</p>
+          )}
+          <PickBlock
+            kind="risky"
+            label={t("risky")}
+            body={t("riskyBody", { time: target })}
+            journey={risky}
+            resolveByName={resolveByName}
+            now={now}
+          />
+        </>
+      )}
+    </section>
+  );
+}
+
+function PageButton({ onClick, busy, children }: { onClick: () => void; busy: boolean; children: React.ReactNode }) {
+  return (
+    <div className="my-3 flex justify-center">
+      <button
+        type="button"
+        onClick={onClick}
+        disabled={busy}
+        aria-busy={busy}
+        className="rounded-full border border-line bg-card px-4 py-2 text-[13px] font-semibold text-sea hover:bg-sand/60 disabled:opacity-60"
+      >
+        {busy ? <span className="animate-pulse">{children}</span> : children}
+      </button>
     </div>
   );
 }
@@ -195,7 +319,6 @@ export function ResultsView({
   to,
   resolveByName,
   onEdit,
-  onLater,
 }: Props) {
   const { t, locale } = useLanguage();
   const q = useJourneys(request);
@@ -211,15 +334,22 @@ export function ResultsView({
         ? t("tomorrow")
         : formatDateShort(request.date, locale);
 
-  const journeys = q.data?.journeys ?? [];
-  const cross = q.data?.crossNetwork;
+  const arrive = request.mode === "arrive";
+  const journeys = q.journeys;
+  const cross = q.main?.crossNetwork;
+  const arriveBy = q.main?.arriveBy;
   const count = journeys.length;
+  const targetMs = arriveBy ? Date.parse(arriveBy.target) : null;
 
-  const later = () => {
-    const last = journeys[journeys.length - 1];
-    if (!last) return;
-    const next = romeNow(new Date(new Date(last.departure).getTime() + 60_000));
-    onLater(next.date, next.time);
+  const tagFor = (j: Journey) => {
+    if (!arriveBy) return null;
+    if (j.id === arriveBy.conservativeId && j.id === arriveBy.riskyId)
+      return <PickBadge kind="safe">{t("onlyOption")}</PickBadge>;
+    if (j.id === arriveBy.conservativeId) return <PickBadge kind="safe">{t("conservative")}</PickBadge>;
+    if (j.id === arriveBy.riskyId) return <PickBadge kind="risky">{t("risky")}</PickBadge>;
+    if (targetMs != null && !j.cancelled && expectedArrivalMs(j) > targetMs)
+      return <Badge>{t("arrivesAfter", { time: formatTime(arriveBy.target) })}</Badge>;
+    return null;
   };
 
   return (
@@ -278,7 +408,7 @@ export function ResultsView({
           </span>
           <span className="inline-flex items-center gap-1.5 rounded-full bg-sand px-2.5 py-1 font-semibold text-ink-soft">
             <Clock aria-hidden="true" className="h-3.5 w-3.5 text-muted" />
-            {t("fromTime", { time: request.time })}
+            {arrive ? t("arriveByTime", { time: request.time }) : t("fromTime", { time: request.time })}
           </span>
           <span className="ml-auto font-medium text-muted" aria-live="polite">
             {q.isSuccess && !cross &&
@@ -293,7 +423,7 @@ export function ResultsView({
             <JourneyCardSkeleton key={i} />
           ))}
         </div>
-      ) : q.isError ? (
+      ) : q.isError && !q.data ? (
         <EmptyState
           role="alert"
           icon={<TrainFront aria-hidden="true" className="h-5 w-5" />}
@@ -308,13 +438,33 @@ export function ResultsView({
         />
       ) : (
         <>
+          {arriveBy && count > 0 && (
+            <ArriveByPicks result={arriveBy} journeys={journeys} resolveByName={resolveByName} now={now} />
+          )}
+          {count > 0 && q.hasPreviousPage && (
+            <PageButton onClick={() => q.fetchPreviousPage()} busy={q.isFetchingPreviousPage}>
+              ← {t("earlierTrains")}
+            </PageButton>
+          )}
+          {arriveBy && count > 0 && (
+            <h2 className="mx-5 mb-1 mt-2 text-[19px] font-semibold tracking-[-0.01em]">{t("allTrains")}</h2>
+          )}
           {count > 0 && (
             <JourneyList
               journeys={journeys}
               resolveByName={resolveByName}
               now={now}
-              openFirst
+              openFirst={!arriveBy}
+              tagFor={arriveBy ? tagFor : undefined}
             />
+          )}
+          {cross && arrive && (
+            <p className="mx-5 mb-3 text-[13px] text-ink-soft">
+              {t("crossArriveNote", {
+                time: addMinutesToSearch(request, -ARRIVE_BY.lookbackMin).time,
+                target: request.time,
+              })}
+            </p>
           )}
           {cross && (
             <CrossNetworkView
@@ -334,16 +484,10 @@ export function ResultsView({
               action={<TextButton onClick={onEdit}>{t("edit")}</TextButton>}
             />
           )}
-          {count > 0 && (
-            <div className="mt-4 flex justify-center">
-              <button
-                type="button"
-                onClick={later}
-                className="rounded-full border border-line bg-card px-4 py-2 text-[13px] font-semibold text-sea hover:bg-sand/60"
-              >
-                {t("laterTrains")} →
-              </button>
-            </div>
+          {count > 0 && q.hasNextPage && (
+            <PageButton onClick={() => q.fetchNextPage()} busy={q.isFetchingNextPage}>
+              {t("laterTrains")} →
+            </PageButton>
           )}
         </>
       )}

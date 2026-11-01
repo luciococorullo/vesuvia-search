@@ -20,6 +20,14 @@ export function initialWhen(): When {
   return { mode: "now", date, time };
 }
 
+/** Default target for "arrive by": the next 5-minute mark an hour from now. */
+export function arriveByWhen(): When {
+  const now = romeNow();
+  const step = 5 * 60_000;
+  const target = romeNow(new Date(Math.ceil((Date.now() + 60 * 60_000) / step) * step));
+  return { mode: target.date === now.date ? "today" : "tomorrow", date: target.date, time: target.time };
+}
+
 /** Concrete Rome date/time for a `When` (evaluated at call time for "now"). */
 export function resolveWhen(when: When): { date: string; time: string } {
   const now = romeNow();
@@ -35,7 +43,16 @@ export function resolveWhen(when: When): { date: string; time: string } {
   }
 }
 
-export function WhenChips({ value, onChange }: { value: When; onChange: (w: When) => void }) {
+export function WhenChips({
+  value,
+  onChange,
+  hideNow = false,
+}: {
+  value: When;
+  onChange: (w: When) => void;
+  /** Hide "now" (meaningless as an arrival target). */
+  hideNow?: boolean;
+}) {
   const { t, locale } = useLanguage();
   const uid = useId();
 
@@ -84,7 +101,7 @@ export function WhenChips({ value, onChange }: { value: When; onChange: (w: When
   return (
     <div>
       <div role="radiogroup" aria-label={t("when")} className="flex flex-wrap gap-1.5">
-        {chips.map((c) => {
+        {chips.filter((c) => !(hideNow && c.mode === "now")).map((c) => {
           const on = value.mode === c.mode;
           return (
             <button

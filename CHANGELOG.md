@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - "Add to Home Screen" flow: home banner (snoozable) and footer link; native prompt on Chromium, step-by-step sheet on iOS and other Android browsers
 - `/api/version`: an installed app reloads itself when a newer deployment is live
+- "Arrive by" search: give a target arrival time and get two highlighted picks, a safe one (buffer + a later fallback train) and a risky one (latest train in time); tunables in `ARRIVE_BY`
+- "Earlier trains" in results; earlier and later trains now load in place
 
 ### Fixed
 

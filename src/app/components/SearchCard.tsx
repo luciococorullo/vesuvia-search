@@ -1,7 +1,7 @@
 "use client";
 
 import { ArrowUpDown } from "lucide-react";
-import type { Station } from "@/lib/eav/types";
+import type { SearchMode, Station } from "@/lib/eav/types";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { cn } from "@/lib/utils";
 import { LineDots } from "@/components/ui/LinePill";
@@ -15,6 +15,8 @@ interface Props {
   toFallback?: string;
   when: When;
   onWhenChange: (w: When) => void;
+  mode: SearchMode;
+  onModeChange: (m: SearchMode) => void;
   onPickFrom: () => void;
   onPickTo: () => void;
   onSwap: () => void;
@@ -74,6 +76,8 @@ export function SearchCard({
   toFallback,
   when,
   onWhenChange,
+  mode,
+  onModeChange,
   onPickFrom,
   onPickTo,
   onSwap,
@@ -128,7 +132,28 @@ export function SearchCard({
       </div>
 
       <div className="mb-3 mt-1">
-        <WhenChips value={when} onChange={onWhenChange} />
+        <div
+          role="radiogroup"
+          aria-label={t("searchMode")}
+          className="mb-2 inline-flex rounded-full bg-sand p-0.5"
+        >
+          {(["depart", "arrive"] as const).map((m) => (
+            <button
+              key={m}
+              type="button"
+              role="radio"
+              aria-checked={mode === m}
+              onClick={() => onModeChange(m)}
+              className={cn(
+                "min-h-[30px] rounded-full px-3 text-[12.5px] font-semibold transition-colors",
+                mode === m ? "bg-card text-ink shadow-warm-sm" : "text-ink-soft hover:text-ink",
+              )}
+            >
+              {m === "depart" ? t("leaveAt") : t("arriveBy")}
+            </button>
+          ))}
+        </div>
+        <WhenChips value={when} onChange={onWhenChange} hideNow={mode === "arrive"} />
       </div>
 
       {error && (

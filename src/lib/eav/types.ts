@@ -80,9 +80,18 @@ export interface JourneySearchRequest {
   toId: number;
   /** YYYY-MM-DD */
   date: string;
-  /** HH:MM */
+  /** HH:MM: departure time, or target arrival time when `mode` is "arrive". */
   time: string;
+  /** "depart" (default): trains leaving from `time`. "arrive": trains arriving by `time`. */
+  mode?: SearchMode;
+  /**
+   * Depart mode only: keep only journeys departing strictly before this ISO
+   * datetime (used to page to earlier trains).
+   */
+  until?: string;
 }
+
+export type SearchMode = 'depart' | 'arrive';
 
 export interface JourneySearchResponse {
   journeys: Journey[];
@@ -91,6 +100,19 @@ export interface JourneySearchResponse {
    * is split at an interchange node with an external transfer (metro, walk...).
    */
   crossNetwork?: CrossNetworkPlan;
+  /** Present for same-network "arrive" searches. */
+  arriveBy?: ArriveByResult;
+}
+
+export interface ArriveByResult {
+  /** Target arrival, ISO with Rome offset. */
+  target: string;
+  /** Safe pick: arrives with a buffer and has a later fallback train. */
+  conservativeId?: string;
+  /** Latest train expected to arrive by the target. */
+  riskyId?: string;
+  /** Buffer used for the conservative pick (minutes). */
+  bufferMinutes: number;
 }
 
 export interface CrossNetworkPlan {

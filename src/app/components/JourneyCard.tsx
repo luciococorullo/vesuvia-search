@@ -223,11 +223,16 @@ export function JourneyCard({
   resolveByName,
   now,
   defaultOpen = false,
+  tag,
+  className,
 }: {
   journey: Journey;
   resolveByName: ResolveByName;
   now: number | null;
   defaultOpen?: boolean;
+  /** Extra badge in the summary row (e.g. arrive-by pick). */
+  tag?: React.ReactNode;
+  className?: string;
 }) {
   const { t } = useLanguage();
   const [open, setOpen] = useState(defaultOpen);
@@ -249,6 +254,7 @@ export function JourneyCard({
         "mx-4 my-2.5 rounded-[18px] border border-line bg-card transition-shadow md:mx-5",
         open && "shadow-warm-sm",
         journey.cancelled && "opacity-70",
+        className,
       )}
     >
       <button
@@ -311,6 +317,7 @@ export function JourneyCard({
             departure={journey.departure}
             now={now}
           />
+          {tag}
         </span>
         <span className="sr-only">
           {open ? t("hideDetails") : t("showDetails")}
