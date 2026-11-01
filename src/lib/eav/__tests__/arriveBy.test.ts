@@ -100,10 +100,12 @@ describe('searchArriveBy', () => {
     const runs = [
       journey('08:00', '09:10'),
       journey('08:30', '10:05'), // slow: late
-      journey('08:45', '09:55'), // fast: in time, on the next planner page
+      journey('08:40', '10:10'), // slow: late
+      journey('08:45', '09:55'), // fast: in time, on a later planner page
       journey('09:15', '10:25'),
     ];
     const res = await searchArriveBy(1, 2, req, planner(runs, 2));
     expect(res.arriveBy?.riskyId).toBe('08:45');
+    expect(res.journeys.map((j) => j.id)).toContain('08:45');
   });
 });

@@ -90,7 +90,11 @@ export async function searchArriveBy(
 
   const firstPick = journeys.findIndex((j) => j.id === picks.conservativeId || j.id === picks.riskyId);
   if (firstPick > ARRIVE_BY.keepBeforePicks) journeys = journeys.slice(firstPick - ARRIVE_BY.keepBeforePicks);
-  const late = journeys.filter((j) => Date.parse(j.arrival) > targetMs);
+  // Trim late context only after the last in-time train, so no pick is cut.
+  const lastInTime = Math.max(
+    ...journeys.filter((j) => Date.parse(j.arrival) <= targetMs || j.id === picks.riskyId).map((j) => Date.parse(j.departure)),
+  );
+  const late = journeys.filter((j) => Date.parse(j.departure) > lastInTime);
   const lastKept = late[ARRIVE_BY.keepAfterTarget - 1];
   if (lastKept) journeys = journeys.filter((j) => Date.parse(j.departure) <= Date.parse(lastKept.departure));
   return { journeys, arriveBy: { ...arriveBy, ...picks } };
