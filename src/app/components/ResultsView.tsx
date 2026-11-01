@@ -336,8 +336,8 @@ export function ResultsView({
 
   const arrive = request.mode === "arrive";
   const journeys = q.journeys;
-  const cross = q.main?.crossNetwork;
-  const arriveBy = q.main?.arriveBy;
+  const cross = q.data?.crossNetwork;
+  const arriveBy = q.data?.arriveBy;
   const count = journeys.length;
   const targetMs = arriveBy ? Date.parse(arriveBy.target) : null;
 

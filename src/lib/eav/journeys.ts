@@ -19,51 +19,75 @@ import { searchPlanner } from './planner';
 import type { Journey, JourneySearchRequest, JourneySearchResponse, Station } from './types';
 
 type Moment = { date: string; time: string };
+type Planner = (fromId: number, toId: number, date: string, time: string) => Promise<Journey[]>;
 
 /** Planner calls allowed for one windowed search (each returns ~4 runs). */
 const MAX_PAGES = 6;
+/** Extra steps back (windowBeforeMin each) when the window holds no safe pick with a fallback. */
+const MAX_EARLIER_STEPS = 2;
 
 const byDeparture = (a: Journey, b: Journey) => Date.parse(a.departure) - Date.parse(b.departure);
 
 /**
- * Page forward through the planner from `start` until `done(all)` holds, no
- * new trains come back, or MAX_PAGES is hit.
+ * Page forward through the planner from `start` until a train departs at or
+ * after `stopMs`, no new trains come back, or MAX_PAGES is hit.
  */
 async function collect(
+  plan: Planner,
   fromId: number,
   toId: number,
   start: Moment,
-  done: (all: Journey[]) => boolean,
+  stopMs: number,
 ): Promise<Journey[]> {
   const byId = new Map<string, Journey>();
   let at = start;
   for (let i = 0; i < MAX_PAGES; i++) {
-    const page = await searchPlanner(fromId, toId, at.date, at.time);
+    const page = await plan(fromId, toId, at.date, at.time);
     const fresh = page.filter((j) => !byId.has(j.id));
     for (const j of fresh) byId.set(j.id, j);
     const all = [...byId.values()].sort(byDeparture);
-    if (!fresh.length || done(all)) return all;
+    if (!fresh.length || all.some((j) => Date.parse(j.departure) >= stopMs)) return all;
     at = addMinutesToSearch(all[all.length - 1].departure, 1);
   }
   return [...byId.values()].sort(byDeparture);
 }
 
+function merge(a: Journey[], b: Journey[]): Journey[] {
+  const byId = new Map([...a, ...b].map((j) => [j.id, j]));
+  return [...byId.values()].sort(byDeparture);
+}
+
 /** Same-network "arrive by": trains around the target arrival plus the two picks. */
-async function searchArriveBy(fromId: number, toId: number, req: JourneySearchRequest): Promise<JourneySearchResponse> {
+export async function searchArriveBy(
+  fromId: number,
+  toId: number,
+  req: JourneySearchRequest,
+  plan: Planner = searchPlanner,
+): Promise<JourneySearchResponse> {
   const targetMs = romeWallClockToUtc(req.date, hhmmToMinutes(req.time));
   const probeStart = addMinutesToSearch(req, -ARRIVE_BY.lookbackMin);
-  const probe = await searchPlanner(fromId, toId, probeStart.date, probeStart.time);
+  const probe = await plan(fromId, toId, probeStart.date, probeStart.time);
   const arriveBy = { target: toRomeIso(targetMs), bufferMinutes: ARRIVE_BY.conservativeBufferMin };
   if (!probe.length) return { journeys: [], arriveBy };
 
-  // Start the window so it covers the trip length plus a margin for earlier trains.
+  // Window: trip length plus a margin before the target. Collect until a train
+  // departs after the target (nothing later can arrive in time, even a faster one).
   const duration = Math.min(...probe.map((j) => j.durationMinutes));
-  const windowStartMs = targetMs - (duration + ARRIVE_BY.windowBeforeMin) * 60_000;
-  // Stop once we hold a train arriving after the target: everything in time is covered.
-  const pastTarget = (all: Journey[]) => all.some((j) => Date.parse(j.arrival) > targetMs);
-  let journeys = await collect(fromId, toId, addMinutesToSearch(toRomeIso(windowStartMs), 0), pastTarget);
+  let windowStartMs = targetMs - (duration + ARRIVE_BY.windowBeforeMin) * 60_000;
+  let journeys = await collect(plan, fromId, toId, addMinutesToSearch(toRomeIso(windowStartMs), 0), targetMs);
+  let picks = pickArriveBy(journeys, targetMs);
 
-  const picks = pickArriveBy(journeys, targetMs);
+  // Sparse lines: if no safe pick with a fallback is in the window (none, or it
+  // is the risky one itself), any earlier in-time train would be one. Look back.
+  const needsEarlier = () => picks.riskyId && (!picks.conservativeId || picks.conservativeId === picks.riskyId);
+  for (let i = 0; i < MAX_EARLIER_STEPS && needsEarlier(); i++) {
+    const untilMs = windowStartMs;
+    windowStartMs -= ARRIVE_BY.windowBeforeMin * 60_000;
+    const earlier = await collect(plan, fromId, toId, addMinutesToSearch(toRomeIso(windowStartMs), 0), untilMs);
+    journeys = merge(journeys, earlier.filter((j) => Date.parse(j.departure) < untilMs));
+    picks = pickArriveBy(journeys, targetMs);
+  }
+
   const firstPick = journeys.findIndex((j) => j.id === picks.conservativeId || j.id === picks.riskyId);
   if (firstPick > ARRIVE_BY.keepBeforePicks) journeys = journeys.slice(firstPick - ARRIVE_BY.keepBeforePicks);
   const late = journeys.filter((j) => Date.parse(j.arrival) > targetMs);
@@ -84,7 +108,7 @@ export async function searchJourneys(
     if (req.mode === 'arrive') return searchArriveBy(from.id, to.id, req);
     if (req.until) {
       const untilMs = Date.parse(req.until);
-      const all = await collect(from.id, to.id, req, (js) => js.some((j) => Date.parse(j.departure) >= untilMs));
+      const all = await collect(searchPlanner, from.id, to.id, req, untilMs);
       return { journeys: all.filter((j) => Date.parse(j.departure) < untilMs) };
     }
     return { journeys: await searchPlanner(from.id, to.id, req.date, req.time) };
