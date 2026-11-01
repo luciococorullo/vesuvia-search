@@ -2,6 +2,7 @@
  * POST /api/journeys  body: JourneySearchRequest → JourneySearchResponse
  * Same network: `journeys` filled. Different networks: `journeys: []` and
  * `crossNetwork` describes first leg + transfer + second leg.
+ * `mode: "arrive"` treats `time` as the target arrival and adds `arriveBy` picks.
  */
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
@@ -18,6 +19,8 @@ const bodySchema = z.object({
   toId: z.number().int().positive(),
   date: z.string().refine(isValidYmd),
   time: z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/),
+  mode: z.enum(['depart', 'arrive']).optional(),
+  until: z.string().datetime({ offset: true }).optional(),
 });
 
 export async function POST(request: NextRequest) {

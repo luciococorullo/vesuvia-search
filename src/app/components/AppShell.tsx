@@ -3,14 +3,15 @@
 /**
  * Single-page shell. All navigational state lives in the URL so views are
  * linkable and the back button works:
- *   /?from=ID&to=ID&date=YYYY-MM-DD&time=HH:MM   → results
+ *   /?from=ID&to=ID&date=YYYY-MM-DD&time=HH:MM   → results (leave at time)
+ *   ...&mode=arrive                               → results (arrive by time)
  *   /?tab=board&station=ID&type=arrivals          → live board
  *   /?tab=favorites                               → favourites
  */
 
 import { useCallback, useMemo, useState, useSyncExternalStore } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import type { JourneySearchRequest, Station } from "@/lib/eav/types";
+import type { JourneySearchRequest, SearchMode, Station } from "@/lib/eav/types";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useStations } from "@/hooks/useStations";
 import { useFavorites } from "@/hooks/useStorage";
@@ -33,7 +34,7 @@ import { ResultsView } from "./ResultsView";
 import { SearchCard } from "./SearchCard";
 import { StationPicker } from "./StationPicker";
 import { TabBar, type Tab } from "./TabBar";
-import { initialWhen, resolveWhen, type When } from "./WhenChips";
+import { arriveByWhen, initialWhen, resolveWhen, type When } from "./WhenChips";
 
 type PickerTarget = "from" | "to" | "board" | null;
 type Params = Record<string, string | number | undefined | null>;
@@ -61,6 +62,7 @@ export function AppShell() {
   const urlTo = toId(params.get("to"));
   const urlDate = params.get("date");
   const urlTime = params.get("time");
+  const urlMode: SearchMode = params.get("mode") === "arrive" ? "arrive" : "depart";
   const request = useMemo<JourneySearchRequest | null>(
     () =>
       tab === "trip" &&
@@ -71,9 +73,15 @@ export function AppShell() {
       DATE_RE.test(urlDate) &&
       urlTime &&
       TIME_RE.test(urlTime)
-        ? { fromId: urlFrom, toId: urlTo, date: urlDate, time: urlTime }
+        ? {
+            fromId: urlFrom,
+            toId: urlTo,
+            date: urlDate,
+            time: urlTime,
+            ...(urlMode === "arrive" && { mode: urlMode }),
+          }
         : null,
-    [tab, urlFrom, urlTo, urlDate, urlTime],
+    [tab, urlFrom, urlTo, urlDate, urlTime, urlMode],
   );
   const boardType: BoardType = params.get("type") === "arrivals" ? "arrivals" : "departures";
   const urlStation = toId(params.get("station"));
@@ -92,7 +100,8 @@ export function AppShell() {
   /* ---------- search form state ---------- */
   const [fromId, setFromId] = useState<number | null>(urlFrom);
   const [toIdState, setToId] = useState<number | null>(urlTo);
-  const [when, setWhen] = useState<When>(initialWhen);
+  const [when, setWhen] = useState<When>(() => (urlMode === "arrive" ? arriveByWhen() : initialWhen()));
+  const [searchMode, setSearchMode] = useState<SearchMode>(urlMode);
   const [formError, setFormError] = useState<string | null>(null);
   const [picker, setPicker] = useState<PickerTarget>(null);
 
@@ -114,9 +123,9 @@ export function AppShell() {
 
   /* ---------- actions ---------- */
   const runSearch = useCallback(
-    (route: RouteRef, date: string, time: string) => {
+    (route: RouteRef, date: string, time: string, mode: SearchMode = "depart") => {
       addRecent(route);
-      go({ from: route.from.id, to: route.to.id, date, time });
+      go({ from: route.from.id, to: route.to.id, date, time, mode: mode === "arrive" ? mode : undefined });
     },
     [go],
   );
@@ -126,13 +135,20 @@ export function AppShell() {
     if (from.id === to.id) return setFormError(t("sameStation"));
     setFormError(null);
     const { date, time } = resolveWhen(when);
-    runSearch({ from: { id: from.id, name: from.name }, to: { id: to.id, name: to.name } }, date, time);
+    runSearch({ from: { id: from.id, name: from.name }, to: { id: to.id, name: to.name } }, date, time, searchMode);
+  };
+
+  const changeSearchMode = (mode: SearchMode) => {
+    setSearchMode(mode);
+    // "Arrive by now" is meaningless: suggest a target an hour from now.
+    if (mode === "arrive" && when.mode === "now") setWhen(arriveByWhen());
   };
 
   const pickRoute = (r: RouteRef) => {
     setFromId(r.from.id);
     setToId(r.to.id);
     setWhen(initialWhen());
+    setSearchMode("depart");
     const now = romeNow();
     runSearch(r, now.date, now.time);
   };
@@ -202,7 +218,6 @@ export function AppShell() {
         to={byId.get(request.toId)}
         resolveByName={resolveByName}
         onEdit={() => go({})}
-        onLater={(date, time) => go({ from: request.fromId, to: request.toId, date, time })}
       />
     );
   } else {
@@ -216,6 +231,8 @@ export function AppShell() {
             to={to}
             when={when}
             onWhenChange={setWhen}
+            mode={searchMode}
+            onModeChange={changeSearchMode}
             onPickFrom={() => setPicker("from")}
             onPickTo={() => setPicker("to")}
             onSwap={() => {

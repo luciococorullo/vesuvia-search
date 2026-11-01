@@ -62,8 +62,14 @@ interface JourneySearchRequest {
   toId: number;   // integer > 0, different from fromId
   date: string;   // YYYY-MM-DD, must be a valid calendar date
   time: string;   // HH:MM, 00:00-23:59
+  mode?: 'depart' | 'arrive'; // default 'depart'; 'arrive' = `time` is the target arrival
+  until?: string; // ISO datetime with offset; depart mode only: keep trains departing before it
 }
 ```
+
+`mode: 'arrive'` (same network) probes the planner from `time − lookbackMin` to learn the trip length, then pages forward from `time − duration − windowBeforeMin` until a train arrives after the target, and returns `arriveBy` with two picks. Cross-network arrive searches run the normal plan from `time − lookbackMin`, without picks. Tunables live in `ARRIVE_BY` (`src/lib/eav/arriveBy.ts`).
+
+`until` is used by the UI for "earlier trains": it pages forward from `time` until it reaches `until`, so no train in between is skipped.
 
 Validation failures, invalid JSON and `fromId === toId` return 400; unknown ids return 404.
 
@@ -71,6 +77,12 @@ Validation failures, invalid JSON and `fromId === toId` return 400; unknown ids 
 interface JourneySearchResponse {
   journeys: Journey[];          // same network; empty for cross-network results
   crossNetwork?: CrossNetworkPlan;
+  arriveBy?: {                  // same-network arrive searches
+    target: string;             // ISO, Rome offset
+    conservativeId?: string;    // arrives ≥ bufferMinutes early and has a later fallback in time
+    riskyId?: string;           // latest train expected by the target (scheduled + live delay)
+    bufferMinutes: number;
+  };
 }
 interface Journey {
   id: string; from: string; to: string;
